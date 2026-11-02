@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 from numbers4_agent.research_discovery import (
     DEFAULT_TOPICS, discover, _crossref_entries, _brave_entries,
-    _model_assessment, _queries,
+    _model_assessment, _queries, _research_method_signals,
 )
 
 NOW=datetime(2026,11,2,17,30,tzinfo=timezone(timedelta(hours=9)))
@@ -79,6 +79,25 @@ class PredictiveResearchTests(unittest.TestCase):
         self.assertTrue(assessments["positional"]["exploratory_screen_passed"])
         self.assertFalse(assessments["positional"]["eligible_for_production"])
         self.assertFalse(assessments["positional"]["prospective_independent_confirmation"])
+
+    def test_abstract_method_signals_without_republishing_copyrighted_abstract(self):
+        raw="<jats:p>One-step Markov transition probabilities and concept drift</jats:p>"
+        data={"message":{"items":[{
+            "DOI":"10.9999/lottery-model",
+            "title":["Lottery sequential statistical forecasting"],
+            "abstract":raw,
+            "container-title":["Research journal"],
+            "published":{"date-parts":[[2023,2,1]]},
+        }]}}
+        results=_crossref_entries(data,"lottery")
+        self.assertEqual(len(results),1)
+        self.assertTrue(results[0]["abstract_metadata_present"])
+        self.assertIn("markov",results[0]["method_signals"])
+        self.assertIn("temporal_decay",results[0]["method_signals"])
+        self.assertNotIn("abstract",results[0])
+        self.assertNotIn(raw,json.dumps(results))
+        self.assertFalse(results[0]["external_claim_verified"])
+        self.assertEqual(_research_method_signals("unrelated text"),[])
 
     def test_no_unbounded_query_count_or_credentials(self):
         for query in ([""], ["a\nb"], ["x"*251], []):
