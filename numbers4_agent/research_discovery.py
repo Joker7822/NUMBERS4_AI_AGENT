@@ -161,7 +161,7 @@ def _crossref_entries(response: dict, query: str) -> list[dict]:
             validate_public_url(url)
         except ValueError:
             continue
-        category = _categories(title, query)
+        category = _categories(title, "")
         if not category:
             continue
         out.append({
