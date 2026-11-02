@@ -1,8 +1,9 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-round2-online";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-finance-winners";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
 const japaneseTime=t=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date(t))+" JST";
+const yen=n=>typeof n==="number"?n.toLocaleString("ja-JP")+"円":"未算定";
 function render(data){
   set("draw-count",data.consistent_rounds);set("issue-count",data.issued_draws);set("graded-count",data.graded_issued_draws);
   const label=data.source_status==="conflict"?"ソース不一致":data.auto_verified_rounds?"銀行＋販売元照合":data.consistent_rounds?"手入力2系統一致":"抽せん結果未登録";
@@ -45,10 +46,51 @@ function render(data){
       '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
       ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
   const next=live?.next_research_candidate;
-  set("online-next-candidate",next&&live.status==='historical_walk_forward_reconstruction_only'?
+  const safeNext=next&&live.status==='historical_walk_forward_reconstruction_only';
+  set("online-next-candidate",safeNext?
       '第'+next.target_round+'回研究候補 '+next.numbers.join(' / ')+
       ' （'+next.model+'、第'+next.data_cutoff_round+'回まで使用、未発行・銀行未照合）':
       '正式な事前発行予測ではありません。');
+  set("latest-candidate-meta",safeNext?
+      '第'+next.target_round+'回向け / 第'+next.data_cutoff_round+'回までの結果から算出 / '+
+      next.model+' / 研究専用・事前発行なし・購入なし':
+      '研究予測をまだ生成していません。');
+  const forecastGrid=byId("latest-candidate-numbers");forecastGrid.replaceChildren();
+  if(safeNext)next.numbers.forEach((num,i)=>{
+    const card=create("div","ticket");
+    card.append(create("small","", "研究候補 "+(i+1)),create("strong","",num));
+    forecastGrid.append(card);
+  });
+  const f=live?.retrospective_finance;
+  const financeReady=live?.status==='historical_walk_forward_reconstruction_only'&&
+    f?.status==='historical_simulation_only_not_actual_purchase';
+  set("simulation-scope",financeReady?
+    "第"+f.first_evaluated_round+"〜"+f.last_evaluated_round+"回 / "+f.evaluated_rounds.toLocaleString("ja-JP")+
+    "回 × ストレート5口 × 1口200円。抽せん後の履歴を使った再現であり、実購入していません。":
+    "配当データと予測履歴が照合できないため仮想収支を表示できません。");
+  set("simulation-spend",financeReady?yen(f.simulated_ticket_cost_yen):"未算定");
+  set("simulation-income",financeReady?yen(f.simulated_payout_yen):"未算定");
+  set("simulation-net",financeReady?(f.simulated_net_yen>0?"+":"")+yen(f.simulated_net_yen):"未算定");
+  set("simulation-roi",financeReady?f.simulated_roi_percent.toLocaleString("ja-JP")+"%":"未算定");
+  set("simulation-baseline",financeReady?yen(f.baseline_simulated_net_yen):"未算定");
+  set("actual-profit","購入記録なし・実収支は確認できません");
+  const hitList=byId("historical-wins");hitList.replaceChildren();
+  set("historical-wins-meta",financeReady?
+      "第2回からの再現予測でストレート一致 "+f.historical_winning_draws+
+      "回。すべて抽せん後に再現した研究上の一致で、購入・当せん実績ではありません。":
+      "当せん金データと再現予測の照合待ちです。");
+  if(financeReady){
+    if(!f.winning_rounds.length)hitList.append(create("p","subtle","一致した予測はありません。"));
+    for(const entry of f.winning_rounds.slice().reverse()){
+      const row=create("div","historical-hit");
+      row.append(
+        create("span","hit-round","第"+entry.round+"回 ・ "+entry.draw_date),
+        create("b","hit-number",entry.matched_prediction),
+        create("span","hit-payout",yen(entry.straight_payout_yen))
+      );
+      hitList.append(row);
+    }
+  }
   set("backtest-count",proof.evaluated_draws+"回");
   set("backtest-hits",proof.status==="historical_exploratory_only"?proof.top5_model_hits+"回":"未検証");
   set("backtest-scope",proof.status==="historical_exploratory_only"?

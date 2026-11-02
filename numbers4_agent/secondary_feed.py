@@ -19,6 +19,7 @@ import urllib.request
 from urllib.parse import urlparse
 
 from .historical_archive import load_archive, _git_blob_sha1, VERSION as ARCHIVE_VERSION, STATUS
+from .finance import PAYOUT_CSV, PAYOUT_META, VERSION as PAYOUT_VERSION, STATUS as PAYOUT_STATUS, _payout_int, load_payouts
 from .rules import four_digits
 
 JST=timezone(timedelta(hours=9))
@@ -127,6 +128,23 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
                             "sha256":sha256(raw).hexdigest()})
             data.append(raw)
         rows=validate_pair(parse_csv(data[0]),parse_json(data[1]),now.date())
+        # Payouts come from one secondary publisher only. The second mirror
+        # corroborates winning digits, never award amounts.
+        previous_payouts=[]
+        payout_enabled=(root/PAYOUT_CSV).exists() or (root/PAYOUT_META).exists()
+        if payout_enabled:
+            previous_payouts,_=load_payouts(root,old)
+            publisher_payout_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))
+            if len(publisher_payout_rows)!=len(rows):
+                raise ValueError("secondary payout rows do not match draw coverage")
+            fresh_payouts=[]
+            for idx,(r,src) in enumerate(zip(rows,publisher_payout_rows),1):
+                if (src.get("draw_no")!=str(idx) or src.get("draw_date")!=r["draw_date"] or
+                    four_digits(src.get("winning_number"))!=r["winning_number"]):
+                    raise ValueError("payout record does not match independently corroborated draw")
+                fresh_payouts.append(_payout_int(src.get("straight_payout")))
+            if fresh_payouts[:len(previous_payouts)]!=previous_payouts:
+                raise ValueError("historical secondary payout was rewritten; refuse update")
         if len(rows)<len(old) or rows[:len(old)]!=old:
             raise ValueError("source history was rewritten, shortened, or now inconsistent with stored archive")
         result["sources"]=sources
@@ -159,6 +177,35 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
             csv_file.parent.mkdir(parents=True,exist_ok=True)
             csv_file.write_bytes(csv_bytes)
             meta_file.write_text(json.dumps(provenance,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            if payout_enabled:
+                # Append only after verifying the complete historical prefix.
+                payout_text="round,draw_date,winning_number,straight_payout_yen\n"+"".join(
+                    f"{r['round']},{r['draw_date']},{r['winning_number']},{p}\n"
+                    for r,p in zip(rows,fresh_payouts))
+                payout_raw=payout_text.encode("utf-8")
+                pay_meta={
+                    "version":PAYOUT_VERSION, "status":PAYOUT_STATUS,
+                    "git_blob_sha1":_git_blob_sha1(payout_raw),
+                    "record_count":len(rows),"first_round":1,"last_round":len(rows),
+                    "first_draw_date":rows[0]["draw_date"],
+                    "last_draw_date":rows[-1]["draw_date"],
+                    "first_number":rows[0]["winning_number"],
+                    "latest_number":rows[-1]["winning_number"],
+                    "ticket_price_yen":200,
+                    "bank_primary_payouts_verified":False,
+                    "secondary_payout_independence_proven":False,
+                    "forecast_grading_authorized":False,
+                    "actual_purchase_records_present":False,
+                    "source":{"url":sources[0]["url"],"commit_sha":sources[0]["commit_sha"],
+                              "blob_sha":sources[0]["blob_sha"]},
+                    "bank_primary_url":"https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html",
+                    "interpretation":"Historical single-publisher straight payouts, hypothetical research P/L only.",
+                }
+                (root/PAYOUT_CSV).write_bytes(payout_raw)
+                (root/PAYOUT_META).write_text(json.dumps(pay_meta,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                validated,_=load_payouts(root,rows)
+                if validated!=fresh_payouts:
+                    raise ValueError("new historical payout ledger postwrite verification failed")
             if len(load_archive(root)[0])!=len(rows):
                 raise ValueError("historical archive failed post-commit integrity check")
             result["status"]="appended_secondary_history_not_officially_verified"

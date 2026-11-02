@@ -2,6 +2,7 @@
 from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
+import csv
 import json
 
 from .rules import four_digits
@@ -11,7 +12,8 @@ from .evaluation import graded_predictions, walk_forward
 from .ledger import read_issued
 from .sources import JST, reconcile, corroborated_draws
 from .store import file_hash
-from .historical_archive import archive_summary
+from .historical_archive import archive_summary, load_archive
+from .finance import load_payouts, summarize_reconstruction
 from .online_learning import VERSION as ONLINE_VERSION
 from hashlib import sha256
 
@@ -106,6 +108,25 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
                 "next_research_candidate","archive_git_blob_sha1","generated_at_jst")}
             online.update({"prediction_skill_confirmed":False,"officially_verified":False,
                            "forecast_grading_authorized":False,"production_model_changed":False})
+            finance=replay.get("retrospective_finance")
+            if finance is not None:
+                archive_rows,_=load_archive(root)
+                payout_rows,payout_meta=load_payouts(root,archive_rows)
+                with round_path.open(encoding="utf-8",newline="") as handle:
+                    history=list(csv.DictReader(handle))
+                for grade in history:
+                    for key in ("round","data_cutoff_round","selected_hit","uniform_hit"):
+                        grade[key]=int(grade[key])
+                verified_sim=summarize_reconstruction(history,archive_rows,payout_rows)
+                verified_sim["payout_git_blob_sha1"]=payout_meta["git_blob_sha1"]
+                if verified_sim!=finance:
+                    raise ValueError("simulated financial totals or winning rounds differ from source evidence")
+                if (finance["historical_winning_draws"]!=online["selected_top5_straight_hits"] or
+                    finance["baseline_winning_draws"]!=online["uniform_reference_top5_straight_hits"]):
+                    raise ValueError("simulation win counts differ from replay")
+                online["retrospective_finance"]=verified_sim
+            else:
+                warnings.append("過去の模擬収支は計算待ちです。実購入の収支は未確認です。")
         else:
             online={"status":"stale_or_mismatched_input","evaluated_draws":0,
                     "prediction_skill_confirmed":False,"officially_verified":False}

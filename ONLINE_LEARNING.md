@@ -46,3 +46,13 @@ python -m numbers4_agent.cli --root . audit-references
 - **事前登録済み新規Future-OOSの実測と明示承認なしにProduction昇格はしません。** この段階で「予測精度改善を実証済み」と宣言できません。
 - 自動購入・売上・個人情報アクセス・外部記事のコード実行は実装しません。
 - 研究用の次回候補には抽せん日を付けず、`research_only_not_issued_not_purchased` と表示します。
+
+
+## 最新予測・過去一致・研究用収支の自動表示（2026-11-02）
+
+`numbers4_agent/finance.py` が `data/secondary_straight_payouts.csv`（第三者公開の回別ストレート配当）と全履歴7,104回、`research/online_round_predictions.csv` を照合します。各回5口×200円とし、ストレート一致した回だけ公表配当を加算します。表示する当せん回数と配当合計はファイルハッシュ・対象回号・4桁番号・回別配当に紐づいており、データ不一致時は公開を拒否します。
+
+`research/online_replay.json` の `retrospective_finance` と `docs/data/status.json` を公開ダッシュボードで使います。最新研究予測5口と、本当に事前発行された5口は**別欄**です。過去の一致一覧は`historical_walk_forward_reconstruction_only`であり、当時の予測を保存していたと主張するものではありません。
+
+**本番の収支ではありません**。宝くじを購入・換金した記録がないため `actual_spend_yen`、`actual_income_yen`、`actual_profit_yen` はすべて `null`。銀行一次ソースでの全回配当検証も未実施です。仮想の的中・金額がプラスであってもモデルの予測精度向上を示しません。GitHub Actionsはベストエフォートで更新し、即時性を保証しません。
+
