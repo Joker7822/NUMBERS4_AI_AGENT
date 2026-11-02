@@ -60,3 +60,31 @@ test('all historical rows are labelled as secondary, never officially graded',()
   s.historical_archive.forecast_grading_authorized=true;
   assert.throws(()=>normalizeStatus(s),/過去履歴/);
 });
+
+test('round-two replay is historical only and never published as a winning prediction',()=>{
+  const s=source();
+  s.historical_archive={
+    status:'secondary_public_mirrors_agree_not_officially_verified',
+    record_count:4,first_round:1,last_round:4,
+    first_draw_date:'1994-10-07',last_draw_date:'1994-10-28',
+    latest_number:'0171',officially_verified:false,
+    forecast_grading_authorized:false,source_independence_not_established:true,
+    git_blob_sha1:'b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466'};
+  s.online_prequential_replay={
+    status:'historical_walk_forward_reconstruction_only',
+    evaluated_draws:3,first_evaluated_round:2,last_evaluated_round:4,
+    selected_top5_straight_hits:0,uniform_reference_top5_straight_hits:0,
+    selected_mean_log_score_edge_vs_uniform:0,selected_mean_brier_improvement_vs_uniform:0,
+    archive_git_blob_sha1:s.historical_archive.git_blob_sha1,
+    forecast_grading_authorized:false,production_model_changed:false,
+    prediction_skill_confirmed:false,officially_verified:false,
+    next_research_candidate:{target_round:5,data_cutoff_round:4,
+      model:'uniform',numbers:['0000','0001','0002','0003','0004'],draw_date:null,
+      status:'research_only_not_issued_not_purchased',accuracy_claim:false}};
+  assert.equal(normalizeStatus(s).online_prequential_replay.evaluated_draws,3);
+  s.online_prequential_replay.forecast_grading_authorized=true;
+  assert.throws(()=>normalizeStatus(s),/再現予測/);
+  s.online_prequential_replay.forecast_grading_authorized=false;
+  s.online_prequential_replay.next_research_candidate.data_cutoff_round=5;
+  assert.throws(()=>normalizeStatus(s),/再現予測/);
+});

@@ -13,6 +13,8 @@ from .sources import corroborated_draws, record_observation, reconcile
 from .official_fetch import sync
 from .proof import run as research_proof, save_report
 from .historical_archive import archive_summary
+from .online_learning import write_replay
+from .secondary_feed import refresh as refresh_secondary, audit_related
 
 
 def print_json(data: object) -> None:
@@ -46,6 +48,9 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("evaluate", help="grade existing pre-issued tickets against two entered sources")
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
     sub.add_parser("audit-history", help="validate full secondary archive from round 1 (not officially verified)")
+    sub.add_parser("replay-history", help="research-only predict each draw starting from round 2")
+    sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
+    sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
@@ -75,6 +80,18 @@ def main(argv: list[str] | None = None) -> int:
             result = walk_forward(root)
         elif args.command == "audit-history":
             result = archive_summary(root)
+        elif args.command == "replay-history":
+            result = write_replay(root)
+        elif args.command == "refresh-secondary":
+            result = refresh_secondary(root)
+            report=root/"research/online_source_audit.json"
+            report.parent.mkdir(parents=True,exist_ok=True)
+            report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+        elif args.command == "audit-references":
+            result = audit_related()
+            report=root/"research/online_reference_audit.json"
+            report.parent.mkdir(parents=True,exist_ok=True)
+            report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
         elif args.command == "fetch-official":
             result = sync(root, months_back=args.months_back)
         elif args.command == "prove":

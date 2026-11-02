@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-full-archive"></script>
+  <script type="module" src="app.js?v=20261102-round2-online"></script>
 </head>
 <body>
   <div class="page">
@@ -67,8 +67,16 @@
           <p class="subtle">公式銀行と第二公開元の読取り専用自動取得は有効です。一致しない結果の本番採用・予測の自動購入・モデルの自動昇格は禁止です。</p>
         </section>
       </div>
+      <section class="panel" id="online-prequential">
+        <div class="panel-head"><span>06 / HISTORICAL PREQUENTIAL REPLAY</span><h2>第2回から全回の逐次予測・照合</h2></div>
+        <div class="data-row"><span>過去データのみで予測・照合した回数</span><strong id="online-replay-count">—</strong></div>
+        <div class="data-row"><span>5口ストレートの一致回数</span><strong id="online-replay-hits">—</strong></div>
+        <div class="data-row"><span>確率モデルと一様抽せんの差</span><strong id="online-replay-edge">—</strong></div>
+        <p id="online-next-candidate" class="subtle">更新後の研究候補を確認中です。</p>
+        <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
+      </section>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.2.1</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>
