@@ -1,13 +1,13 @@
 {
   "version": "numbers4-recursive-research-evolution-v1",
-  "generation": 3,
-  "generated_at_jst": "2026-11-02T19:08:53+09:00",
+  "generation": 4,
+  "generated_at_jst": "2026-11-02T19:37:15+09:00",
   "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
   "archive_latest_round": 7104,
   "current_archive_new_rounds_since_previous_generation": 0,
   "research_discovery": {
-    "version": "numbers4-predictive-research-discovery-v1",
-    "searched_at_jst": "2026-11-02T19:08:53+09:00",
+    "version": "numbers4-continuous-discovery-v1",
+    "searched_at_jst": "2026-11-02T19:37:15+09:00",
     "queries": [
       "lottery draw statistical randomness tests prediction",
       "lottery forecast model comparison data snooping prevention",
@@ -19,7 +19,7 @@
     ],
     "web_search_enabled": false,
     "web_search_provider_requires_configured_key": true,
-    "candidate_count": 14,
+    "candidate_count": 104,
     "candidates": [
       {
         "provider": "crossref",
@@ -129,6 +129,321 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
+        "id": "10.1201/9781482273090-9",
+        "title": "Statistical Methods for Spatial Epidemiology: Tests for Randomness",
+        "source_url": "https://doi.org/10.1201/9781482273090-9",
+        "publication_year": 1998,
+        "venue": "GIS And Health",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.32614/cran.package.valottery",
+        "title": "valottery: Results from the Virginia Lottery Draw Games",
+        "source_url": "https://doi.org/10.32614/cran.package.valottery",
+        "publication_year": 2015,
+        "venue": "CRAN: Contributed Packages",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess2175.pub2",
+        "title": "Randomness, Tests of",
+        "source_url": "https://doi.org/10.1002/0471667196.ess2175.pub2",
+        "publication_year": 2005,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1177/0008068319490203",
+        "title": "Topographic Randomness and Its Statistical Tests",
+        "source_url": "https://doi.org/10.1177/0008068319490203",
+        "publication_year": 1949,
+        "venue": "Calcutta Statistical Association Bulletin",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/9781118762585.ch13",
+        "title": "Tests on randomness",
+        "source_url": "https://doi.org/10.1002/9781118762585.ch13",
+        "publication_year": 2014,
+        "venue": "Statistical Hypothesis Testing with SAS and R",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/9781118762585.part8",
+        "title": "Tests on Randomness",
+        "source_url": "https://doi.org/10.1002/9781118762585.part8",
+        "publication_year": 2014,
+        "venue": "Statistical Hypothesis Testing with SAS and R",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1177/0008068319480309",
+        "title": "Tests of Randomness",
+        "source_url": "https://doi.org/10.1177/0008068319480309",
+        "publication_year": 1948,
+        "venue": "Calcutta Statistical Association Bulletin",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2286010",
+        "title": "Some Nonparametric Tests of Randomness",
+        "source_url": "https://doi.org/10.2307/2286010",
+        "publication_year": 1974,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess1161.pub2",
+        "title": "Spatial Randomness, Hopkins–Rotondi Tests of",
+        "source_url": "https://doi.org/10.1002/0471667196.ess1161.pub2",
+        "publication_year": 2005,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3906/mat-1509-19",
+        "title": "New statistical randomness tests: 4-bit template matching tests",
+        "source_url": "https://doi.org/10.3906/mat-1509-19",
+        "publication_year": 2017,
+        "venue": "TURKISH JOURNAL OF MATHEMATICS",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2281348",
+        "title": "The Efficiencies of Tests of Randomness Against Normal Regression",
+        "source_url": "https://doi.org/10.2307/2281348",
+        "publication_year": 1956,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1111/j.2517-6161.1979.tb01091.x",
+        "title": "Tests of 'Randomness' for Spatial Point Patterns",
+        "source_url": "https://doi.org/10.1111/j.2517-6161.1979.tb01091.x",
+        "publication_year": 1979,
+        "venue": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "694eee9a3006316e983ae9e5224aa0a514c069ecdc427bb7ba4afecb9598ebed",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1201/9780429186196-14",
+        "title": "The Single-Sample Runs Test (and Other Tests of Randomness)",
+        "source_url": "https://doi.org/10.1201/9780429186196-14",
+        "publication_year": 2020,
+        "venue": "Handbook of Parametric and Nonparametric Statistical Procedures",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/01621459.1974.10480197",
+        "title": "Some Nonparametric Tests of Randomness",
+        "source_url": "https://doi.org/10.1080/01621459.1974.10480197",
+        "publication_year": 1974,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2281400",
+        "title": "On the Independence of Tests of Randomness and Other Hypotheses",
+        "source_url": "https://doi.org/10.2307/2281400",
+        "publication_year": 1957,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
         "id": "10.2139/ssrn.4449864",
         "title": "Data Snooping for Pose Estimation Based on Generalized Eia Model",
         "source_url": "https://doi.org/10.2139/ssrn.4449864",
@@ -160,6 +475,153 @@
         "method_signals": [],
         "research_categories": [
           "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.4135/9781412961288.n102",
+        "title": "Data Snooping",
+        "source_url": "https://doi.org/10.4135/9781412961288.n102",
+        "publication_year": 2010,
+        "venue": "Encyclopedia of Research Design",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.4135/9781071812082.n148",
+        "title": "Data Snooping",
+        "source_url": "https://doi.org/10.4135/9781071812082.n148",
+        "publication_year": 2022,
+        "venue": "The SAGE Encyclopedia of Research Design",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.3746097",
+        "title": "Do Lottery Characteristics Matter for Analysts’ Forecast Behavior?",
+        "source_url": "https://doi.org/10.2139/ssrn.3746097",
+        "publication_year": 2021,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "dc53d53f50bf9ed3f0c8f792ba74f608306a880d96a901898631fa060a15b583",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.563209",
+        "title": "Stepwise Multiple Testing as Formalized Data Snooping",
+        "source_url": "https://doi.org/10.2139/ssrn.563209",
+        "publication_year": 2004,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "ad7db53913e061052cb89e1233060df08a5f05b866c2073431391e0be84c4d2e",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.14393/ufu.di.2022.149",
+        "title": "A atualização do valor crítico interfere na performance do procedimento Data Snooping?",
+        "source_url": "https://doi.org/10.14393/ufu.di.2022.149",
+        "publication_year": null,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5194/egusphere-egu24-14180",
+        "title": "Advancing Forecast Precision: Data-Driven Model Generation via Data Assimilation",
+        "source_url": "https://doi.org/10.5194/egusphere-egu24-14180",
+        "publication_year": 2024,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "8ce6aefec2ac2ff5ce291f1e8d60d034646b08f33a5c5e6cc8b5dd70a3b2c1fb",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1088/1742-6596/1423/1/012024",
+        "title": "Analysis and forecast for growth of lottery sales based on optimal control model",
+        "source_url": "https://doi.org/10.1088/1742-6596/1423/1/012024",
+        "publication_year": 2019,
+        "venue": "Journal of Physics: Conference Series",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "97922a71ae8970538cba6a65a9bf05a9a03be120b7436fb4a8cda860e5f15761",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
         ],
         "retraction_or_update_metadata_present": false,
         "discovery_query": "lottery forecast model comparison data snooping prevention",
@@ -217,11 +679,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.32614/cran.package.scoring",
-        "title": "scoring: Proper Scoring Rules",
-        "source_url": "https://doi.org/10.32614/cran.package.scoring",
-        "publication_year": 2013,
-        "venue": "CRAN: Contributed Packages",
+        "id": "10.24818/ida-ql/2025.210",
+        "title": "Proper Scoring Rules - Multivariate Probabilistic Forecasting",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [
@@ -240,11 +702,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.24818/ida-ql/2025.210",
-        "title": "Proper Scoring Rules - Multivariate Probabilistic Forecasting",
-        "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
-        "publication_year": 2025,
-        "venue": "IDA Quantlets Repository",
+        "id": "10.32614/cran.package.scoring",
+        "title": "scoring: Proper Scoring Rules",
+        "source_url": "https://doi.org/10.32614/cran.package.scoring",
+        "publication_year": 2013,
+        "venue": "CRAN: Contributed Packages",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [
@@ -277,6 +739,329 @@
           "validation",
           "probability",
           "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7082155",
+        "title": "Minimal counterexamples separating accuracy, proper scoring rules, and calibration error in probabilistic classification",
+        "source_url": "https://doi.org/10.2139/ssrn.7082155",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "03a54bf8166eeebf782577e5cf241bd8a35a789f58f1eac72ed4ac5a5286f18e",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.214",
+        "title": "Proper Scoring Rules - Scoring rules characterization",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.214",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.213",
+        "title": "Proper Scoring Rules - Locality of scoring rules",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.213",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.211",
+        "title": "Proper Scoring Rules - Local scale dependence of scoring rules",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.211",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1287/opre.2022.2414",
+        "title": "From Proper Scoring Rules to Max-Min Optimal Forecast Aggregation",
+        "source_url": "https://doi.org/10.1287/opre.2022.2414",
+        "publication_year": 2023,
+        "venue": "Operations Research",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "448821633232a23bc9aa9436ac0ee06fe22398758ef1fa0494a438027b31e5ec",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1175/mwr-d-14-00269.1",
+        "title": "Variogram-Based Proper Scoring Rules for Probabilistic Forecasts of Multivariate Quantities*",
+        "source_url": "https://doi.org/10.1175/mwr-d-14-00269.1",
+        "publication_year": 2015,
+        "venue": "Monthly Weather Review",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "1f7a56e49fcbf1448dfa3a9489cca53c4a1cb18575e962709f53560b9fc98017",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-cl/2025.133",
+        "title": "Proper Scoring Rules",
+        "source_url": "https://doi.org/10.24818/ida-cl/2025.133",
+        "publication_year": 2025,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.215",
+        "title": "Proper Scoring Rules",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.215",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.209",
+        "title": "Proper Scoring Rules",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.209",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21236/ada454828",
+        "title": "Strictly Proper Scoring Rules, Prediction, and Estimation",
+        "source_url": "https://doi.org/10.21236/ada454828",
+        "publication_year": 2005,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5194/ems2021-336",
+        "title": "A sequential decomposition of proper scoring rules",
+        "source_url": "https://doi.org/10.5194/ems2021-336",
+        "publication_year": 2021,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "61fd5ec02bef3390a8c8a00fe2853fbf265dadfbfa8d93267ec2a6e3001f1bb3",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.2261272",
+        "title": "Strictly Proper Scoring Rules and the Wisdom of the Crowd",
+        "source_url": "https://doi.org/10.2139/ssrn.2261272",
+        "publication_year": 2013,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "8a9e595c3ea4530f271c9530ce7632cdd496cec67526f197bcc8f97b4bd3960b",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/qj.3029",
+        "title": "Proper scoring rules for interval probabilistic forecasts",
+        "source_url": "https://doi.org/10.1002/qj.3029",
+        "publication_year": 2017,
+        "venue": "Quarterly Journal of the Royal Meteorological Society",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "5bcf4476664345bb52a9a64480a23a29a98c14aea1c1ef854c6d3e9a9a4a3641",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21236/ada459827",
+        "title": "Strictly Proper Scoring Rules, Prediction and Estimation",
+        "source_url": "https://doi.org/10.21236/ada459827",
+        "publication_year": 2004,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
         ],
         "retraction_or_update_metadata_present": false,
         "discovery_query": "proper scoring rules probabilistic forecast evaluation",
@@ -326,10 +1111,1199 @@
         "full_text_independently_reviewed": false,
         "reproducible_lottery_edge_verified": false,
         "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/07474946.2015.1030973",
+        "title": "Constrained Bayesian Method for Testing Multiple Hypotheses in Sequential Experiments",
+        "source_url": "https://doi.org/10.1080/07474946.2015.1030973",
+        "publication_year": 2015,
+        "venue": "Sequential Analysis",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/07474946.2013.843318",
+        "title": "The Methods of Sequential Analysis of Bayesian Type for the Multiple Testing Problem",
+        "source_url": "https://doi.org/10.1080/07474946.2013.843318",
+        "publication_year": 2014,
+        "venue": "Sequential Analysis",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/07474938.2020.1770996",
+        "title": "Robust open Bayesian analysis: Overfitting, model uncertainty, and endogeneity issues in multiple regression models",
+        "source_url": "https://doi.org/10.1080/07474938.2020.1770996",
+        "publication_year": 2020,
+        "venue": "Econometric Reviews",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2289939",
+        "title": "Tests for Autocorrelation and Randomness in Multiple Time Series",
+        "source_url": "https://doi.org/10.2307/2289939",
+        "publication_year": 1989,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2283736",
+        "title": "Tests for Randomness of Directions Against Two Circular Alternatives",
+        "source_url": "https://doi.org/10.2307/2283736",
+        "publication_year": 1969,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess1161",
+        "title": "Spatial Randomness, <scp>H</scp> opkins– <scp>R</scp> otondi Tests of",
+        "source_url": "https://doi.org/10.1002/0471667196.ess1161",
+        "publication_year": 2004,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2286239",
+        "title": "Maximin Tests of Randomness Against Ordered Alternatives: The Multinomial Distribution Case",
+        "source_url": "https://doi.org/10.2307/2286239",
+        "publication_year": 1977,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.32614/cran.package.cryptrndtest",
+        "title": "CryptRndTest: Statistical Tests for Cryptographic Randomness",
+        "source_url": "https://doi.org/10.32614/cran.package.cryptrndtest",
+        "publication_year": 2015,
+        "venue": "CRAN: Contributed Packages",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2307/2290144",
+        "title": "Rank-Based Tests for Randomness Against First-Order Serial Dependence",
+        "source_url": "https://doi.org/10.2307/2290144",
+        "publication_year": 1988,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1201/9781420036268.ch10",
+        "title": "The Single-Sample Runs Test (and Other Tests of Randomness",
+        "source_url": "https://doi.org/10.1201/9781420036268.ch10",
+        "publication_year": 2003,
+        "venue": "Handbook of Parametric and Nonparametric Statistical Procedures",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/978-3-642-04107-5_26",
+        "title": "Automation of Statistical Tests on Randomness to Obtain Clearer Conclusion",
+        "source_url": "https://doi.org/10.1007/978-3-642-04107-5_26",
+        "publication_year": 2009,
+        "venue": "Monte Carlo and Quasi-Monte Carlo Methods 2008",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1198/jasa.2009.tm09047",
+        "title": "On Multivariate Runs Tests for Randomness",
+        "source_url": "https://doi.org/10.1198/jasa.2009.tm09047",
+        "publication_year": 2009,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/978-1-4612-3352-7_29",
+        "title": "Compression, Tests for Randomness and Estimating the Statistical Model of an Individual Sequence",
+        "source_url": "https://doi.org/10.1007/978-1-4612-3352-7_29",
+        "publication_year": 1990,
+        "venue": "Sequences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1109/cyberc.2013.93",
+        "title": "Evaluation of Statistical Tests for Randomness Using Conditional Entropy",
+        "source_url": "https://doi.org/10.1109/cyberc.2013.93",
+        "publication_year": 2013,
+        "venue": "2013 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.18637/jss.v007.i03",
+        "title": "Some Difficult-to-Pass Tests of Randomness",
+        "source_url": "https://doi.org/10.18637/jss.v007.i03",
+        "publication_year": 2002,
+        "venue": "Journal of Statistical Software",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/01621459.1956.10501327",
+        "title": "The Efficiencies of Tests of Randomness Against Normal Regression",
+        "source_url": "https://doi.org/10.1080/01621459.1956.10501327",
+        "publication_year": 1956,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1080/01621459.1989.10478800",
+        "title": "Tests for Autocorrelation and Randomness in Multiple Time Series",
+        "source_url": "https://doi.org/10.1080/01621459.1989.10478800",
+        "publication_year": 1989,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1111/j.2517-6161.1956.tb00229.x",
+        "title": "Tests for Randomness in a Series of Events When the Alternative is a Trend",
+        "source_url": "https://doi.org/10.1111/j.2517-6161.1956.tb00229.x",
+        "publication_year": 1956,
+        "venue": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "255918b9079647cdc619111861d3810f94346567c8a29ae43c10120c13ca6568",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1111/j.2517-6161.1979.tb01054.x",
+        "title": "Some Tests of Randomness Based Upon the Variance-Time Curve of the Poisson Process",
+        "source_url": "https://doi.org/10.1111/j.2517-6161.1979.tb01054.x",
+        "publication_year": 1979,
+        "venue": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "928483269529846775e154098e3753dfcef50afe414a719a00c08942082bacd1",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1198/016214506000000618",
+        "title": "Tests of Spatial Randomness Adjusted for an Inhomogeneity",
+        "source_url": "https://doi.org/10.1198/016214506000000618",
+        "publication_year": 2006,
+        "venue": "Journal of the American Statistical Association",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/j.dam.2019.07.022",
+        "title": "Periodic template tests: A family of statistical randomness tests for a collection of binary sequences",
+        "source_url": "https://doi.org/10.1016/j.dam.2019.07.022",
+        "publication_year": 2019,
+        "venue": "Discrete Applied Mathematics",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.1738906",
+        "title": "Politicians’ Luck of the Draw: Evidence from the Spanish Christmas Lottery",
+        "source_url": "https://doi.org/10.2139/ssrn.1738906",
+        "publication_year": 2011,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "e2b763766cd4e1861b845d3c4079e1290ce74836bd7702041a6296e56a8084e4",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.2858619",
+        "title": "Information Aggregation and Data Snooping",
+        "source_url": "https://doi.org/10.2139/ssrn.2858619",
+        "publication_year": 2016,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.3128788",
+        "title": "Technical Analysis, Spread Trading and Data Snooping Control",
+        "source_url": "https://doi.org/10.2139/ssrn.3128788",
+        "publication_year": 2018,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "9eb3668bf94a7a7398c4e50cd43eb4b08f70738c4a1c0b92c479ad2af7d49e52",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.6950738",
+        "title": "Anomalies, Data Snooping, and Post-Publication Decay: Evidence from the Super Bowl Predictor",
+        "source_url": "https://doi.org/10.2139/ssrn.6950738",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "69da91644deb0908a6b757a59dccacd914f8adee75e6cbdcc8263a9dd88e2e0d",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1057/9781137384843.0012",
+        "title": "Is the Life Cycle Model or Onoâs Model Most Suitable for the Japanese? Analysis by Time-Series Data and Surveys of Lottery Purchase and Large Prizewinners",
+        "source_url": "https://doi.org/10.1057/9781137384843.0012",
+        "publication_year": null,
+        "venue": "Consumer Casualties",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.962867",
+        "title": "Data Snooping and the Global Accrual Anomaly",
+        "source_url": "https://doi.org/10.2139/ssrn.962867",
+        "publication_year": 2010,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.1343896",
+        "title": "Data Snooping and Market-Timing Rule Performance",
+        "source_url": "https://doi.org/10.2139/ssrn.1343896",
+        "publication_year": 2009,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1145/3465456.3467599",
+        "title": "From Proper Scoring Rules to Max-Min Optimal Forecast Aggregation",
+        "source_url": "https://doi.org/10.1145/3465456.3467599",
+        "publication_year": 2021,
+        "venue": "Proceedings of the 22nd ACM Conference on Economics and Computation",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1109/tit.2009.2027573",
+        "title": "Probabilistic Coherence and Proper Scoring Rules",
+        "source_url": "https://doi.org/10.1109/tit.2009.2027573",
+        "publication_year": 2009,
+        "venue": "IEEE Transactions on Information Theory",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5194/egusphere-egu26-14157",
+        "title": "A generalisation of the signal-to-noise ratio using proper scoring rules",
+        "source_url": "https://doi.org/10.5194/egusphere-egu26-14157",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "a46c69757c30626dc06fbcc6369054ecefe41c1db2a4edd19bd0e38c157b85b4",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.18260/1-2--5762",
+        "title": "Experiential Learning And Strictly Proper Scoring Rules",
+        "source_url": "https://doi.org/10.18260/1-2--5762",
+        "publication_year": null,
+        "venue": "2009 Annual Conference &amp; Exposition Proceedings",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3150/16-bej857",
+        "title": "Proper scoring rules and Bregman divergence",
+        "source_url": "https://doi.org/10.3150/16-bej857",
+        "publication_year": 2018,
+        "venue": "Bernoulli",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "2912e3eb9bae3b4324d3f9a58a4a97d9511e17c0fe07601e22fab7b2fbdac0b3",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7110898",
+        "title": "Proof of Calibration — Reputation from Strictly Proper Scoring Rules: the Exact Price of Faking Skill",
+        "source_url": "https://doi.org/10.2139/ssrn.7110898",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "7648f9316246f01ce9f76c4f7c2fd935c6a5bba8b90fb574b9a2ff5e32f80eeb",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "randomness",
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21437/interspeech.2013-470",
+        "title": "Likelihood-ratio calibration using prior-weighted proper scoring rules",
+        "source_url": "https://doi.org/10.21437/interspeech.2013-470",
+        "publication_year": 2013,
+        "venue": "Interspeech 2013",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7358640",
+        "title": "Proper Scoring Rules for Correlation Matrix Forecasts on the SPD Manifold: Theory and Empirical Evidence",
+        "source_url": "https://doi.org/10.2139/ssrn.7358640",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "1d5cc5f914d518c9ebd6a86af327ddb1bd381ab250fa14487e29012eef3c73d3",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7372798",
+        "title": "Proper Scoring Rules for Path-Valued Forecasts on the SPD Manifold: Propriety via Riemannian Development",
+        "source_url": "https://doi.org/10.2139/ssrn.7372798",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "986882589028f792a357f9634cfef5151d50850f7fb4ed58f04b57559f82479d",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.2019078",
+        "title": "Proper Scoring Rules and Risk Aversion",
+        "source_url": "https://doi.org/10.2139/ssrn.2019078",
+        "publication_year": 2012,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7548499",
+        "title": "Evaluating Aleatoric Uncertainty from Repeated Measurements: A Proper Scoring Rule for Heteroscedastic Probabilistic Surrogates",
+        "source_url": "https://doi.org/10.2139/ssrn.7548499",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "941126766c5adcd719251abcb63dfb269098b798b5e16ef5556f9def0ca095a7",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1175/2009mwr2945.1",
+        "title": "Scoring Rules for Forecast Verification",
+        "source_url": "https://doi.org/10.1175/2009mwr2945.1",
+        "publication_year": 2010,
+        "venue": "Monthly Weather Review",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "a0f4f49e17eebb6fc7df3de56df3185d6d84f157a3a25dedc77b0b93c4e61518",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1093/biomet/ass046",
+        "title": "Compatible weighted proper scoring rules",
+        "source_url": "https://doi.org/10.1093/biomet/ass046",
+        "publication_year": 2012,
+        "venue": "Biometrika",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5194/egusphere-egu21-7418",
+        "title": "Ranking earthquake forecasts: On the use of proper scoring rules to discriminate forecasts",
+        "source_url": "https://doi.org/10.5194/egusphere-egu21-7418",
+        "publication_year": 2021,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "75b5f4d568a8cdce217b80f004cd34642de64e1ea90a29ae4be193924b25a078",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "validation",
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.3632278",
+        "title": "Proper Scoring Rules for Evaluating Asymmetry in Density Forecasting",
+        "source_url": "https://doi.org/10.2139/ssrn.3632278",
+        "publication_year": 2020,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/bf02595735",
+        "title": "Incentive contrats and strictly proper scoring rules",
+        "source_url": "https://doi.org/10.1007/bf02595735",
+        "publication_year": 2002,
+        "venue": "Test",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1175/waf-d-19-0205.1",
+        "title": "Beyond Strictly Proper Scoring Rules: The Importance of Being Local",
+        "source_url": "https://doi.org/10.1175/waf-d-19-0205.1",
+        "publication_year": 2021,
+        "venue": "Weather and Forecasting",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "beaf17a703cb4c66b33daf00e6a2c1e93660088246f4fef97a81e15aa5db6097",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3150/13-bej557",
+        "title": "Affine invariant divergences associated with proper composite scoring rules and their applications",
+        "source_url": "https://doi.org/10.3150/13-bej557",
+        "publication_year": 2014,
+        "venue": "Bernoulli",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "68a5239bd8d0fc7e00a8f5325fea9407555410aadbc0c85bf96cf892292928e1",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/s40300-014-0039-y",
+        "title": "Theory and applications of proper scoring rules",
+        "source_url": "https://doi.org/10.1007/s40300-014-0039-y",
+        "publication_year": 2014,
+        "venue": "METRON",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1093/oso/9780198523567.003.0029",
+        "title": "Proper Scoring Rules for Fractiles",
+        "source_url": "https://doi.org/10.1093/oso/9780198523567.003.0029",
+        "publication_year": 1996,
+        "venue": "Bayesian Statistics 5",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "38f5d78d72969db1c10d38f7d30928b2e6fb92e35c28abce1deb87284a6381fe",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7669151",
+        "title": "Benign Overfitting in Conditional Factor Models",
+        "source_url": "https://doi.org/10.2139/ssrn.7669151",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "f04a9ec8b65f99982c8d743b12dc2b8223725ce3e9daf4030e89ffd631668335",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5705/ss.202025.0042",
+        "title": "Sequential Multiple Testing of Multiple Composite Hypotheses: an Asymptotic Optimality Theory with General Information Functions",
+        "source_url": "https://doi.org/10.5705/ss.202025.0042",
+        "publication_year": 2029,
+        "venue": "Statistica Sinica",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21203/rs.3.rs-209537/v1",
+        "title": "Forecast and Uncertainty Analysis of Extreme Precipitation in China from Ensemble of Multiple Climate Models",
+        "source_url": "https://doi.org/10.21203/rs.3.rs-209537/v1",
+        "publication_year": 2021,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "fc6210ce22a026ae639585938908c1cce84fa63026e3108ed9dcb80a35f78e5b",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.5220/0013330700004558",
+        "title": "Evaluating the Overfitting and Generalization Abilities of Machine Learning Models for Lung Cancer",
+        "source_url": "https://doi.org/10.5220/0013330700004558",
+        "publication_year": 2024,
+        "venue": "Proceedings of the 1st International Conference on Modern Logistics and Supply Chain Management",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3150/24-bej1727",
+        "title": "Asymptotically optimal sequential multiple testing with asynchronous decisions",
+        "source_url": "https://doi.org/10.3150/24-bej1727",
+        "publication_year": 2025,
+        "venue": "Bernoulli",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "9367e6d838354b5359d684ad3c32a0a18f2bd0c14c06947c4bc6e5bded5c1b65",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1109/wsc.2016.7822099",
+        "title": "Logarithmically efficient simulation for misclassification probabilities in sequential multiple testing",
+        "source_url": "https://doi.org/10.1109/wsc.2016.7822099",
+        "publication_year": 2016,
+        "venue": "2016 Winter Simulation Conference (WSC)",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
       }
     ],
+    "new_unique_sources": 104,
+    "lifetime_unique_sources_after_commit": 104,
+    "lifetime_unique_sources_before_run": 0,
+    "cumulative_batches_before_run": 0,
+    "request_budget_this_run": 8,
+    "requests_attempted_this_run": 8,
+    "pages_received_this_run": 8,
+    "checked_queries": 4,
+    "provider_page_limits_obeyed": true,
+    "application_lifetime_source_quota": null,
+    "per_http_response_size_and_timeout_limits_enabled": true,
     "errors": [],
-    "review_policy": "literature_and_search_results_are_hypotheses_not_proven_model_improvements",
+    "review_policy": "search_metadata_is_untrusted_not_model_proof",
     "automatic_code_execution_from_sources": false,
     "automatic_model_training_from_sources": false,
     "official_results_verified": false,
@@ -358,16 +2332,6 @@
       "claimed_predictive_ability_verified": false
     },
     {
-      "source_id": "10.32614/cran.package.scoring",
-      "source_url": "https://doi.org/10.32614/cran.package.scoring",
-      "mapped_to_approved_implementations": [
-        "rolling"
-      ],
-      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
-      "full_paper_independently_reviewed": false,
-      "claimed_predictive_ability_verified": false
-    },
-    {
       "source_id": "10.24818/ida-ql/2025.210",
       "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
       "mapped_to_approved_implementations": [
@@ -378,8 +2342,398 @@
       "claimed_predictive_ability_verified": false
     },
     {
+      "source_id": "10.32614/cran.package.scoring",
+      "source_url": "https://doi.org/10.32614/cran.package.scoring",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
       "source_id": "10.1146/annurev-statistics-042424-050626",
       "source_url": "https://doi.org/10.1146/annurev-statistics-042424-050626",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.7082155",
+      "source_url": "https://doi.org/10.2139/ssrn.7082155",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.214",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.214",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.213",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.213",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.211",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.211",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1287/opre.2022.2414",
+      "source_url": "https://doi.org/10.1287/opre.2022.2414",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1175/mwr-d-14-00269.1",
+      "source_url": "https://doi.org/10.1175/mwr-d-14-00269.1",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-cl/2025.133",
+      "source_url": "https://doi.org/10.24818/ida-cl/2025.133",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.215",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.215",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.209",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.209",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.21236/ada454828",
+      "source_url": "https://doi.org/10.21236/ada454828",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.5194/ems2021-336",
+      "source_url": "https://doi.org/10.5194/ems2021-336",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.2261272",
+      "source_url": "https://doi.org/10.2139/ssrn.2261272",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1002/qj.3029",
+      "source_url": "https://doi.org/10.1002/qj.3029",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.21236/ada459827",
+      "source_url": "https://doi.org/10.21236/ada459827",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1080/07474946.2015.1030973",
+      "source_url": "https://doi.org/10.1080/07474946.2015.1030973",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1080/07474946.2013.843318",
+      "source_url": "https://doi.org/10.1080/07474946.2013.843318",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1080/07474938.2020.1770996",
+      "source_url": "https://doi.org/10.1080/07474938.2020.1770996",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.6950738",
+      "source_url": "https://doi.org/10.2139/ssrn.6950738",
+      "mapped_to_approved_implementations": [
+        "ema"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1145/3465456.3467599",
+      "source_url": "https://doi.org/10.1145/3465456.3467599",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1109/tit.2009.2027573",
+      "source_url": "https://doi.org/10.1109/tit.2009.2027573",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.5194/egusphere-egu26-14157",
+      "source_url": "https://doi.org/10.5194/egusphere-egu26-14157",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.18260/1-2--5762",
+      "source_url": "https://doi.org/10.18260/1-2--5762",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.3150/16-bej857",
+      "source_url": "https://doi.org/10.3150/16-bej857",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.7110898",
+      "source_url": "https://doi.org/10.2139/ssrn.7110898",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.21437/interspeech.2013-470",
+      "source_url": "https://doi.org/10.21437/interspeech.2013-470",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.7358640",
+      "source_url": "https://doi.org/10.2139/ssrn.7358640",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.7372798",
+      "source_url": "https://doi.org/10.2139/ssrn.7372798",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.2019078",
+      "source_url": "https://doi.org/10.2139/ssrn.2019078",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.7548499",
+      "source_url": "https://doi.org/10.2139/ssrn.7548499",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1175/2009mwr2945.1",
+      "source_url": "https://doi.org/10.1175/2009mwr2945.1",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1093/biomet/ass046",
+      "source_url": "https://doi.org/10.1093/biomet/ass046",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.5194/egusphere-egu21-7418",
+      "source_url": "https://doi.org/10.5194/egusphere-egu21-7418",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.3632278",
+      "source_url": "https://doi.org/10.2139/ssrn.3632278",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1007/bf02595735",
+      "source_url": "https://doi.org/10.1007/bf02595735",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1175/waf-d-19-0205.1",
+      "source_url": "https://doi.org/10.1175/waf-d-19-0205.1",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.3150/13-bej557",
+      "source_url": "https://doi.org/10.3150/13-bej557",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1007/s40300-014-0039-y",
+      "source_url": "https://doi.org/10.1007/s40300-014-0039-y",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1093/oso/9780198523567.003.0029",
+      "source_url": "https://doi.org/10.1093/oso/9780198523567.003.0029",
       "mapped_to_approved_implementations": [
         "rolling"
       ],
@@ -398,7 +2752,7 @@
   "original_replay_version": "numbers4-prequential-online-replay-one-ticket-v2",
   "original_replay_straight_hits": 1,
   "original_replay_uniform_hits": 1,
-  "original_replay_sha256": "1c0959c8ab564c87dfc662d9bb81b6edb77efc304703059db495088d51da7eba",
+  "original_replay_sha256": "605224eeac2a669947016ec70c0dd415171b1b2fc7a418cbc366d17eb42b45a3",
   "research_round_csv_sha256": "e1287eca4b7eeebd2f68c721088bdd10b3e824d38bf62c1914dda642640e4c7a",
   "next_generation_queries": [
     "lottery draw statistical randomness tests prediction",
@@ -434,14 +2788,14 @@
       "alpha": 10
     },
     {
-      "family": "rolling",
-      "window": 500,
+      "family": "ema",
+      "decay": 0.995,
       "alpha": 5
     },
     {
-      "family": "markov",
-      "window": 120,
-      "alpha": 20
+      "family": "ema",
+      "decay": 0.995,
+      "alpha": 10
     }
   ],
   "model_ids": [
@@ -449,8 +2803,8 @@
     "rolling_250_alpha5",
     "ema_0p99_alpha10",
     "rolling_120_alpha10",
-    "rolling_500_alpha5",
-    "markov_120_alpha20"
+    "ema_0p995_alpha5",
+    "ema_0p995_alpha10"
   ],
   "development": {
     "first_round": 2,
@@ -496,19 +2850,19 @@
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
-      "rolling_500_alpha5": {
+      "ema_0p995_alpha5": {
         "draws": 4999,
-        "straight_hits": 2,
-        "mean_log_score_edge_vs_uniform": -0.030483344,
-        "mean_brier_edge_vs_uniform": -6.060807e-06,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.031854979,
+        "mean_brier_edge_vs_uniform": -6.4729e-06,
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
-      "markov_120_alpha20": {
+      "ema_0p995_alpha10": {
         "draws": 4999,
         "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.00500821,
-        "mean_brier_edge_vs_uniform": -1.01835e-06,
+        "mean_log_score_edge_vs_uniform": -0.021532716,
+        "mean_brier_edge_vs_uniform": -4.369674e-06,
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
@@ -566,19 +2920,19 @@
         "expected_uniform_hits_per_one_ticket": 0.2104,
         "confirmed_prospective_skill": false
       },
-      "rolling_500_alpha5": {
+      "ema_0p995_alpha5": {
         "draws": 2104,
         "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.027957581,
-        "mean_brier_edge_vs_uniform": -5.812497e-06,
+        "mean_log_score_edge_vs_uniform": -0.027759976,
+        "mean_brier_edge_vs_uniform": -5.670815e-06,
         "expected_uniform_hits_per_one_ticket": 0.2104,
         "confirmed_prospective_skill": false
       },
-      "markov_120_alpha20": {
+      "ema_0p995_alpha10": {
         "draws": 2104,
         "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.003680217,
-        "mean_brier_edge_vs_uniform": -7.65948e-07,
+        "mean_log_score_edge_vs_uniform": -0.018872861,
+        "mean_brier_edge_vs_uniform": -3.856633e-06,
         "expected_uniform_hits_per_one_ticket": 0.2104,
         "confirmed_prospective_skill": false
       },
