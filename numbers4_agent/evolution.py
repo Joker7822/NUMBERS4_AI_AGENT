@@ -160,12 +160,17 @@ def _metadata_leads(discovery: dict) -> tuple[set[str], list[dict]]:
         if not isinstance(record, dict) or not isinstance(record.get("title"), str):
             continue
         text = " ".join([record["title"], record.get("description", "")]).lower()
+        # Crossref abstracts are used only to produce bounded method-signal
+        # flags; no full publisher abstracts or page instructions are retained.
+        signals = record.get("method_signals", [])
+        if not isinstance(signals, list):
+            signals = []
         proposed = []
-        if any(word in text for word in ("markov", "transition", "sequential dependence")):
+        if "markov" in signals or any(word in text for word in ("markov", "transition", "sequential dependence")):
             proposed.append("markov")
-        if any(word in text for word in ("exponentially weight", "forgetting", "decay", "concept drift")):
+        if "temporal_decay" in signals or any(word in text for word in ("exponentially weight", "forgetting", "decay", "concept drift")):
             proposed.append("ema")
-        if any(word in text for word in ("bayesian", "dirichlet", "rolling", "smoothing", "calibration")):
+        if any(signal in signals for signal in ("bayesian_smoothing", "calibration")) or any(word in text for word in ("bayesian", "dirichlet", "rolling", "smoothing", "calibration")):
             proposed.append("rolling")
         if proposed:
             hints.update(proposed)
