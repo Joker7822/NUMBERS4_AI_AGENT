@@ -77,8 +77,8 @@ def prequential(rows: list[dict], *, min_history: int = 60, scope: str = "unveri
         edges.append(log(likelihood / 0.0001))
         model_squared = prod(sum(p*p for p in line) for line in q)
         brier_edges.append((1-0.0001) - (model_squared-2*likelihood+1))
-        guess = ranked_candidates(previous, target["round"], method="positional")
-        ref = ranked_candidates(previous, target["round"], method="uniform")
+        guess = ranked_candidates(previous, target["round"], method="positional", count=5)
+        ref = ranked_candidates(previous, target["round"], method="uniform", count=5)
         top5_wins += digits in guess["numbers"]
         reference_wins += digits in ref["numbers"]
     n = len(edges)

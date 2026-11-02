@@ -1,0 +1,55 @@
+name: Numbers4 Opt-in Public Web Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Public HTTPS URLs, one per line (maximum 50)'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: numbers4-manual-public-web-research
+  cancel-in-progress: false
+
+jobs:
+  collect-untrusted-public-research:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only explicitly supplied public HTTPS URLs
+        env:
+          RESEARCH_URLS: ${{ inputs.urls }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from numbers4_agent.open_web import inspect_urls
+
+          urls = [line.strip() for line in os.environ.get('RESEARCH_URLS', '').splitlines()
+                  if line.strip() and not line.lstrip().startswith('#')]
+          report = inspect_urls(urls)
+          path = Path('/tmp/numbers4-public-web-research.json')
+          path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + '\n', encoding='utf-8')
+          print('Opt-in research: received', report['submitted_urls'],
+                'retrieved', report['retrieved_pages'],
+                'untrusted public pages; official verification remains false.')
+          assert report['official_results_verified'] is False
+          assert report['production_model_promotion_authorized'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: numbers4-untrusted-public-web-research
+          path: /tmp/numbers4-public-web-research.json
+          retention-days: 7

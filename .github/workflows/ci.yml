@@ -33,11 +33,47 @@ jobs:
           r=json.loads(Path('/tmp/numbers4-straight-benchmark.json').read_text())
           print('Exploratory STRAIGHT retrospective cohort:',r['retrospective_holdout']['first_round'],'-',r['retrospective_holdout']['last_round'])
           for name,s in r['retrospective_holdout']['models'].items():
-              print(name,'draws:',s['evaluated_draws'],'hits:',s['top5_straight_hits'],
+              print(name,'draws:',s['evaluated_draws'],'hits:',s['straight_hits'],
                     'log-edge:',s['mean_log_score_edge_vs_uniform'],
                     'paired-p-exploratory:',s['paired_exact_discordance_p_exploratory'])
           assert r['forecast_skill_confirmed'] is False
           assert r['automatic_production_promotion'] is False
+          PY
+      - name: Recalculate round 2 onward with exactly one research ticket
+        run: |
+          python -m numbers4_agent.cli --root . replay-history > /tmp/numbers4-single-ticket-replay.json
+          python -m numbers4_agent.cli --root . build-dashboard --output /tmp/numbers4-single-ticket-status.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-single-ticket-replay.json').read_text())
+          f=r['retrospective_finance']
+          b=r['retrospective_box_finance']
+          assert r['tickets_per_draw']==1
+          assert r['first_evaluated_round']==2
+          assert f['tickets_per_draw']==1
+          assert f['simulated_ticket_cost_yen']==r['evaluated_draws']*200
+          assert b['requested_tickets_per_round']==1
+          assert b['simulated_purchased_tickets']+b['excluded_ineligible_tickets']==r['evaluated_draws']
+          assert r['prediction_skill_confirmed'] is False
+          assert r['actual_purchase_profit_yen'] is None
+          print('ONE_TICKET_REPLAY_JSON_START')
+          print(json.dumps({
+            'evaluated_draws':r['evaluated_draws'],
+            'selected_straight_hits':r['selected_straight_hits'],
+            'uniform_reference_straight_hits':r['uniform_reference_straight_hits'],
+            'straight_ticket_cost_yen':f['simulated_ticket_cost_yen'],
+            'straight_prizes_yen':f['simulated_payout_yen'],
+            'straight_net_yen':f['simulated_net_yen'],
+            'box_valid_tickets':b['simulated_purchased_tickets'],
+            'box_excluded_tickets':b['excluded_ineligible_tickets'],
+            'box_hits':b['historical_winning_draws'],
+            'box_ticket_cost_yen':b['simulated_ticket_cost_yen'],
+            'box_prizes_yen':b['simulated_payout_yen'],
+            'box_net_yen':b['simulated_net_yen'],
+            'next_research_number':r['next_research_candidate']['numbers'],
+          },ensure_ascii=False,indent=2))
+          print('ONE_TICKET_REPLAY_JSON_END')
           PY
       - uses: actions/upload-artifact@v4
         with:

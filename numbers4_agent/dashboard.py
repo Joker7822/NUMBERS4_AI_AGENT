@@ -56,7 +56,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         warnings.append("事前発行した予測はありません。研究候補を発行済みとして表示しません。")
     else:
         if recent_issued["target_round"] not in {r["round"] for r in trusted}:
-            warnings.append("最新の発行済み5口はまだ2ソース入力の一致結果で採点できません。")
+            warnings.append("最新の発行済み予測はまだ2ソース入力の一致結果で採点できません。")
     cache_path = root / "research" / "historical_unverified.json"
     unverified = None
     if cache_path.is_file():
@@ -91,23 +91,24 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     round_path=root/"research/online_round_predictions.csv"
     if replay_path.is_file() and round_path.is_file():
         replay=json.loads(replay_path.read_text(encoding="utf-8"))
-        if (replay.get("version")!=ONLINE_VERSION or
+        if (replay.get("version") not in {ONLINE_VERSION, "numbers4-prequential-online-replay-v1"} or
                 replay.get("prediction_skill_confirmed") is not False or
                 replay.get("forecast_grading_authorized") is not False or
                 replay.get("officially_verified") is not False or
                 replay.get("production_model_changed") is not False or
                 replay.get("historical_frozen_forecasts") is not False):
             raise ValueError("unsafe historical online replay authority")
-        fresh=(archive.get("git_blob_sha1")==replay.get("archive_git_blob_sha1") and
+        fresh=(replay.get("version")==ONLINE_VERSION and replay.get("tickets_per_draw")==1 and
+               archive.get("git_blob_sha1")==replay.get("archive_git_blob_sha1") and
                archive.get("last_round")==replay.get("archive_latest_round") and
                sha256(round_path.read_bytes()).hexdigest()==replay.get("round_predictions_sha256") and
                replay.get("evaluated_draws")==archive.get("record_count",0)-1 and
                replay.get("first_evaluated_round")==2)
         if fresh:
             online={key:replay.get(key) for key in (
-                "status","evaluated_draws","first_evaluated_round","last_evaluated_round",
-                "selected_top5_straight_hits","uniform_reference_top5_straight_hits",
-                "uniform_theoretical_top5_expected_hits","selected_mean_log_score_edge_vs_uniform",
+                "status","evaluated_draws","first_evaluated_round","last_evaluated_round","tickets_per_draw",
+                "selected_straight_hits","uniform_reference_straight_hits",
+                "uniform_theoretical_expected_hits","selected_mean_log_score_edge_vs_uniform",
                 "selected_mean_brier_improvement_vs_uniform","research_model_selection_rounds",
                 "research_statistical_audit",
                 "next_research_candidate","archive_git_blob_sha1","generated_at_jst")}
@@ -136,8 +137,8 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
                 verified_sim["payout_git_blob_sha1"]=payout_meta["git_blob_sha1"]
                 if verified_sim!=finance:
                     raise ValueError("simulated financial totals or winning rounds differ from source evidence")
-                if (finance["historical_winning_draws"]!=online["selected_top5_straight_hits"] or
-                    finance["baseline_winning_draws"]!=online["uniform_reference_top5_straight_hits"]):
+                if (finance["historical_winning_draws"]!=online["selected_straight_hits"] or
+                    finance["baseline_winning_draws"]!=online["uniform_reference_straight_hits"]):
                     raise ValueError("simulation win counts differ from replay")
                 online["retrospective_finance"]=verified_sim
                 box_finance=replay.get("retrospective_box_finance")
@@ -155,7 +156,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         else:
             online={"status":"stale_or_mismatched_input","evaluated_draws":0,
                     "prediction_skill_confirmed":False,"officially_verified":False}
-            warnings.append("第2回からの再現予測が現在の履歴と一致しないため、表示を保留しています。")
+            warnings.append("第2回からの1口予測が未再計算、または現在の履歴と一致しないため、表示を保留しています。旧5口報告は歴史的参考として保持します。")
     else:
         online={"status":"not_yet_run","evaluated_draws":0,
                 "prediction_skill_confirmed":False,"officially_verified":False}

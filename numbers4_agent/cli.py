@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import json
+import os
 import sys
 
 from .dashboard import snapshot, write_dashboard
@@ -15,6 +16,10 @@ from .proof import run as research_proof, save_report
 from .historical_archive import archive_summary
 from .online_learning import write_replay
 from .straight_challenger import write_report as write_straight_benchmark
+from .open_web import inspect_urls as inspect_public_web
+from .research_discovery import (
+    DEFAULT_TOPICS, write_research_cycle as write_predictive_research_cycle,
+)
 from .secondary_feed import refresh as refresh_secondary, audit_related
 
 
@@ -36,13 +41,13 @@ def parser() -> argparse.ArgumentParser:
     recommend.add_argument("--target-round", type=int, required=True)
     recommend.add_argument("--mode", choices=["straight", "box", "set"], default="straight")
     recommend.add_argument("--method", choices=["uniform", "positional"], default="positional")
-    recommend.add_argument("--count", type=int, default=5)
-    publish = sub.add_parser("issue", help="append five explicit advice-only, pre-deadline forecasts")
+    recommend.add_argument("--count", type=int, default=1)
+    publish = sub.add_parser("issue", help="append one explicit advice-only, pre-deadline forecast")
     publish.add_argument("--target-round", type=int, required=True)
     publish.add_argument("--draw-date", required=True)
     publish.add_argument("--deadline-jst", required=True, help="draw day and no later than 18:30 +09:00")
     publish.add_argument("--mode", choices=["straight", "box", "set"], required=True)
-    publish.add_argument("--numbers", nargs=5, required=True, metavar="NNNN")
+    publish.add_argument("--numbers", nargs=1, required=True, metavar="NNNN")
     publish.add_argument("--model-version", required=True)
     publish.add_argument("--ack-advice-only", action="store_true", required=True)
     sub.add_parser("audit", help="print snapshot and source conflicts")
@@ -58,6 +63,19 @@ def parser() -> argparse.ArgumentParser:
                             help="exploratory report only; never overwrite issuance ledgers")
     sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
     sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
+    scientific = sub.add_parser("research-cycle",
+        help="search for predictive-method research and benchmark frozen STRAIGHT challengers")
+    scientific.add_argument("--query", action="append", default=[],
+                            help="research question; repeat for multiple searches (max 8)")
+    scientific.add_argument("--output", type=Path,
+                            default=Path("research/predictive_research_cycle.json"),
+                            help="research-only evidence report")
+    research_web = sub.add_parser("research-web",
+                                  help="inspect opt-in public HTTPS pages beyond the official source allowlist")
+    research_web.add_argument("--url", action="append", default=[],
+                              help="one public HTTPS page, repeat for additional pages")
+    research_web.add_argument("--url-file", type=Path,
+                              help="optional UTF-8 file of one HTTPS URL per line")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
@@ -102,6 +120,19 @@ def main(argv: list[str] | None = None) -> int:
             report=root/"research/online_reference_audit.json"
             report.parent.mkdir(parents=True,exist_ok=True)
             report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+        elif args.command == "research-cycle":
+            result = write_predictive_research_cycle(
+                root, args.output,
+                queries=args.query or list(DEFAULT_TOPICS),
+                brave_api_key=os.environ.get("BRAVE_SEARCH_API_KEY") or None,
+            )
+        elif args.command == "research-web":
+            urls = list(args.url)
+            if args.url_file is not None:
+                urls.extend(line.strip() for line in
+                            args.url_file.read_text(encoding="utf-8-sig").splitlines()
+                            if line.strip() and not line.lstrip().startswith("#"))
+            result = inspect_public_web(urls)
         elif args.command == "fetch-official":
             result = sync(root, months_back=args.months_back)
         elif args.command == "prove":
@@ -113,7 +144,7 @@ def main(argv: list[str] | None = None) -> int:
             result["source_rounds"] = reconcile(root)
         print_json(result)
         return 0
-    except (ValueError, TypeError, KeyError) as exc:
+    except (ValueError, TypeError, KeyError, OSError) as exc:
         print(f"検証エラー: {exc}", file=sys.stderr)
         return 2
 

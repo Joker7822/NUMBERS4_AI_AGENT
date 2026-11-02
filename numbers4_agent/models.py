@@ -11,7 +11,7 @@ MODEL_REFERENCE = "uniform-deterministic-reference-v1"
 
 
 def ranked_candidates(history: list[dict], target_round: int, *,
-                      mode: str = "straight", count: int = 5,
+                      mode: str = "straight", count: int = 1,
                       method: str = "positional") -> dict:
     if not isinstance(target_round, int) or isinstance(target_round, bool) or target_round < 1:
         raise ValueError("invalid future round")
