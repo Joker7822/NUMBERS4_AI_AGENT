@@ -24,6 +24,7 @@ from .secondary_feed import refresh as refresh_secondary, audit_related
 from .automatic_learning import (freeze_shadow, assess as assess_prospective,
                                   apply_policy, recommend_champion)
 from .publication_witness import verify_and_record as verify_shadow_publication
+from .evolution import cycle as evolve_research_cycle
 
 
 def print_json(data: object) -> None:
@@ -73,6 +74,14 @@ def parser() -> argparse.ArgumentParser:
                             help="exploratory report only; never overwrite issuance ledgers")
     sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
     sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
+    evolution = sub.add_parser("evolve-research",
+        help="search method hypotheses, evolve safe learners and FULL-replay draw 2 onward")
+    evolution.add_argument("--query", action="append", default=[],
+                           help="optional research query (repeat up to eight)")
+    evolution.add_argument("--split-round", type=int, default=5000,
+                           help="reused historical development split, never prospective proof")
+    evolution.add_argument("--offline", action="store_true",
+                           help="explicit offline fallback (no online retrieval) for testing")
     scientific = sub.add_parser("research-cycle",
         help="search for predictive-method research and benchmark frozen STRAIGHT challengers")
     scientific.add_argument("--query", action="append", default=[],
@@ -144,6 +153,12 @@ def main(argv: list[str] | None = None) -> int:
             report=root/"research/online_reference_audit.json"
             report.parent.mkdir(parents=True,exist_ok=True)
             report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+        elif args.command == "evolve-research":
+            result = evolve_research_cycle(
+                root, queries=args.query or None,
+                offline=args.offline, split_round=args.split_round,
+                brave_api_key=os.environ.get("BRAVE_SEARCH_API_KEY") or None,
+            )
         elif args.command == "research-cycle":
             result = write_predictive_research_cycle(
                 root, args.output,
