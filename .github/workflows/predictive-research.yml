@@ -1,0 +1,67 @@
+name: Numbers4 Predictive Method Research Cycle
+
+on:
+  workflow_dispatch:
+    inputs:
+      queries:
+        description: 'Optional research queries, one per line (max 8). Empty uses 4 preset scientific topics.'
+        required: false
+        type: string
+  schedule:
+    # Weekdays 11:15 JST, best-effort GitHub cron; not a real-time service.
+    - cron: '15 2 * * 1-5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: numbers4-method-discovery-research
+  cancel-in-progress: false
+
+jobs:
+  discover-and-test-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate search safety and retrospective model metrics
+        run: |
+          python -m unittest tests.test_research_discovery tests.test_open_web tests.test_straight_challenger -v
+      - name: Search predictive method literature, then benchmark existing frozen models
+        env:
+          BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+          RESEARCH_QUERIES: ${{ inputs.queries }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from numbers4_agent.research_discovery import DEFAULT_TOPICS, write_research_cycle
+          values=[line.strip() for line in os.environ.get('RESEARCH_QUERIES','').splitlines()
+                  if line.strip() and not line.lstrip().startswith('#')]
+          report=write_research_cycle(
+              Path('.'), Path('/tmp/numbers4-predictive-method-research.json'),
+              queries=values or list(DEFAULT_TOPICS),
+              brave_api_key=os.environ.get('BRAVE_SEARCH_API_KEY') or None)
+          assert report['genuine_future_out_of_sample_verified_draws']==0
+          assert report['model_auto_promotion_authorized'] is False
+          assert report['external_code_executed'] is False
+          assert report['production_forecast_ledger_modified'] is False
+          print('Research candidate sources:', report['discovery']['candidate_count'])
+          print('Search provider errors:', len(report['discovery']['errors']))
+          print('Online web search configured:', report['discovery']['web_search_enabled'])
+          for name, model in report['experiment']['model_assessments'].items():
+              print(name, 'historic straight matches', model['straight_hits'],
+                    'log-score edge', model['mean_log_score_edge_vs_uniform'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: numbers4-unverified-predictive-method-research
+          path: /tmp/numbers4-predictive-method-research.json
+          if-no-files-found: warn
+          retention-days: 30
