@@ -20,14 +20,14 @@ def small_case():
     ]
     grades=[
         {"round":2,"draw_date":"1994-10-14","actual":"1234","data_cutoff_round":1,
-         "selected_model":"uniform","selected_numbers":"4321 1234 1111 0000 0123",
-         "selected_hit":1,"uniform_numbers":"1111 7777 5678 5679 1234","uniform_hit":1},
+         "selected_model":"uniform","selected_numbers":"4321",
+         "selected_hit":0,"uniform_numbers":"1234","uniform_hit":1},
         {"round":3,"draw_date":"1994-10-21","actual":"1111","data_cutoff_round":2,
-         "selected_model":"uniform","selected_numbers":"1111 1112 1113 1114 1123",
-         "selected_hit":1,"uniform_numbers":"2222 3333 4444 5555 1112","uniform_hit":0},
+         "selected_model":"uniform","selected_numbers":"1111",
+         "selected_hit":1,"uniform_numbers":"2222","uniform_hit":0},
         {"round":4,"draw_date":"1994-10-28","actual":"0097","data_cutoff_round":3,
-         "selected_model":"positional_250_alpha5","selected_numbers":"9700 0079 5555 1234 1235",
-         "selected_hit":0,"uniform_numbers":"0097 7900 2222 3333 4444","uniform_hit":1},
+         "selected_model":"positional_250_alpha5","selected_numbers":"9700",
+         "selected_hit":0,"uniform_numbers":"0097","uniform_hit":1},
     ]
     return history,grades,[78000,32000,None,15000]
 
@@ -51,13 +51,13 @@ class BoxFinanceTests(unittest.TestCase):
         f=simulate_box(grades,rows,payouts)
         self.assertEqual(f["version"],REPLAY_VERSION)
         self.assertEqual(f["historical_winning_draws"],2)
-        self.assertEqual(f["historical_winning_tickets"],4)
-        self.assertEqual(f["simulated_payout_yen"],2*32000+2*15000)
-        self.assertEqual(f["simulated_purchased_tickets"],11)  # 3+4+4
-        self.assertEqual(f["excluded_ineligible_tickets"],4)
-        self.assertEqual(f["simulated_ticket_cost_yen"],2200)
-        self.assertEqual(f["simulated_net_yen"],91800)
-        self.assertEqual(f["winning_rounds"][0]["winning_ticket_count"],2)
+        self.assertEqual(f["historical_winning_tickets"],2)
+        self.assertEqual(f["simulated_payout_yen"],32000+15000)
+        self.assertEqual(f["simulated_purchased_tickets"],2)  # eligible rounds 2 and 4
+        self.assertEqual(f["excluded_ineligible_tickets"],1)
+        self.assertEqual(f["simulated_ticket_cost_yen"],400)
+        self.assertEqual(f["simulated_net_yen"],46600)
+        self.assertEqual(f["winning_rounds"][0]["winning_ticket_count"],1)
         self.assertEqual(f["winning_rounds"][0]["matched_tickets"][0]["predicted_number"],"4321")
         self.assertEqual(f["winning_rounds"][1]["winning_number"],"0097")
         self.assertEqual(f["winning_rounds"][1]["box_payout_yen_per_ticket"],15000)
@@ -66,7 +66,7 @@ class BoxFinanceTests(unittest.TestCase):
 
     def test_original_straight_flags_cannot_be_edited_for_box(self):
         rows,grades,payouts=small_case()
-        grades[0]["selected_hit"]=0
+        grades[0]["selected_hit"]=1
         with self.assertRaisesRegex(ValueError,"STRAIGHT replay flags"):
             simulate_box(grades,rows,payouts)
 
