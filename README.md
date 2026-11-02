@@ -23,6 +23,8 @@ python -m numbers4_agent.cli --root . research-web \
   > /tmp/numbers4-public-research.json
 ```
 
+GitHub上で手動実行する場合は [Actions → Numbers4 Opt-in Public Web Research](https://github.com/Joker7822/NUMBERS4_AI_AGENT/actions/workflows/public-web-research.yml) の「Run workflow」を選び、公開HTTPS URLを1行ずつ入力してください。実行結果は7日間保存される **`numbers4-untrusted-public-web-research`** のJSONアーティファクトとして確認できます。公式ソースとの照合は行いません。
+
 - 1回のコマンドで最大**50 URL**、各URL最大**4MB**、接続タイムアウト**10秒**、リダイレクト拒否。50件超は分割実行。**無制限トラフィック／無限クロール／検索エンジンAPIの無制限利用には対応しません**。
 - HTTPS・公開DNSのみに接続し、DNSがローカル/プライベートIPを返したら拒否。名前解決済みの公開IPに接続先を固定し、元ホスト名でTLS証明書を検証します。IP直指定・認証URL・リダイレクト・スクリプト実行は禁止します。
 - 返却するJSONにはURL（クエリ部分を除く）、取得時刻、本文SHA-256、サイズ、HTMLから抽出した先頭テキスト、失敗理由の種類を記録します。**取得元の本文は未検証の外部情報**です。誤情報・サイト停止・著作権・robots.txt・利用規約に注意してください。
