@@ -116,6 +116,32 @@ export function normalizeStatus(s){
   }else if(e&&e.status==='stale_history_reanalysis'&&v!==null&&v!==undefined){
     throw new Error('履歴不一致の過去検証を表示できません');
   }
+  const current=s.latest_research_forecast;
+  if(current!==undefined&&current!==null){
+    const safeModel=n=>typeof n==='string'&&
+      /^(uniform|positional_(60|250|1000)_alpha(5|10|20)|(rolling|markov)_[0-9]+_alpha[0-9]+|ema_0p[0-9]+_alpha[0-9]+)$/.test(n);
+    if(current.version!=='numbers4-latest-research-forecast-v1'||
+       !['validated_research_evolution','validated_single_ticket_replay'].includes(current.source)||
+       current.status!=='research_only_not_issued_not_purchased'||
+       current.actual_purchase!==false||
+       current.officially_verified!==false||
+       current.prediction_skill_confirmed!==false||
+       !Number.isInteger(current.target_round)||current.target_round<2||
+       !Number.isInteger(current.data_cutoff_round)||
+       current.data_cutoff_round!==current.target_round-1||
+       !safeDigits(current.number)||!safeModel(current.model)||
+       !safeTime(current.computed_at_jst)||
+       !safeTime(current.last_changed_at_jst)||
+       Date.parse(current.last_changed_at_jst)>Date.parse(s.generated_at_jst)||
+       typeof current.changed_since_previous_snapshot!=='boolean'||
+       !/^[a-f0-9]{40}$/.test(current.archive_git_blob_sha1)||
+       (current.source==='validated_research_evolution'&&
+          (!Number.isInteger(current.research_generation)||current.research_generation<1))||
+       (current.source==='validated_single_ticket_replay'&&
+          current.research_generation!==null)){
+      throw new Error('最新の研究予測の更新情報と未発行状態を確認できません');
+    }
+  }
   const a=s.auto_learning;
   if(a){
     const acceptedModels=['uniform','positional_60_alpha10','positional_250_alpha5','positional_1000_alpha20'];
