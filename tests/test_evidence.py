@@ -57,7 +57,7 @@ class EvidenceTests(unittest.TestCase):
 
     def test_issuance_grade_exact_mode_with_manual_source_agreement(self):
         record = issue(self.root, target_round=100, draw_date="2026-10-30",
-                       mode="set", numbers=["0123", "1235", "1112", "8899", "9021"],
+                       mode="set", numbers=["0123"],
                        deadline_jst="2026-10-30T18:30:00+09:00",
                        model_version="research-candidate-v1", now=self.issue_time)
         self.assertFalse(record["actual_purchase"])
@@ -68,33 +68,57 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(grades[0]["tickets"][0]["result"], "set_straight")
         self.assertEqual(grades[0]["winning_tickets"], 1)
         self.assertIsNone(grades[0]["actual_profit_yen"])
-        self.assertEqual(grades[0]["reference_cost_yen"], 1000)
+        self.assertEqual(grades[0]["reference_cost_yen"], 200)
         self.assertEqual(read_issued(self.root)[0]["numbers"][0], "0123")
 
     def test_no_after_draw_or_duplicated_or_redundant_publication(self):
         args = dict(target_round=100, draw_date="2026-10-30",mode="box",
-                    numbers=["0123", "1234", "2345", "3456", "4567"],
+                    numbers=["0123"],
                     deadline_jst="2026-10-30T18:30:00+09:00",
                     model_version="research-candidate-v1")
         with self.assertRaisesRegex(ValueError, "deadline has passed"):
             issue(self.root, **args, now=self.when)
-        with self.assertRaisesRegex(ValueError, "redundant"):
-            issue(self.root, **(args | {"numbers": ["0123","3201","2345","3456","4567"]}),
+        with self.assertRaises(ValueError):
+            issue(self.root, **(args | {"numbers": ["1111"]}),
                   now=self.issue_time)
         issue(self.root, **args, now=self.issue_time)
         with self.assertRaisesRegex(ValueError, "already published"):
             issue(self.root, **args, now=self.issue_time)
         path = self.root / "data" / "issued_forecasts.jsonl"
-        path.write_text(path.read_text().replace("4567", "9876"))
+        path.write_text(path.read_text().replace("0123", "9876"))
         with self.assertRaises(ValueError):
             read_issued(self.root)
+
+
+    def test_new_issuance_is_one_ticket_but_legacy_five_is_read_only(self):
+        from numbers4_agent.store import append
+        with self.assertRaisesRegex(ValueError, "exactly one"):
+            issue(self.root, target_round=101, draw_date="2026-10-30",
+                  mode="straight", numbers=["0123","1234"],
+                  deadline_jst="2026-10-30T18:30:00+09:00",
+                  model_version="one-v1", now=self.issue_time)
+        legacy = {
+            "target_round":100,"draw_date":"2026-10-30",
+            "mode":"straight","numbers":["0000","0001","0002","0003","0004"],
+            "freeze_deadline_jst":"2026-10-30T18:30:00+09:00",
+            "issued_at_jst":self.issue_time.isoformat(),
+            "model_version":"five-ticket-legacy",
+            "actual_purchase":False,"scope":"published_advice_not_purchase",
+        }
+        append(self.root/"data"/"issued_forecasts.jsonl", legacy)
+        self.assertEqual(len(read_issued(self.root)[0]["numbers"]),5)
+        with self.assertRaisesRegex(ValueError,"already published"):
+            issue(self.root, target_round=100, draw_date="2026-10-30",
+                  mode="straight", numbers=["0123"],
+                  deadline_jst="2026-10-30T18:30:00+09:00",
+                  model_version="one-v1", now=self.issue_time)
 
     def test_no_retroactive_issue_with_real_draw_evidence(self):
         self.observe("mizuhobank")
         self.observe("takarakuji_official")
         with self.assertRaisesRegex(ValueError, "after latest"):
             issue(self.root, target_round=100, draw_date="2026-10-30", mode="straight",
-                  numbers=["0123", "1234", "2345", "3456", "4567"],
+                  numbers=["0123"],
                   deadline_jst="2026-10-30T18:30:00+09:00", model_version="ref",now=self.issue_time)
 
     def test_observation_before_official_draw_window_is_rejected(self):
@@ -106,6 +130,6 @@ class EvidenceTests(unittest.TestCase):
     def test_pre_deadline_input_must_use_jst(self):
         with self.assertRaisesRegex(ValueError, "must be JST"):
             issue(self.root, target_round=100, draw_date="2026-10-30", mode="straight",
-                  numbers=["0123", "1234", "2345", "3456", "4567"],
+                  numbers=["0123"],
                   deadline_jst="2026-10-30T09:30:00+00:00",
                   model_version="ref",now=self.issue_time)
