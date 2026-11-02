@@ -217,11 +217,13 @@ def _validated_witnesses(root: Path, forecasts: list[dict]) -> dict[int, dict]:
         if (row.get("version") != VERSION or
                 row.get("forecast_event_sha256") != issued["event_sha256"] or
                 row.get("github_event") != "push" or
+                row.get("github_repo") != "Joker7822/NUMBERS4_AI_AGENT" or
                 row.get("github_workflow") != "Numbers4 CI" or
                 not isinstance(row.get("github_run_id"), int) or
                 row["github_run_id"] <= 0 or
                 not isinstance(row.get("github_head_sha"), str) or
                 len(row["github_head_sha"]) != 40 or
+                any(c not in "0123456789abcdef" for c in row["github_head_sha"]) or
                 row.get("github_server_verified") is not True or
                 not _time(issued["issued_at_jst"]) <= when <
                 _time(issued["freeze_deadline_jst"])):
