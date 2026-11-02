@@ -72,6 +72,10 @@ class SelfEvolutionTests(unittest.TestCase):
         self.assertIn("Dirichlet", next_queries(prior)[1])
         prior["development_winner"]["model"] = "uniform"
         self.assertIn("data snooping", next_queries(prior)[1])
+        fallback_specs, _ = propose(discovered(), previous=prior, generation=2)
+        self.assertIn({"family": "rolling", "window": 60, "alpha": 20},
+                      fallback_specs)
+        self.assertGreaterEqual(len(fallback_specs), 4)
 
     def test_decay_training_matches_weighted_counts_and_markov_has_no_lookahead(self):
         ema = _EmaDigits(.99, 5)
