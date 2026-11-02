@@ -488,6 +488,7 @@ def public_status(root: Path, archive: dict) -> dict:
 def cycle(root: Path, *, queries: list[str] | None = None,
           offline: bool = False, crossref_fetch=None, brave_fetch=None,
           brave_api_key: str | None = None, split_round: int = SPLIT_ROUND,
+          search_request_budget: int = 8,
           now: datetime | None = None) -> dict:
     """Run one *entire* research generation, including original full replay.
 
@@ -515,7 +516,8 @@ def cycle(root: Path, *, queries: list[str] | None = None,
     else:
         discovered, staged_sources = collect_progressively(
             root, active_queries, crossref_fetch=crossref_fetch,
-            brave_fetch=brave_fetch, brave_api_key=brave_api_key, now=now)
+            brave_fetch=brave_fetch, brave_api_key=brave_api_key,
+            request_budget=search_request_budget, now=now)
         discovered["status"] = "online_discovery_attempted"
     specs, mapped = propose(discovered, previous=previous, generation=generation)
     assessed, grades = evaluate(rows, specs, split_round=split_round)
