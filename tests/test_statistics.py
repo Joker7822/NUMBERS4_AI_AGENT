@@ -45,7 +45,7 @@ class StatisticalAuditTests(unittest.TestCase):
                          sum(g['uniform_hit'] and not g['selected_hit'] for g in grades))
         self.assertAlmostEqual(
             audit['selected_hit_tail_probability_given_uniform_null'],
-            binomial_right_tail(125, report['selected_top5_straight_hits'], .0005),
+            binomial_right_tail(125, report['selected_straight_hits'], .0001),
             places=8,
         )
 
