@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102-replay-verification">
-  <script type="module" src="app.js?v=20261102-replay-verification"></script>
+  <script type="module" src="app.js?v=20261103-latest-forecast-sync"></script>
 </head>
 <body>
   <div class="page">
@@ -95,9 +95,13 @@
       </section>
       <section class="panel" id="latest-research-forecast">
         <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測1口（ストレート・ボックス共通の研究候補）</h2></div>
-        <p class="subtle">直近の公開履歴から作成した研究候補を両方の申込タイプで再評価します。数字は両方式で共通ですが、ストレートは並び順まで一致、ボックスは並び順不問です。ボックス専用モデルへの再学習はしていません。4桁同一はボックス購入不可。正式な事前発行・購入実績ではありません。</p>
-        <div id="latest-candidate-meta" class="panel-foot">研究予測を読み込み中です。</div>
+        <p class="subtle">新しい研究世代や抽せん履歴の更新で候補が変わった場合は、最新の検証可能な研究1口へ自動で切り替えます。自己進化の評価がまだ終わっていない場合は、現在の履歴を使ったリプレイ候補を暫定表示します。画面を開いたままでも2分おきに最新情報を確認します。ストレートとボックスで番号は共通ですが、ボックスは並び順不問・4桁同一は購入不可です。正式な事前発行・購入実績ではありません。</p>
+        <div id="latest-candidate-meta" class="panel-foot" aria-live="polite">最新の研究予測を読み込み中です。</div>
         <div id="latest-candidate-numbers" class="ticket-grid" aria-label="最新の研究予測1口"></div>
+        <div class="data-row"><span>計算元・研究モデル</span><strong id="latest-candidate-source">—</strong></div>
+        <div class="data-row"><span>研究予測の算出日時</span><strong id="latest-candidate-computed">—</strong></div>
+        <div class="data-row"><span>表示する予測が最後に変更された日時</span><strong id="latest-candidate-last-change">—</strong></div>
+        <p class="subtle" id="latest-candidate-change" role="status">前回公開分との変更状況を確認中です。</p>
       </section>
       <div class="columns">
         <section class="panel">
