@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-official-fetch-proof";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-source-freshness-proof";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -9,8 +9,13 @@ function render(data){
   set("status-pill",label);byId("status-pill").className="pill"+(data.source_status==="conflict"?" block":data.stale||!data.consistent_rounds?" warn":"");
   set("refresh-time","生成 "+japaneseTime(data.generated_at_jst)+(data.stale?"・監視更新遅延":""));
   const draw=data.latest_consistent_draw;
-  set("draw-number",draw?draw.winning_number.split("").join(" "):"— — — —");
-  set("draw-details",draw?`第${draw.round}回 ・ ${draw.draw_date} ・ ${draw.status==="auto_verified_two_publishers"?"みずほ銀行＋楽天公開結果が一致":"2つの手入力記録が一致"}`:"照合一致した抽せん情報はまだありません。");
+  const secondary=data.latest_unverified_draw;
+  const visible=draw||secondary;
+  set("draw-number",visible?visible.winning_number.split("").join(" "):"— — — —");
+  set("draw-details",draw?
+    `第${draw.round}回 ・ ${draw.draw_date} ・ ${draw.status==="auto_verified_two_publishers"?"みずほ銀行＋楽天公開結果が一致":"2つの手入力記録が一致"}`:
+    secondary?`第${secondary.round}回 ・ ${secondary.draw_date} ・ 楽天公表の参考番号【みずほ銀行未照合・正式採点不可】`:
+    "照合一致した抽せん情報はまだありません。");
   const issued=data.published_forecast,holder=byId("issued-numbers");holder.replaceChildren();
   set("issued-meta",issued?`第${issued.target_round}回 / ${issued.draw_date} / ${issued.mode} / 発行: ${japaneseTime(issued.issued_at_jst)}`:"事前発行した予測はありません。研究候補は公開済みとして扱いません。");
   if(issued)for(const [i,num] of issued.numbers.entries()){
