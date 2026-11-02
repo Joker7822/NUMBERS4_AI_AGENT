@@ -11,7 +11,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 concurrency:
   group: numbers4-verified-auto-champion-main
@@ -36,6 +36,7 @@ jobs:
       - name: Verify external publication witness, assess true future draws and safely train
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -101,8 +102,19 @@ jobs:
             unexpected="$(git diff --cached --name-only | grep -Ev '^(data/(shadow_forecasts.jsonl|shadow_publication_witnesses.jsonl|production_champion.json)|research/prospective_auto_learning_status.json)$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unexpected staged path: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No auto-learning changes'; exit 0; fi
+            shadow_changed="$(git diff --cached --name-only | grep -Fx 'data/shadow_forecasts.jsonl' || true)"
             git commit -m 'research: publish verified pre-draw shadow and evidence-gated champion assessment'
-            if git push origin HEAD:main; then echo 'Audited automatic learning state published'; exit 0; fi
+            if git push origin HEAD:main; then
+              echo 'Audited automatic learning state published'
+              if [ -n "$shadow_changed" ]; then
+                # Bot GITHUB_TOKEN pushes do not trigger CI automatically.
+                # Dispatching CI AFTER push generates a server timestamp
+                # bound to this exact now-published head SHA.
+                gh workflow run ci.yml --ref main
+                echo 'Independent GitHub CI publication witness dispatched'
+              fi
+              exit 0
+            fi
             if [ "$attempt" -eq 3 ]; then echo '::error::Could not publish without racing main'; exit 1; fi
           done
       - name: Summarize training and promotion (no ticket purchases)
@@ -110,6 +122,6 @@ jobs:
         run: |
           echo '## Verified-only automated predictive research' >> "$GITHUB_STEP_SUMMARY"
           echo '- Training inputs: bank+publisher reconciled results only; never secondary mirrors or web snippets.' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Publication proof: actual GitHub push-run created before the Numbers4 draw.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Publication proof: actual GitHub push or explicit CI-dispatch run created before the Numbers4 draw.' >> "$GITHUB_STEP_SUMMARY"
           echo '- Champion promotion: >=500 future verified draws, anytime e-process family alpha 0.01 and more 1-ticket STRAIGHT hits than uniform.' >> "$GITHUB_STEP_SUMMARY"
           echo '- No code execution from research websites, issuance of tickets, or automatic purchases.' >> "$GITHUB_STEP_SUMMARY"
