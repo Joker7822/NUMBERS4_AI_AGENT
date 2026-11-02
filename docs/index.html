@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-box-results"></script>
+  <script type="module" src="app.js?v=20261102-dual-simulation"></script>
 </head>
 <body>
   <div class="page">
@@ -31,8 +31,8 @@
         <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
       </section>
       <section class="panel" id="latest-research-forecast">
-        <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新のボックス候補5口（研究専用）</h2></div>
-        <p class="subtle">直近の公開履歴から作成した4桁の研究候補を、ボックス購入と仮定した場合の表示です。ボックス予測に特化した再学習ではありません。4桁同一は購入できません。正式な事前発行・購入実績ではありません。</p>
+        <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測5口（ストレート・ボックス共通の研究候補）</h2></div>
+        <p class="subtle">直近の公開履歴から作成した研究候補を両方の申込タイプで再評価します。数字は両方式で共通ですが、ストレートは並び順まで一致、ボックスは並び順不問です。ボックス専用モデルへの再学習はしていません。4桁同一はボックス購入不可。正式な事前発行・購入実績ではありません。</p>
         <div id="latest-candidate-meta" class="panel-foot">研究予測を読み込み中です。</div>
         <div id="latest-candidate-numbers" class="ticket-grid" aria-label="最新の研究予測5口"></div>
       </section>
@@ -56,6 +56,26 @@
         <div id="grade-meta" class="panel-foot">照合できる事前発行予測がありません。</div>
         <div id="grades" class="grade-grid"></div>
       </section>
+      <div class="columns" id="historical-straight-finance">
+        <section class="panel">
+          <div class="panel-head"><span>STRAIGHT / RETROSPECTIVE SIMULATION</span><h2>ストレート：的中件数・当せん金・仮想収支</h2></div>
+          <p id="simulation-straight-scope" class="subtle">過去のストレート予測と回別当せん金を照合しています。</p>
+          <div class="data-row"><span>ストレート的中回数・口数</span><strong id="simulation-straight-wins">—</strong></div>
+          <div class="data-row"><span>仮想購入費用（5口×200円／回）</span><strong id="simulation-straight-spend">—</strong></div>
+          <div class="data-row"><span>仮想当せん金合計</span><strong id="simulation-straight-income">—</strong></div>
+          <div class="data-row"><span>仮想差引収支</span><strong id="simulation-straight-net">—</strong></div>
+          <div class="data-row"><span>仮想収益率</span><strong id="simulation-straight-roi">—</strong></div>
+          <div class="data-row"><span>一様比較モデルの仮想収支</span><strong id="simulation-straight-baseline">—</strong></div>
+          <div class="data-row"><span>実際の購入・収支</span><strong id="actual-straight-profit">未確認</strong></div>
+          <p class="subtle">4桁と並び順の完全一致のみ当たり。過去の時点を後から再現したストレート5口分の別シナリオです。回別配当は第三者の公開履歴で、みずほ銀行の一次結果との全件照合は未実施です。</p>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><span>STRAIGHT / NON-MISS HISTORY</span><h2>ストレート：過去の的中結果（ハズレ以外）</h2></div>
+          <p id="historical-straight-wins-meta" class="subtle">過去のストレート一致回を確認しています。</p>
+          <div id="historical-straight-wins" class="historical-hits" aria-label="過去のストレート一致回のみ"></div>
+          <p class="subtle">実際に事前発行・購入・換金した記録ではありません。ボックスとは別計算であり、両方式を同時購入した収支ではありません。</p>
+        </section>
+      </div>
       <div class="columns" id="historical-finance">
         <section class="panel">
           <div class="panel-head"><span>HISTORY / SIMULATED PROFIT & LOSS</span><h2>ボックス購入の過去シミュレーション収支</h2></div>
@@ -98,13 +118,13 @@
       <section class="panel" id="online-prequential">
         <div class="panel-head"><span>06 / HISTORICAL PREQUENTIAL REPLAY</span><h2>第2回から全回の逐次予測・照合</h2></div>
         <div class="data-row"><span>過去データのみで予測・照合した回数</span><strong id="online-replay-count">—</strong></div>
-        <div class="data-row"><span>ボックス購入と仮定した一致回数・口数</span><strong id="online-replay-hits">—</strong></div>
+        <div class="data-row"><span>ストレート・ボックス別の一致回数・口数</span><strong id="online-replay-hits">—</strong></div>
         <div class="data-row"><span>確率モデルと一様抽せんの差</span><strong id="online-replay-edge">—</strong></div>
         <p id="online-next-candidate" class="subtle">更新後の研究候補を確認中です。</p>
         <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
       </section>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.2</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.3</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>

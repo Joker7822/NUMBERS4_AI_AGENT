@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-box-results";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-dual-simulation";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -41,10 +41,15 @@ function render(data){
   set("online-replay-count",live?.status==='historical_walk_forward_reconstruction_only'?
       live.evaluated_draws.toLocaleString('ja-JP')+'回':'未検証');
   const box=live?.retrospective_box_finance;
+  const straight=live?.retrospective_finance;
   const financeReady=live?.status==='historical_walk_forward_reconstruction_only'&&
     box?.status==='historical_simulation_only_not_actual_purchase';
-  set("online-replay-hits",financeReady?
-      box.historical_winning_draws+'回（'+box.historical_winning_tickets+'口、ボックス）':'未検証');
+  const straightReady=live?.status==='historical_walk_forward_reconstruction_only'&&
+    straight?.status==='historical_simulation_only_not_actual_purchase';
+  set("online-replay-hits",financeReady&&straightReady?
+      'ストレート '+straight.historical_winning_draws+'回 / ボックス '+
+      box.historical_winning_draws+'回（'+box.historical_winning_tickets+'口）':
+      '未検証');
   set("online-replay-edge",live?.status==='historical_walk_forward_reconstruction_only'?
       '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
       ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
@@ -62,9 +67,9 @@ function render(data){
   if(safeNext)next.numbers.forEach((num,i)=>{
     const card=create("div","ticket");
     const eligible=new Set(num).size>1;
-    card.append(create("small","", "ボックス候補 "+(i+1)),
+    card.append(create("small","", "共通研究候補 "+(i+1)),
                 create("strong","",num),
-                create("small","",eligible?"ボックス申込可能":"4桁同一・申込不可"));
+                create("small","",eligible?"ストレート可・ボックス可":"ストレート可・ボックス不可（4桁同一）"));
     forecastGrid.append(card);
   });
   const f=box;
@@ -102,6 +107,39 @@ function render(data){
           " = "+yen(entry.hypothetical_box_payout_yen))
       );
       hitList.append(row);
+    }
+  }
+  set("simulation-straight-scope",straightReady?
+    "第"+straight.first_evaluated_round+"〜"+straight.last_evaluated_round+"回 / "+
+    straight.evaluated_rounds.toLocaleString("ja-JP")+
+    "回。毎回ストレート5口を買ったと仮定した別シナリオ。ボックスの支出は含めません。":
+    "ストレート配当と過去予測の照合が未完了です。");
+  set("simulation-straight-wins",straightReady?
+    straight.historical_winning_draws+"回 / "+straight.historical_winning_draws+"口":"未算定");
+  set("simulation-straight-spend",straightReady?yen(straight.simulated_ticket_cost_yen):"未算定");
+  set("simulation-straight-income",straightReady?yen(straight.simulated_payout_yen):"未算定");
+  set("simulation-straight-net",straightReady?
+    (straight.simulated_net_yen>0?"+":"")+yen(straight.simulated_net_yen):"未算定");
+  set("simulation-straight-roi",straightReady?
+    straight.simulated_roi_percent.toLocaleString("ja-JP")+"%":"未算定");
+  set("simulation-straight-baseline",straightReady?
+    yen(straight.baseline_simulated_net_yen):"未算定");
+  set("actual-straight-profit","購入記録なし・実収支は確認できません");
+  const straightList=byId("historical-straight-wins");straightList.replaceChildren();
+  set("historical-straight-wins-meta",straightReady?
+    "第2回からの後付けストレート再現：一致"+straight.historical_winning_draws+
+    "回。順序までの完全一致のみ。実購入・当せん実績ではありません。":
+    "ストレート配当と予測履歴を照合中です。");
+  if(straightReady){
+    if(!straight.winning_rounds.length)straightList.append(create("p","subtle","ストレート一致した予測はありません。"));
+    for(const entry of straight.winning_rounds.slice().reverse()){
+      const row=create("div","historical-hit");
+      row.append(
+        create("span","hit-round","第"+entry.round+"回 ・ "+entry.draw_date),
+        create("b","hit-number",entry.matched_prediction),
+        create("span","hit-payout",yen(entry.straight_payout_yen))
+      );
+      straightList.append(row);
     }
   }
   set("backtest-count",proof.evaluated_draws+"回");

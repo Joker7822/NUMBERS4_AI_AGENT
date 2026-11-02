@@ -5,3 +5,7 @@
 
 /* Multi-ticket BOX wins need space for permutation-equivalent winners and per-ticket payouts. */
 .historical-hit{grid-template-columns:minmax(0,1fr) minmax(0,1fr);row-gap:8px}.historical-hit .hit-round{grid-column:1/-1}.historical-hit .hit-number{overflow-wrap:anywhere}.historical-hit .hit-payout{font-size:12px;line-height:1.7;overflow-wrap:anywhere}@media(max-width:560px){.historical-hit{grid-template-columns:minmax(0,1fr)}.historical-hit .hit-payout{text-align:left}}
+
+/* Keep the independently calculated STRAIGHT and BOX win histories readable. */
+.historical-hits{max-height:660px;overflow-y:auto;overscroll-behavior:contain;padding-right:5px}
+#historical-straight-finance .panel,#historical-finance .panel{min-width:0}
