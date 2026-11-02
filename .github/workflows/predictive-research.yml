@@ -128,7 +128,6 @@ jobs:
 
   deploy-current-evolved-dashboard:
     needs: discover-evolve-and-replay-all
-    if: ${{ needs.discover-evolve-and-replay-all.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
