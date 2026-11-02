@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Numbers4 AI Agent: 根拠を区別する独立した研究・予測監査ダッシュボード">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
+  <link rel="stylesheet" href="style.css?v=20261102">
+  <script type="module" src="app.js?v=20261102"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a href="#top" class="brand"><span class="logo">N<span>4</span></span><span class="brand-name"><strong>NUMBERS4 <em>AI AGENT</em></strong><small>INDEPENDENT RESEARCH SYSTEM</small></span></a>
+      <button id="refresh" class="button" type="button">↻ 最新データを読み込む</button>
+    </header>
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> FOUR DIGITS / INDEPENDENT EVIDENCE</div>
+        <h1>4桁の予測を、<br><span>根拠から評価する。</span></h1>
+        <p>ナンバーズ4専用の独立した研究・記録システムです。候補、事前発行、結果照合、過去検証を混同しません。</p>
+        <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time">公開JSONを確認中</span></div>
+      </section>
+      <div id="error" role="alert" class="error" hidden></div>
+      <section class="stats" aria-label="主要指標">
+        <article class="stat"><label>2系統一致の登録抽せん</label><strong id="draw-count">—</strong><small>公式情報の手動記録を突合</small></article>
+        <article class="stat"><label>事前発行の記録</label><strong id="issue-count">—</strong><small>発行と実際の購入は別</small></article>
+        <article class="stat"><label>採点できた発行回</label><strong id="graded-count">—</strong><small>事前発行＋2系統一致のみ</small></article>
+        <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
+      </section>
+      <div class="columns">
+        <section class="panel">
+          <div class="panel-head"><span>01 / OFFICIAL RESULTS</span><h2>直近の照合結果</h2></div>
+          <p class="subtle">2つの公式サイトについて手入力された記録が一致した場合だけ掲載します。サイトの自動検証ではありません。</p>
+          <div id="draw-number" class="big-digits" aria-live="polite">— — — —</div>
+          <div id="draw-details" class="panel-foot">結果がまだ登録されていません。</div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><span>02 / ADVICE ONLY</span><h2>最新の事前発行5口</h2></div>
+          <p class="subtle">研究候補や抽せん後に作成された番号は表示しません。</p>
+          <div id="issued-meta" class="panel-foot">発行済み記録はありません。</div>
+          <div id="issued-numbers" class="ticket-grid"></div>
+        </section>
+      </div>
+      <section class="panel">
+        <div class="panel-head"><span>03 / REAL-WORLD GRADING</span><h2>直近の事前発行予測の成績</h2></div>
+        <p class="subtle">実際の購入履歴ではありません。当せん金額・実収益は確認済みの購入記録がない限り算出しません。</p>
+        <div id="grade-meta" class="panel-foot">照合できる事前発行予測がありません。</div>
+        <div id="grades" class="grade-grid"></div>
+      </section>
+      <div class="columns">
+        <section class="panel">
+          <div class="panel-head"><span>04 / RESEARCH CONTROL</span><h2>過去の時系列検証</h2></div>
+          <div class="data-row"><span>評価に使用できる回数</span><strong id="backtest-count">—</strong></div>
+          <div class="data-row"><span>5口ストレートの過去的中回数</span><strong id="backtest-hits">—</strong></div>
+          <div class="data-row"><span>一様無作為の理論基準（5口）</span><strong>0.05%</strong></div>
+          <p class="subtle">上記はストレート5口がすべて異なる場合の単回基準です。過去データの最適化は将来の的中を証明しません。</p>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><span>05 / AUDIT TRAIL</span><h2>運用上の注意</h2></div>
+          <div id="warning-list" class="warnings" role="status"><p>データを確認しています。</p></div>
+          <p class="subtle">外部サイトの自動取得・予測の自動購入・モデルの自動昇格は無効です。</p>
+        </section>
+      </div>
+    </main>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.1.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+  </div>
+</body>
+</html>

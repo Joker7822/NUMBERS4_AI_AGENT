@@ -1,0 +1,43 @@
+name: Numbers4 Dashboard Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'data/**'
+      - 'numbers4_agent/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: numbers4-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate original evidence first
+        run: python -m unittest discover -s tests -v
+      - name: Generate a no-mutation public snapshot
+        run: |
+          python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-public-snapshot.log
+          git diff --exit-code -- data/ numbers4_agent/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

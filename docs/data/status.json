@@ -1,0 +1,30 @@
+{
+  "version": "numbers4-dashboard-v1",
+  "generated_at_jst": "2026-11-02T12:26:01+09:00",
+  "product": "Numbers4",
+  "official_auto_fetch_enabled": false,
+  "data_scope": "human_entered_official_source_claims_with_hash_chain",
+  "source_status": "no_corroborated_draws",
+  "observed_rounds": 0,
+  "consistent_rounds": 0,
+  "latest_consistent_draw": null,
+  "published_forecast": null,
+  "latest_graded_issued_forecast": null,
+  "issued_draws": 0,
+  "graded_issued_draws": 0,
+  "historical_research": {
+    "status": "insufficient_history",
+    "trusted_draws": 0,
+    "evaluated_draws": 0,
+    "forecast_skill_confirmed": false
+  },
+  "source_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "issuance_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "warnings": [
+    "Numbers4の照合済み結果が未登録です。履歴の成績を生成しません。",
+    "事前発行した予測はありません。研究候補を発行済みとして表示しません。"
+  ],
+  "prediction_skill_confirmed": false,
+  "automatic_model_promotion": false,
+  "actual_purchase_profit_yen": null
+}

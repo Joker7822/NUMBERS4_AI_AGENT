@@ -1,0 +1,35 @@
+name: Numbers4 Read-only Daily Audit
+on:
+  schedule:
+    # 12:25 JST, Monday-Friday; a schedule is not a proof of data freshness.
+    - cron: '25 3 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  report-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -q
+      - name: Advisory report, no automatic data ingestion
+        run: |
+          python -m numbers4_agent.cli --root . audit > /tmp/numbers4-advisory.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/numbers4-advisory.json').read_text())
+          with open(__import__('os').environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('## Numbers4 read-only evidence audit\n')
+              f.write(f"- Consistent manual source records: {report['consistent_rounds']}\n")
+              f.write(f"- Future prediction skill confirmed: {report['prediction_skill_confirmed']}\n")
+              for w in report['warnings']:
+                  f.write(f'- WATCH: {w}\n')
+          PY
+          git diff --exit-code -- data/ numbers4_agent/

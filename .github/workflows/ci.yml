@@ -1,0 +1,38 @@
+name: Numbers4 CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit-and-static:
+    strategy:
+      matrix:
+        python-version: ['3.12', '3.13']
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m compileall -q numbers4_agent tests
+      - run: python -m unittest discover -s tests -v
+      - run: python -m numbers4_agent.cli --root . audit > /tmp/numbers4-audit.json
+      - run: python -m numbers4_agent.cli --root . build-dashboard --output /tmp/numbers4-status.json > /dev/null
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check docs/app.js && node --check docs/dashboard.mjs
+      - run: node --test tests/*.test.mjs
