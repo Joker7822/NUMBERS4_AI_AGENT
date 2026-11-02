@@ -1,0 +1,182 @@
+name: Numbers4 Historical Round2 Replay and Online Research Update
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'numbers4_agent/**'
+      - 'tests/**'
+      - 'data/historical_results.csv'
+      - 'data/historical_archive_provenance.json'
+      - '.github/workflows/online-learning.yml'
+      - 'docs/**'
+  push:
+    branches: [main]
+    paths:
+      - 'numbers4_agent/online_learning.py'
+      - 'numbers4_agent/secondary_feed.py'
+      - 'numbers4_agent/historical_archive.py'
+      - 'numbers4_agent/dashboard.py'
+      - 'numbers4_agent/cli.py'
+      - 'tests/test_online_learning.py'
+      - 'tests/test_secondary_feed.py'
+      - 'data/historical_results.csv'
+      - 'data/historical_archive_provenance.json'
+      - '.github/workflows/online-learning.yml'
+  schedule:
+    # GitHub cron is best-effort, NOT a real-time SLA. 23:25 JST weekdays,
+    # with a next-business-morning retry at 10:10 JST Tuesday-Saturday.
+    - cron: '25 14 * * 1-5'
+    - cron: '10 1 * * 2-6'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: numbers4-research-online-main
+  cancel-in-progress: false
+
+jobs:
+  round-two-replay-and-online-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify chronology, immutable history, online-source safety, and browser
+        run: |
+          python -m compileall -q numbers4_agent tests
+          python -m unittest discover -s tests -v
+          node --test tests/*.test.mjs
+      - name: PR replay from round 2 with no tracked evidence writes
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m numbers4_agent.cli --root . audit-history > /tmp/numbers4-history.json
+          python -m numbers4_agent.cli --root . replay-history > /tmp/numbers4-replay.json
+          python -m numbers4_agent.cli --root . build-dashboard > /tmp/numbers4-online-dashboard.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/numbers4-history.json').read_text())
+          r=json.loads(Path('/tmp/numbers4-replay.json').read_text())
+          assert r['first_evaluated_round']==2
+          assert r['last_evaluated_round']==a['last_round']
+          assert r['evaluated_draws']==a['record_count']-1
+          assert not r['prediction_skill_confirmed']
+          assert not r['forecast_grading_authorized']
+          assert not r['production_model_changed']
+          print('Reconstructed forecasts and matches:',r['evaluated_draws'])
+          print('Research-only straight hits:',r['selected_top5_straight_hits'])
+          PY
+          git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl
+      - name: Refresh bounded secondary research evidence, evaluate and commit allowlisted artifacts
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'numbers4-ai-agent[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m numbers4_agent.cli --root . refresh-secondary > /tmp/numbers4-source-report.json
+            python -m numbers4_agent.cli --root . audit-references > /tmp/numbers4-reference-report.json
+            python -m numbers4_agent.cli --root . replay-history > /tmp/numbers4-replay.json
+            python -m numbers4_agent.cli --root . build-dashboard > /tmp/numbers4-dashboard.json
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          source=json.loads(Path('/tmp/numbers4-source-report.json').read_text())
+          replay=json.loads(Path('/tmp/numbers4-replay.json').read_text())
+          dashboard=json.loads(Path('/tmp/numbers4-dashboard.json').read_text())
+          assert source['official_bank_verified'] is False
+          assert source['issued_forecast_grading_authorized'] is False
+          assert source['automatic_model_promotion'] is False
+          assert replay['first_evaluated_round']==2
+          assert replay['evaluated_draws']==replay['last_evaluated_round']-1
+          assert replay['historical_frozen_forecasts'] is False
+          assert replay['prediction_skill_confirmed'] is False
+          assert replay['production_model_changed'] is False
+          assert dashboard['prediction_skill_confirmed'] is False
+          assert dashboard['automatic_model_promotion'] is False
+          assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
+          print('Current archive:',replay['archive_latest_round'])
+          print('Walk-forward rounds:',replay['evaluated_draws'])
+          print('Research-only selected hits:',replay['selected_top5_straight_hits'])
+          print('Uniform reference hits:',replay['uniform_reference_top5_straight_hits'])
+          print('Source refresh status:',source['status'])
+          PY
+            git diff --exit-code -- \
+              data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl \
+              numbers4_agent/models.py numbers4_agent/ledger.py
+            git add -- data/historical_results.csv data/historical_archive_provenance.json \
+              research/online_source_audit.json research/online_reference_audit.json \
+              research/online_replay.json research/online_round_predictions.csv \
+              docs/data/status.json
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
+            if [ -n "$unexpected" ]; then echo "::error::Unsafe staged paths: $unexpected"; exit 1; fi
+            if git diff --cached --quiet; then echo 'No research-only changes'; exit 0; fi
+            git commit -m 'research: refresh secondary Numbers4 history and past-only online evaluation'
+            if git push origin HEAD:main; then echo 'Published audited research-only artifacts'; exit 0; fi
+            if [ "$attempt" -eq 3 ]; then echo '::error::Could not publish bounded research'; exit 1; fi
+          done
+      - name: Document research limits
+        if: always()
+        run: |
+          {
+            echo '## Historical round-2 replay and online source audit'
+            echo 'All graded historical rows are post-hoc reproductions. Not real pre-issued tickets.'
+            echo 'Two GitHub mirrors may share a publisher. Bank official confirmation is separate.'
+            echo 'No purchases, official grading rights, code execution from source pages, or Production promotions.'
+            if [ -f /tmp/numbers4-replay.json ]; then
+              python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-replay.json').read_text())
+          print('Rounds: '+str(r['evaluated_draws']))
+          print('Selected hits: '+str(r['selected_top5_straight_hits']))
+          print('Baseline hits: '+str(r['uniform_reference_top5_straight_hits']))
+          PY
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-research-dashboard:
+    needs: round-two-replay-and-online-audit
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: numbers4-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Checkout latest main after publishing research evidence
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

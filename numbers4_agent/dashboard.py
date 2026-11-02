@@ -12,6 +12,8 @@ from .ledger import read_issued
 from .sources import JST, reconcile, corroborated_draws
 from .store import file_hash
 from .historical_archive import archive_summary
+from .online_learning import VERSION as ONLINE_VERSION
+from hashlib import sha256
 
 VERSION = "numbers4-dashboard-v1"
 
@@ -79,6 +81,38 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         research = report.get("research_unverified_history", {})
         if research.get("prediction_skill_confirmed") is not False or research.get("production_promotion_allowed") is not False:
             raise ValueError("unauthorized research-to-production claim")
+    replay_path=root/"research/online_replay.json"
+    round_path=root/"research/online_round_predictions.csv"
+    if replay_path.is_file() and round_path.is_file():
+        replay=json.loads(replay_path.read_text(encoding="utf-8"))
+        if (replay.get("version")!=ONLINE_VERSION or
+                replay.get("prediction_skill_confirmed") is not False or
+                replay.get("forecast_grading_authorized") is not False or
+                replay.get("officially_verified") is not False or
+                replay.get("production_model_changed") is not False or
+                replay.get("historical_frozen_forecasts") is not False):
+            raise ValueError("unsafe historical online replay authority")
+        fresh=(archive.get("git_blob_sha1")==replay.get("archive_git_blob_sha1") and
+               archive.get("last_round")==replay.get("archive_latest_round") and
+               sha256(round_path.read_bytes()).hexdigest()==replay.get("round_predictions_sha256") and
+               replay.get("evaluated_draws")==archive.get("record_count",0)-1 and
+               replay.get("first_evaluated_round")==2)
+        if fresh:
+            online={key:replay.get(key) for key in (
+                "status","evaluated_draws","first_evaluated_round","last_evaluated_round",
+                "selected_top5_straight_hits","uniform_reference_top5_straight_hits",
+                "uniform_theoretical_top5_expected_hits","selected_mean_log_score_edge_vs_uniform",
+                "selected_mean_brier_improvement_vs_uniform","research_model_selection_rounds",
+                "next_research_candidate","archive_git_blob_sha1","generated_at_jst")}
+            online.update({"prediction_skill_confirmed":False,"officially_verified":False,
+                           "forecast_grading_authorized":False,"production_model_changed":False})
+        else:
+            online={"status":"stale_or_mismatched_input","evaluated_draws":0,
+                    "prediction_skill_confirmed":False,"officially_verified":False}
+            warnings.append("第2回からの再現予測が現在の履歴と一致しないため、表示を保留しています。")
+    else:
+        online={"status":"not_yet_run","evaluated_draws":0,
+                "prediction_skill_confirmed":False,"officially_verified":False}
     return {
         "version": VERSION, "generated_at_jst": now.isoformat(timespec="seconds"),
         "product": "Numbers4", "official_auto_fetch_enabled": True,
@@ -94,6 +128,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "issued_draws": len(issued), "graded_issued_draws": len(graded),
         "historical_research": walk_forward(root),
         "historical_archive": archive,
+        "online_prequential_replay": online,
         "historical_accuracy_proof": {
             "status": research.get("status", "not_yet_run"),
             "scope": research.get("scope", "no_historical_source"),

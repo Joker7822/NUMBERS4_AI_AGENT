@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-full-archive";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-round2-online";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -36,6 +36,19 @@ function render(data){
     "回（"+archive.last_draw_date+"）・2公開リポジトリで数字一致。みずほ銀行公式との全件照合は未実施。"+
     " 予測の正式採点・精度実証には使用しません。":
     "第1回からの全回履歴はまだ登録されていません。");
+  const live=data.online_prequential_replay;
+  set("online-replay-count",live?.status==='historical_walk_forward_reconstruction_only'?
+      live.evaluated_draws.toLocaleString('ja-JP')+'回':'未検証');
+  set("online-replay-hits",live?.status==='historical_walk_forward_reconstruction_only'?
+      live.selected_top5_straight_hits+'回 / 一様比較 '+live.uniform_reference_top5_straight_hits+'回':'未検証');
+  set("online-replay-edge",live?.status==='historical_walk_forward_reconstruction_only'?
+      '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
+      ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
+  const next=live?.next_research_candidate;
+  set("online-next-candidate",next&&live.status==='historical_walk_forward_reconstruction_only'?
+      '第'+next.target_round+'回研究候補 '+next.numbers.join(' / ')+
+      ' （'+next.model+'、第'+next.data_cutoff_round+'回まで使用、未発行・銀行未照合）':
+      '正式な事前発行予測ではありません。');
   set("backtest-count",proof.evaluated_draws+"回");
   set("backtest-hits",proof.status==="historical_exploratory_only"?proof.top5_model_hits+"回":"未検証");
   set("backtest-scope",proof.status==="historical_exploratory_only"?

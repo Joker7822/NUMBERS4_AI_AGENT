@@ -2,7 +2,7 @@
 
 **Numbers4（ナンバーズ4）専用の、独立したAI研究・予測台帳・照合監査プロジェクト**。LOTO7のコード・履歴・秘密情報は引き継ぎません。
 
-> **状態（2026-11-02、v0.2.1）:** 銀行公式結果の自動取得と別の公開元照合、歴史的ウォークフォワード実行を追加しました。取得元サイトの形式によっては結果を取れず、その場合は正式照合済みとして登録しません。発行済みNumbers4予測は未登録で、予測精度改善は実証されていません。
+> **状態（2026-11-02、v0.3.0）:** 銀行公式結果の自動取得と別の公開元照合、歴史的ウォークフォワード実行を追加しました。取得元サイトの形式によっては結果を取れず、その場合は正式照合済みとして登録しません。発行済みNumbers4予測は未登録で、予測精度改善は実証されていません。
 
 ## 第1回からの全回当せん結果（2026-11-02取得）
 
@@ -21,6 +21,26 @@ python -m unittest discover -s tests -v
 ```
 
 ダッシュボードの「過去当せん番号の全履歴」は **二次公開データの収録件数** です。銀行＋販売元の照合済み抽せん件数や、実際に採点できた予測回数とは別の値です。
+
+## 第2回から全件の逐次予測・オンライン研究更新（2026-11-02）
+
+2026-11-02実装の **[ONLINE_LEARNING.md](ONLINE_LEARNING.md)** を参照してください。第1回の履歴だけを使って第2回を予測し、第2回の当せん番号を確認してからモデルの評価値を更新する操作を、収録された全7,104回にわたり順番に再現します。対象は第2〜第7104回の **7,103回** です。
+
+- 再現した5口と照合結果： [research/online_round_predictions.csv](research/online_round_predictions.csv)
+- 累積成績と研究モデル選択： [research/online_replay.json](research/online_replay.json)
+- 2公開リポジトリのオンライン更新検査： [research/online_source_audit.json](research/online_source_audit.json)
+- みずほ・宝くじ公式ルールおよびproper scoring rulesの定期参照： [research/online_reference_audit.json](research/online_reference_audit.json)
+- 定期運用： [online-learning.yml](.github/workflows/online-learning.yml) で平日23:25 JSTと翌朝10:10 JST、ベストエフォート実行（GitHub cronの遅延あり）。
+
+```bash
+python -m numbers4_agent.cli --root . replay-history
+python -m numbers4_agent.cli --root . build-dashboard
+# インターネットにアクセスできる環境でのみ
+python -m numbers4_agent.cli --root . refresh-secondary
+python -m numbers4_agent.cli --root . audit-references
+```
+
+**誤認防止：7,103回の数字は過去に実際に事前発行した予測ではなく、厳密に過去データのみで再構成した研究です。** 自動重み更新は研究モデルに限定し、公式銀行照合済み結果・事前発行台帳・Productionモデルを書き換えません。予測改善を証明するための新規Future-OOS実測は別途必要です。オンライン公開元の独立性も保証されていません。
 
 ## 公式ルール
 

@@ -76,6 +76,41 @@ export function normalizeStatus(s){
       throw new Error("過去履歴の出典・検証状態が不正です");
     }
   }
+  const online=s.online_prequential_replay;
+  if(online){
+    if(!['not_yet_run','historical_walk_forward_reconstruction_only','stale_or_mismatched_input'].includes(online.status)||
+       online.prediction_skill_confirmed!==false||online.officially_verified!==false||
+       !Number.isInteger(online.evaluated_draws)||online.evaluated_draws<0){
+      throw new Error('逐次予測の研究権限・形式を確認できません');
+    }
+    if(online.status==='historical_walk_forward_reconstruction_only'){
+      const next=online.next_research_candidate;
+      if(online.forecast_grading_authorized!==false||online.production_model_changed!==false||
+         online.first_evaluated_round!==2||!Number.isInteger(online.last_evaluated_round)||
+         online.evaluated_draws!==online.last_evaluated_round-1||
+         !Number.isInteger(online.selected_top5_straight_hits)||
+         !Number.isInteger(online.uniform_reference_top5_straight_hits)||
+         online.selected_top5_straight_hits<0||online.selected_top5_straight_hits>online.evaluated_draws||
+         online.uniform_reference_top5_straight_hits<0||online.uniform_reference_top5_straight_hits>online.evaluated_draws||
+         typeof online.selected_mean_log_score_edge_vs_uniform!=='number'||
+         !Number.isFinite(online.selected_mean_log_score_edge_vs_uniform)||
+         typeof online.selected_mean_brier_improvement_vs_uniform!=='number'||
+         !Number.isFinite(online.selected_mean_brier_improvement_vs_uniform)||
+         !next||next.status!=='research_only_not_issued_not_purchased'||next.accuracy_claim!==false||
+         next.data_cutoff_round!==online.last_evaluated_round||
+         next.target_round!==online.last_evaluated_round+1||next.draw_date!==null||
+         !['uniform','positional_60_alpha10','positional_250_alpha5','positional_1000_alpha20'].includes(next.model)||
+         !Array.isArray(next.numbers)||next.numbers.length!==5||!next.numbers.every(safeDigits)||
+         new Set(next.numbers).size!==5){
+        throw new Error('未来を混入した再現予測・架空の本番昇格は拒否します');
+      }
+      if(s.historical_archive?.status==='secondary_public_mirrors_agree_not_officially_verified'&&
+         (online.last_evaluated_round!==s.historical_archive.last_round||
+          online.archive_git_blob_sha1!==s.historical_archive.git_blob_sha1)){
+        throw new Error('履歴と逐次予測の参照が一致していません');
+      }
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
 }
