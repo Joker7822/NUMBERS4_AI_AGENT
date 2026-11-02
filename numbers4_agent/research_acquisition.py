@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 import json
 from pathlib import Path
+from time import sleep
 
 from .research_discovery import (
     JST, RESULTS_PER_QUERY, BRAVE_HOST, CROSSREF_HOST,
@@ -137,6 +138,11 @@ def collect(root: Path, queries: list[str], *, brave_api_key: str | None = None,
             positions[key] = value
             continue
         requested += 1
+        # Only live network calls are paced; offline injected test fetchers
+        # can run fast. Respect provider rate-limit responses, never bypass.
+        if requested > 1 and ((provider == "crossref" and crossref_fetch is None)
+                              or (provider == "brave_web_search" and brave_fetch is None)):
+            sleep(1.2)
         try:
             if provider == "crossref":
                 response = _crossref_request(
