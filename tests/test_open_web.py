@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 from numbers4_agent.open_web import (
-    EXCERPT_CHARS, MAX_BODY_BYTES, MAX_PAGES_PER_INVOCATION,
+    EXCERPT_CHARS, MAX_BODY_BYTES, DEFAULT_BATCH_SIZE,
     _PinnedHTTPSConnection, fetch_public_page, inspect_urls,
     public_addresses, text_excerpt, validate_public_url,
 )
@@ -155,9 +155,25 @@ class PublicResearchTests(unittest.TestCase):
         self.assertFalse(report["production_model_promotion_authorized"])
         self.assertFalse(report["issued_predictions_modified"])
 
-    def test_no_unbounded_batch(self):
-        with self.assertRaises(ValueError):
-            inspect_urls(["https://new-public-research.org/"] * (MAX_PAGES_PER_INVOCATION + 1))
+    def test_unlimited_url_list_with_resumable_finite_batches(self):
+        urls=[f"https://new-public-research.org/articles/{i}" for i in range(151)]
+        first=inspect_urls(urls,fetch=lambda url:(HTML,"text/html"),now=NOW,
+                           start_index=0,batch_size=DEFAULT_BATCH_SIZE)
+        self.assertEqual(first["submitted_urls"],151)
+        self.assertEqual(first["processed_urls"],25)
+        self.assertEqual(first["retrieved_pages"],25)
+        self.assertEqual(first["next_start_index"],25)
+        self.assertTrue(first["has_more_input_urls"])
+        self.assertIsNone(first["application_total_url_quota"])
+        last=inspect_urls(urls,fetch=lambda url:(HTML,"text/html"),now=NOW,
+                          start_index=150,batch_size=25)
+        self.assertEqual(last["retrieved_pages"],1)
+        self.assertIsNone(last["next_start_index"])
+        self.assertFalse(last["has_more_input_urls"])
+        for bad in [dict(start_index=-1),dict(start_index=151),
+                    dict(start_index=0,batch_size=0)]:
+            with self.assertRaises(ValueError):
+                inspect_urls(urls,fetch=lambda url:(HTML,"text/html"),**bad)
         with self.assertRaises(ValueError):
             inspect_urls([])
         self.assertEqual(len(text_excerpt(b"a" * (EXCERPT_CHARS + 3), "text/plain")),
