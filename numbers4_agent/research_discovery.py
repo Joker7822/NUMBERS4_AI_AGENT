@@ -18,7 +18,7 @@ from urllib.parse import urlencode
 from .historical_archive import load_archive
 from .open_web import (
     _PinnedHTTPSConnection, public_addresses, fetch_public_page,
-    validate_public_url,
+    validate_public_url, text_excerpt,
 )
 from .straight_challenger import evaluate
 
@@ -104,7 +104,7 @@ def _fixed_api_get(host: str, target: str, *, token: str | None = None,
 
 def _crossref_request(query: str, *, fetch=None) -> dict:
     args = urlencode({"query": query, "rows": RESULTS_PER_QUERY,
-                      "select": "DOI,title,published,type,container-title,score,relation"})
+                      "select": "DOI,title,abstract,published,type,container-title,score,relation"})
     url = f"https://{CROSSREF_HOST}/works?{args}"
     if fetch is None:
         raw = _fixed_api_get(CROSSREF_HOST, f"/works?{args}")
@@ -144,6 +144,22 @@ def _categories(title: str, excerpt: str) -> list[str]:
             if any(marker in haystack for marker in markers)]
 
 
+
+def _research_method_signals(text: str) -> list[str]:
+    """Finite vocabulary; search metadata is untrusted, never executable."""
+    value = text.lower()
+    signals = (
+        ("markov", ("markov", "transition probabilities", "sequential dependence")),
+        ("temporal_decay", ("exponentially weighted", "forgetting factor", "concept drift",
+                            "temporal distribution shift")),
+        ("bayesian_smoothing", ("dirichlet", "bayesian smoothing", "prior distribution",
+                                "shrinkage estimator")),
+        ("calibration", ("calibration", "proper scoring rule", "brier score",
+                         "logarithmic scoring")),
+    )
+    return [name for name, keywords in signals if any(term in value for term in keywords)]
+
+
 def _crossref_entries(response: dict, query: str) -> list[dict]:
     items = response.get("message", {}).get("items", [])
     if not isinstance(items, list):
@@ -161,7 +177,12 @@ def _crossref_entries(response: dict, query: str) -> list[dict]:
             validate_public_url(url)
         except ValueError:
             continue
-        category = _categories(title, "")
+        abstract_raw = item.get("abstract")
+        # Publisher-deposited abstracts may have copyright restrictions.
+        # Extract transient method hints, but DO NOT store the abstract.
+        abstract_text = (text_excerpt(abstract_raw.encode("utf-8"), "text/html")[:2000]
+                         if isinstance(abstract_raw, str) else "")
+        category = _categories(title, abstract_text)
         if not category:
             continue
         out.append({
@@ -172,6 +193,10 @@ def _crossref_entries(response: dict, query: str) -> list[dict]:
             "source_url": url,
             "publication_year": _year_from_crossref(item),
             "venue": _first_text(item.get("container-title"), 150),
+            "abstract_metadata_present": bool(abstract_text),
+            "abstract_sha256": sha256(abstract_text.encode("utf-8")).hexdigest()
+                               if abstract_text else None,
+            "method_signals": _research_method_signals(title + " " + abstract_text),
             "research_categories": category,
             "retraction_or_update_metadata_present": bool(item.get("relation")),
             "discovery_query": query,
@@ -210,6 +235,7 @@ def _brave_entries(response: dict, query: str) -> list[dict]:
             "title": title,
             "source_url": display,
             "description": description,
+            "method_signals": _research_method_signals(title + " " + description),
             "research_categories": category,
             "discovery_query": query,
             "external_claim_verified": False,

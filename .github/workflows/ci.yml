@@ -75,6 +75,46 @@ jobs:
           },ensure_ascii=False,indent=2))
           print('ONE_TICKET_REPLAY_JSON_END')
           PY
+      - name: Validate bounded self-evolution with full historical replay (no network)
+        run: |
+          python -m numbers4_agent.cli --root . evolve-research --offline > /tmp/numbers4-evolution-ci.json
+          python -m numbers4_agent.cli --root . build-dashboard --output /tmp/numbers4-evolution-status.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          ev=json.loads(Path('/tmp/numbers4-evolution-ci.json').read_text())
+          status=json.loads(Path('/tmp/numbers4-evolution-status.json').read_text())
+          assert ev['generation']==1
+          assert ev['first_evaluated_round']==2
+          assert ev['evaluated_draws']==ev['last_evaluated_round']-1
+          assert ev['parallel_original_one_ticket_replay_recomputed'] is True
+          assert ev['past_only_research_replay_recomputed'] is True
+          assert ev['production_model_changed'] is False
+          assert ev['model_auto_promotion_authorized'] is False
+          assert ev['research_generation_is_prospective_preregistration'] is False
+          assert ev['research_discovery']['status']=='explicitly_offline_no_sources_retrieved'
+          assert status['research_evolution']['generation']==1
+          assert status['research_evolution']['evaluated_draws']==ev['evaluated_draws']
+          assert status['research_evolution']['performance_advantage_confirmed'] is False
+          print('EVOLUTION_REPLAY_RESULT_START')
+          print(json.dumps({
+            'generation':ev['generation'],
+            'evaluated_draws':ev['evaluated_draws'],
+            'candidate_model_ids':ev['model_ids'],
+            'development_winner':ev['development_winner'],
+            'late_cohort_exploratory_metrics':ev['late_historical_reanalysis']['model_metrics'],
+            'next_research_candidate':ev['next_research_candidate'],
+          },ensure_ascii=False,indent=2))
+          print('EVOLUTION_REPLAY_RESULT_END')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-evolution-python-${{ matrix.python-version }}
+          path: |
+            research/evolution_report.json
+            research/evolution_round_predictions.csv
+            research/evolution_journal.jsonl
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         with:
           name: straight-research-python-${{ matrix.python-version }}

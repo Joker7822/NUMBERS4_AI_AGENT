@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-production-online-monitor";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-recursive-evolution";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -153,6 +153,23 @@ function render(data){
   set("backtest-scope",proof.status==="historical_exploratory_only"?
     "楽天公開履歴（銀行未照合）での過去研究。log-score差: "+String(proof.mean_log_likelihood_edge_vs_uniform)+
     "。将来予測力は未実証。":"真の結果履歴が不足しているため、予測精度の実証はできません。");
+  const ev=data.research_evolution;
+  const evStates={
+    not_yet_run:'未実行（研究モデルの自動探索待ち）',
+    recursive_research_exploration_not_prospective_evidence:'研究自己進化サイクル完了・過去再計算',
+    stale_history_reanalysis:'過去再計算が古いため再学習待ち'
+  };
+  set("evolution-status",ev?evStates[ev.status]:"研究履歴の生成待ち");
+  set("evolution-generation",ev?ev.generation+"世代":"—");
+  set("evolution-draws",ev&&ev.status==='recursive_research_exploration_not_prospective_evidence'?
+      ev.evaluated_draws.toLocaleString('ja-JP')+"回（第2回から）":"未再計算／履歴更新待ち");
+  set("evolution-models",ev?ev.candidate_models+"候補":"—");
+  set("evolution-sources",ev?
+      ev.research_sources_found+"件（"+(ev.web_search_enabled?"公開Web検索あり":"文献検索中心／Web検索キー未設定または未実行")+"）":"—");
+  set("evolution-next",ev?.next_number?
+      "研究1口 "+ev.next_number+" / "+ev.next_model+"（未発行・未購入）":"未更新");
+  set("evolution-time",ev?.generated_at_jst?
+      japaneseTime(ev.generated_at_jst):"未実行");
   const automated=data.auto_learning;
   const modelLabels={
     uniform:'一様基準（未昇格）',

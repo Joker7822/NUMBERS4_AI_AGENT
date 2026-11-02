@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-production-online-monitor"></script>
+  <script type="module" src="app.js?v=20261102-recursive-evolution"></script>
 </head>
 <body>
   <div class="page">
@@ -24,6 +24,18 @@
         <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time">公開JSONを確認中</span></div>
       </section>
       <div id="error" role="alert" class="error" hidden></div>
+      <section class="panel" id="recursive-research-evolution">
+        <div class="panel-head"><span>RECURSIVE / WEB RESEARCH / ONE TICKET</span><h2>オンライン情報を活用する研究AIの自己進化</h2></div>
+        <p class="subtle">論文・公開Webから新しい予測手法を探索し、対応する事前実装済みアルゴリズムを時系列に学習します。毎回、第1回を学習して第2回から全回を再予測。前回の開発区間の評価を次のモデル案・検索語にフィードバックします。</p>
+        <div class="data-row"><span>研究サイクルの実行状態</span><strong id="evolution-status">未実行</strong></div>
+        <div class="data-row"><span>研究世代（累計）</span><strong id="evolution-generation">—</strong></div>
+        <div class="data-row"><span>第2回からの再予測対象</span><strong id="evolution-draws">—</strong></div>
+        <div class="data-row"><span>研究モデル候補</span><strong id="evolution-models">—</strong></div>
+        <div class="data-row"><span>オンライン検索で発見した情報</span><strong id="evolution-sources">—</strong></div>
+        <div class="data-row"><span>自動更新した研究候補（次回用・未発行）</span><strong id="evolution-next">—</strong></div>
+        <div class="data-row"><span>研究再計算の最終生成</span><strong id="evolution-time">—</strong></div>
+        <p class="subtle">同じ過去データを再利用するため、サイクルを繰り返しても独立した予測力の証明にはなりません。正式なモデル昇格は将来の事前公開・一次照合が必要です。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/evolution_report.json" rel="noopener noreferrer">研究レポート</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/actions/workflows/predictive-research.yml" rel="noopener noreferrer">自動探索・再学習の実行履歴</a></p>
+      </section>
       <section class="panel" id="predictive-auto-learning">
         <div class="panel-head"><span>AI / PROSPECTIVE AUTO-LEARNING</span><h2>予測精度向上の検索・自動学習・本番昇格</h2></div>
         <p class="subtle">AIの学習はみずほ銀行結果と別の公表元が一致した、過去の結果だけを対象とします。オンライン検索の論文・記事は手法の仮説として評価し、外部コードは自動実行しません。抽せん前のGitHub公開証拠がある将来検証500回以上と、事前登録した逐次統計基準の両方がそろうまで本番モデルは切り替えません。</p>
@@ -83,7 +95,7 @@
           <div class="panel-head"><span>STRAIGHT / RETROSPECTIVE SIMULATION</span><h2>ストレート：的中件数・当せん金・仮想収支</h2></div>
           <p id="simulation-straight-scope" class="subtle">過去のストレート予測と回別当せん金を照合しています。</p>
           <div class="data-row"><span>ストレート的中回数・口数</span><strong id="simulation-straight-wins">—</strong></div>
-          <div class="data-row"><span>仮想購入費用（5口×200円／回）</span><strong id="simulation-straight-spend">—</strong></div>
+          <div class="data-row"><span>仮想購入費用（1口×200円／回）</span><strong id="simulation-straight-spend">—</strong></div>
           <div class="data-row"><span>仮想当せん金合計</span><strong id="simulation-straight-income">—</strong></div>
           <div class="data-row"><span>仮想差引収支</span><strong id="simulation-straight-net">—</strong></div>
           <div class="data-row"><span>仮想収益率</span><strong id="simulation-straight-roi">—</strong></div>
@@ -148,7 +160,7 @@
         <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
       </section>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.8.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.9.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>

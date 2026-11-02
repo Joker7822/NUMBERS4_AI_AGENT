@@ -17,6 +17,7 @@ from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
 from .online_learning import VERSION as ONLINE_VERSION
 from .online_ops import snapshot as operational_snapshot
+from .evolution import public_status as evolution_status
 from .automatic_learning import (assess as assess_auto_learning,
                                   VERSION as AUTO_VERSION)
 from hashlib import sha256
@@ -29,6 +30,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     states = reconcile(root)
     trusted = corroborated_draws(root)
     archive = archive_summary(root)
+    evolution = evolution_status(root, archive)
     operations = operational_snapshot(root,now)
     prospective = assess_auto_learning(root)
     champion_name = prospective["current_champion"]
@@ -56,6 +58,8 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     recent_issued = max(issued, key=lambda r: r["target_round"]) if issued else None
     recent_grade = graded[-1] if graded else None
     warnings = []
+    if evolution["status"] == "stale_history_reanalysis":
+        warnings.append("研究自己進化の第2回からの再解析が現在の二次履歴より古いため、最新の評価値を保留しています。")
     if prospective["integrity_blocker"]:
         warnings.append("将来予測の公開証拠または一次照合に不備があるため、AIの自動昇格を停止しています。")
     if prospective["verified_official_draws_available"] == 0:
@@ -202,6 +206,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "historical_research": walk_forward(root),
         "historical_archive": archive,
         "online_prequential_replay": online,
+        "research_evolution": evolution,
         "online_operations": operations,
         "auto_learning": model_automation,
         "historical_accuracy_proof": {

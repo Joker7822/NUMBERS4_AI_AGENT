@@ -311,3 +311,40 @@ test('predictive automatic-learning panel is connected to validated status field
     assert.ok(js.includes('"'+id+'"'),id+' missing from renderer');
   }
 });
+
+test('recursive evolution cannot masquerade as independent proof or production promotion',()=>{
+  const s=source();
+  s.research_evolution={
+    version:'numbers4-recursive-research-evolution-v1',
+    status:'recursive_research_exploration_not_prospective_evidence',
+    generation:2,evaluated_draws:7103,candidate_models:5,
+    research_sources_found:3,web_search_enabled:false,
+    research_search_errors:0,metadata_based_method_leads:2,
+    next_model:'rolling_60_alpha10',next_number:'0123',
+    generated_at_jst:'2026-11-02T18:20:00+09:00',
+    repeated_historical_cohorts_not_independent:true,
+    performance_advantage_confirmed:false,
+    model_auto_promotion_authorized:false,actual_purchase:false,
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.research_evolution.performance_advantage_confirmed=true;
+  assert.throws(()=>normalizeStatus(s),/自己進化/);
+  s.research_evolution.performance_advantage_confirmed=false;
+  s.research_evolution.model_auto_promotion_authorized=true;
+  assert.throws(()=>normalizeStatus(s),/自己進化/);
+  s.research_evolution.model_auto_promotion_authorized=false;
+  s.research_evolution.next_number='12345';
+  assert.throws(()=>normalizeStatus(s),/自己進化/);
+});
+
+test('self-evolution research controls are visible but clearly exploratory',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const js=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of ['evolution-status','evolution-generation','evolution-draws',
+                   'evolution-models','evolution-sources',
+                   'evolution-next','evolution-time']){
+    assert.ok(html.includes('id="'+id+'"'),id);
+    assert.ok(js.includes('"'+id+'"'),id);
+  }
+  assert.ok(html.includes('同じ過去データを再利用するため'));
+});
