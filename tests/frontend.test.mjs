@@ -258,3 +258,22 @@ test('historical chance benchmark cannot be forged into prospective proof',()=>{
   s.online_prequential_replay.research_statistical_audit.selected_hit_tail_probability_given_uniform_null=2;
   assert.throws(()=>normalizeStatus(s),/過去研究の偶然確率/);
 });
+
+test('new one-ticket reports never validate as five-ticket portfolios',()=>{
+  const s=source();
+  const online=s.online_prequential_replay;
+  assert.equal(online.status,'historical_walk_forward_reconstruction_only');
+  const old=online.next_research_candidate.numbers.slice();
+  online.tickets_per_draw=1;
+  online.selected_straight_hits=0;
+  online.uniform_reference_straight_hits=0;
+  online.next_research_candidate.numbers=[old[0]];
+  delete online.retrospective_finance;
+  delete online.retrospective_box_finance;
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  online.next_research_candidate.numbers=old;
+  assert.throws(()=>normalizeStatus(s),/再現予測/);
+  online.next_research_candidate.numbers=[old[0]];
+  online.tickets_per_draw=2;
+  assert.throws(()=>normalizeStatus(s),/一口予測/);
+});
