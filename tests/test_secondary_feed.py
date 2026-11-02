@@ -102,9 +102,13 @@ class SecondaryFeedTests(unittest.TestCase):
             parse_json(b'[[1,"abc"]]')
 
     def test_safe_related_source_audit_no_execution_or_promotion(self):
-        a=audit_related(now=NOW,fetch=lambda url: b'<html>read-only</html>')
-        self.assertEqual(len(a['topics']),3)
-        self.assertTrue(all(x['status']=='fetched_read_only_unreviewed' for x in a['topics']))
+        a=audit_related(now=NOW,fetch=lambda url: b'<html><body>'+b'read-only-'*15+b'</body></html>')
+        self.assertEqual(len(a['topics']),len(RELATED))
+        self.assertEqual(a['status'],'rule_change_requires_review')
+        self.assertEqual(a['rule_sources_consistent'],0)
+        self.assertEqual(a['rule_sources_changed'],3)
+        self.assertFalse(a['official_draw_result_verified_by_this_audit'])
+        self.assertFalse(a['official_payouts_verified_by_this_audit'])
         self.assertFalse(a['lottery_predictive_improvement_confirmed'])
         self.assertFalse(a['automatic_external_code_execution'])
 

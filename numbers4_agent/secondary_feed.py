@@ -29,11 +29,8 @@ REPOS=(
     ("hazimekom", "numbers4-api", "data/numbers4_results_v2.csv"),
     ("kodai721229", "kujilab", "public/data/numbers4.json"),
 )
-RELATED=(
-    ("mizuho_rules", "https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html"),
-    ("official_n4_rules", "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/"),
-    ("scoring_rule_research", "https://stat.uw.edu/research/tech-reports/strictly-proper-scoring-rules-prediction-and-estimation"),
-)
+from .online_monitor import SOURCES, audit as audit_sources
+RELATED=tuple((name, url) for name, url, _, _ in SOURCES)
 MAX_BODY=1_600_000
 
 
@@ -263,24 +260,7 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
     return result
 
 
-def audit_related(now: datetime|None=None, *, fetch=read_url) -> dict:
-    """Search-like bounded refresh of known authoritative references; no code execution.
 
-    A successful HTTP fetch only verifies accessibility and response hashes;
-    it does not imply the remote source endorsed this model or algorithm.
-    """
-    now=(now or datetime.now(JST)).astimezone(JST)
-    records=[]
-    for label,url in RELATED:
-        try:
-            raw=fetch(url)
-            records.append({"topic":label,"url":url,"status":"fetched_read_only_unreviewed",
-                            "response_sha256":sha256(raw).hexdigest(),"size_bytes":len(raw)})
-        except (ConnectionError,ValueError,UnicodeError) as e:
-            records.append({"topic":label,"url":url,"status":"unavailable_or_unverified",
-                            "reason":str(e)[:90]})
-    return {"version":"numbers4-related-sources-online-audit-v1",
-            "checked_at_jst":now.isoformat(timespec="seconds"),
-            "topics":records,"paper_relevance_confirmed":False,
-            "automatic_external_code_execution":False,
-            "lottery_predictive_improvement_confirmed":False}
+def audit_related(now: datetime | None = None, *, fetch=read_url) -> dict:
+    """Production-grade bounded official-rule monitoring (not official draw proof)."""
+    return audit_sources(now=now, fetch=fetch)

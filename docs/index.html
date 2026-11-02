@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-dual-simulation"></script>
+  <script type="module" src="app.js?v=20261102-production-online-monitor"></script>
 </head>
 <body>
   <div class="page">
@@ -24,6 +24,17 @@
         <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time">公開JSONを確認中</span></div>
       </section>
       <div id="error" role="alert" class="error" hidden></div>
+      <section class="panel" id="online-operations">
+        <div class="panel-head"><span>07 / ONLINE SOURCES / PRODUCTION MONITORING</span><h2>オンライン情報の検索・検証・運用監視</h2></div>
+        <p class="subtle">宝くじ公式・みずほ銀行など、承認済みの公開元を定期巡回します。取得に成功しただけでは「公式結果確認済み」と判定しません。定期実行はGitHub Actionsで、リアルタイム保証はありません。</p>
+        <div class="data-row"><span>監視の状態</span><strong id="ops-state">未検査</strong></div>
+        <div class="data-row"><span>公式ルールの必須チェック</span><strong id="ops-rules">—</strong></div>
+        <div class="data-row"><span>公式ルール最終確認</span><strong id="ops-last-rules">—</strong></div>
+        <div class="data-row"><span>二次履歴のオンライン照合</span><strong id="ops-source-status">—</strong></div>
+        <div class="data-row"><span>公開履歴最終確認</span><strong id="ops-last-feed">—</strong></div>
+        <div class="data-row"><span>みずほ銀行の一次結果照合</span><strong>別途確認が必要</strong></div>
+        <p class="subtle">公式ルールの必須文言に変化があれば手動確認対象とし、予測コード・配当・発行済み記録を自動変更しません。監視記録：<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_reference_audit.json" rel="noopener noreferrer">公式情報監査</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_source_audit.json" rel="noopener noreferrer">公開データ監査</a>。</p>
+      </section>
       <section class="stats" aria-label="主要指標">
         <article class="stat"><label>公開元照合済み抽せん</label><strong id="draw-count">—</strong><small>銀行＋販売元または手入力を照合</small></article>
         <article class="stat"><label>事前発行の記録</label><strong id="issue-count">—</strong><small>発行と実際の購入は別</small></article>
@@ -124,7 +135,7 @@
         <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
       </section>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.3</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.4.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>

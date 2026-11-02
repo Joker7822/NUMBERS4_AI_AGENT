@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-dual-simulation";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-production-online-monitor";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -147,6 +147,25 @@ function render(data){
   set("backtest-scope",proof.status==="historical_exploratory_only"?
     "楽天公開履歴（銀行未照合）での過去研究。log-score差: "+String(proof.mean_log_likelihood_edge_vs_uniform)+
     "。将来予測力は未実証。":"真の結果履歴が不足しているため、予測精度の実証はできません。");
+  const ops=data.online_operations;
+  const states={
+    online_monitoring_active_secondary_research_only:"公式ルール監視正常・二次履歴研究運用中",
+    manual_review_required:"公式ルール要確認（変更の疑い）",
+    source_unavailable:"公開元取得不能・確認保留",
+    stale:"定期監査の更新が遅延",
+    not_verified:"初回監査待ち"
+  };
+  set("ops-state",ops?states[ops.state]:"監査データ未登録");
+  set("ops-rules",ops?ops.rule_sources_consistent+"/"+ops.rule_sources_required+"件一致（必須文言）":"未検査");
+  set("ops-last-rules",ops?.rule_checked_at_jst?japaneseTime(ops.rule_checked_at_jst):"確認できません");
+  const statusMap={
+    not_checked:"未検査",
+    validated_no_new_draws:"二次公開元一致・新規なし",
+    appended_secondary_history_not_officially_verified:"二次公開元一致・履歴追記",
+    network_unavailable_old_archive_preserved:"取得失敗・旧履歴維持"
+  };
+  set("ops-source-status",ops?statusMap[ops.secondary_feed_status]:"確認できません");
+  set("ops-last-feed",ops?.secondary_checked_at_jst?japaneseTime(ops.secondary_checked_at_jst):"確認できません");
   const warnings=byId("warning-list");warnings.replaceChildren();
   for(const warning of data.warnings)warnings.append(create("p","",warning));
   if(!data.warnings.length)warnings.append(create("p","ok","重大な入力不一致はありません。ただし予測精度は実証されていません。"));
