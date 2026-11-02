@@ -1,4 +1,4 @@
-"""Check GitHub server push-run timestamps before treating a shadow as prospective.
+"""Check GitHub server event timestamps before treating a shadow as prospective.
 
 A local timestamp, SHA chain, commit author date or retrospective CSV is NEVER
 sufficient. A receipt is issued only when the forecast line appears for the
@@ -59,7 +59,7 @@ def _find_introduction_commit(root: Path, row: dict) -> str:
 def _github_runs(commit: str, *, fetch=None) -> list[dict]:
     if not COMMIT.fullmatch(commit):
         raise ValueError("invalid GitHub commit reference")
-    query = urlencode({"event": "push", "head_sha": commit, "per_page": 100})
+    query = urlencode({"head_sha": commit, "per_page": 100})
     if fetch is None:
         headers = {"Accept": "application/vnd.github+json",
                    "User-Agent": "numbers4-prospective-proof/1"}
@@ -95,7 +95,7 @@ def verify_and_record(root: Path, *, fetch=None) -> dict:
         for run in _github_runs(commit, fetch=fetch):
             if not isinstance(run, dict):
                 continue
-            if (run.get("event") != "push" or
+            if (run.get("event") not in {"push", "workflow_dispatch"} or
                     run.get("head_sha") != commit or
                     run.get("head_branch") != "main" or
                     run.get("name") != "Numbers4 CI" or
@@ -117,7 +117,10 @@ def verify_and_record(root: Path, *, fetch=None) -> dict:
         append(root / WITNESS_PATH, {
             "version": VERSION, "round": row["round"],
             "forecast_event_sha256": row["event_sha256"],
-            "github_repo": PUBLIC_REPO, "github_event": "push",
+            "github_repo": PUBLIC_REPO, "github_event": (
+                "workflow_dispatch" if any(x.get("event") == "workflow_dispatch"
+                and x.get("id") == run_id for x in _github_runs(commit, fetch=fetch))
+                else "push"),
             "github_workflow": "Numbers4 CI",
             "github_head_sha": commit, "github_run_id": run_id,
             "github_run_created_at": when.astimezone(timezone.utc).isoformat(),
