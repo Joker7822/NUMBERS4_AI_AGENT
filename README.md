@@ -40,6 +40,8 @@ python -m numbers4_agent.cli --root . refresh-secondary
 python -m numbers4_agent.cli --root . audit-references
 ```
 
+**評価上の追加監査（2026-11-02）：** `research/online_replay.json` の `research_statistical_audit` に、独立・公平な抽せんでの5口ストレート的中回数の二項分布による右裾確率、統計モデルが採用された回数、一様5口基準と異なる的中回数を記載します。いずれも**探索的な過去研究の記述統計**であり、有意差や将来の予測力を実証するものではありません。新しい本番運用の条件と未解決事項は [将来予測の検証・公開品質ゲート](PROSPECTIVE_PROTOCOL.md) を参照してください。
+
 **誤認防止：7,103回の数字は過去に実際に事前発行した予測ではなく、厳密に過去データのみで再構成した研究です。** 自動重み更新は研究モデルに限定し、公式銀行照合済み結果・事前発行台帳・Productionモデルを書き換えません。予測改善を証明するための新規Future-OOS実測は別途必要です。オンライン公開元の独立性も保証されていません。
 
 
@@ -158,6 +160,8 @@ python -m numbers4_agent.cli evaluate
 python -m numbers4_agent.cli backtest
 python -m numbers4_agent.cli build-dashboard
 ```
+
+**公開ライセンス：** 2026-11-02現在、LICENSEファイル未追加です。著作権者がライセンス条件を選択するまでは無断でMIT等を設定しません。バージョンv0.4.0はソース上の統一表記であり、タグ付きGitHub Releaseの存在を意味しません。
 
 **注意:** 書式例は未来の回号／実際の抽せんスケジュールを主張していません。公開ページのURLは、その回の当せん番号を本当に示しているか人間が確認してください。2サイトの手動一致だけで公式発表の自動検証済みと主張しないでください。
 
