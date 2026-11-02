@@ -132,7 +132,7 @@ class AutomaticLearningTests(unittest.TestCase):
                 {"event_sha256","previous_sha256"}}
         tamper["models"]["positional_60_alpha10"]["number"]="9999"
         append(p,tamper)
-        with self.assertRaisesRegex(ValueError,"orphan"):
+        with self.assertRaisesRegex(ValueError,"publication lacks"):
             assess(self.root)
 
     def test_published_model_does_not_override_secondary_learning(self):
