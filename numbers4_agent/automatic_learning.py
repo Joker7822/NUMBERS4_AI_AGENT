@@ -216,7 +216,7 @@ def _validated_witnesses(root: Path, forecasts: list[dict]) -> dict[int, dict]:
         when = _time(row["github_run_created_at"])
         if (row.get("version") != VERSION or
                 row.get("forecast_event_sha256") != issued["event_sha256"] or
-                row.get("github_event") != "push" or
+                row.get("github_event") not in {"push", "workflow_dispatch"} or
                 row.get("github_repo") != "Joker7822/NUMBERS4_AI_AGENT" or
                 row.get("github_workflow") != "Numbers4 CI" or
                 not isinstance(row.get("github_run_id"), int) or
