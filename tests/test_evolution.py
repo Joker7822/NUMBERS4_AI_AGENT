@@ -1,5 +1,7 @@
 """Research evolution tests: online paper hints are NOT executable instructions."""
 from collections import deque
+import csv
+from unittest.mock import patch
 from datetime import date, timedelta
 from hashlib import sha256
 import json
@@ -10,7 +12,7 @@ import unittest
 from numbers4_agent.evolution import (
     VERSION, JOURNAL, REPORT, ROUND_FIELDS, _EmaDigits, _MarkovDigits,
     _read_previous, _spec_id, _top_number, _validate_spec, choose_past_only,
-    evaluate, next_queries, propose, cycle,
+    evaluate, next_queries, propose, cycle, _verified_latest_replay_projection, ROUND_CSV,
 )
 from numbers4_agent.online_learning import positional_probs
 from numbers4_agent.store import append, canonical
@@ -142,6 +144,55 @@ class SelfEvolutionTests(unittest.TestCase):
             evaluate(invalid,specs,split_round=10)
         with self.assertRaises(ValueError):
             evaluate(history(10),[specs[0],specs[0]],split_round=5)
+
+    def test_latest_generation_summary_is_recalculated_from_every_historical_row(self):
+        samples=history(340)
+        specs,_=propose(discovered("Markov transitions"),generation=1)
+        experiment,rows=evaluate(samples,specs,split_round=200)
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            output=root/ROUND_CSV
+            output.parent.mkdir(parents=True,exist_ok=True)
+            def write_rows():
+                with output.open("w",encoding="utf-8",newline="") as stream:
+                    writer=csv.DictWriter(stream,fieldnames=ROUND_FIELDS)
+                    writer.writeheader()
+                    writer.writerows(rows)
+            write_rows()
+            report={
+                **experiment,
+                "generation":11,
+                "generated_at_jst":"2026-11-02T19:33:00+09:00",
+                "archive_git_blob_sha1":"a"*40,
+                "research_round_csv_sha256":sha256(output.read_bytes()).hexdigest(),
+            }
+            with patch("numbers4_agent.evolution.load_archive",
+                       return_value=(samples,{"git_blob_sha1":"a"*40})):
+                result=_verified_latest_replay_projection(root,report)
+                self.assertEqual(result["generation"],11)
+                self.assertEqual(result["first_round"],2)
+                self.assertEqual(result["last_round"],340)
+                self.assertEqual(result["evaluated_draws"],339)
+                self.assertEqual(result["tickets_per_draw"],1)
+                self.assertEqual(len(result["recent_rounds"]),12)
+                self.assertEqual(result["recent_rounds"][0]["round"],340)
+                self.assertEqual(result["recent_rounds"][-1]["round"],329)
+                self.assertEqual(result["late_cohort"]["first_round"],201)
+                self.assertEqual(result["selected_straight_hits"],sum(r["selected_hit"] for r in rows))
+                self.assertEqual(result["uniform_reference_straight_hits"],sum(r["uniform_hit"] for r in rows))
+                self.assertFalse(result["prediction_skill_confirmed"])
+                self.assertFalse(result["bank_primary_all_rounds_verified"])
+                self.assertFalse(result["automatic_model_promotion_authorized"])
+                original=rows[-1]["selected_hit"]
+                rows[-1]["selected_hit"]=1-original
+                write_rows()
+                with self.assertRaisesRegex(ValueError,"prediction mismatch"):
+                    _verified_latest_replay_projection(root,report)
+                rows[-1]["selected_hit"]=original
+                write_rows()
+                report["development"]["model_metrics"]["adaptive"]["straight_hits"]+=1
+                with self.assertRaisesRegex(ValueError,"model comparison"):
+                    _verified_latest_replay_projection(root,report)
 
     def test_journal_sha_chain_detects_tampering_and_no_provenance_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
