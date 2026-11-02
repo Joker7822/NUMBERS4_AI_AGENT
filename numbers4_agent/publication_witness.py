@@ -109,18 +109,15 @@ def verify_and_record(root: Path, *, fetch=None) -> dict:
                 continue
             if not issued <= created < deadline:
                 continue
-            accepted.append((created, run["id"]))
+            accepted.append((created, run["id"], run["event"]))
         if not accepted:
             pending.append(row["round"])
             continue
-        when, run_id = min(accepted)
+        when, run_id, event = min(accepted)
         append(root / WITNESS_PATH, {
             "version": VERSION, "round": row["round"],
             "forecast_event_sha256": row["event_sha256"],
-            "github_repo": PUBLIC_REPO, "github_event": (
-                "workflow_dispatch" if any(x.get("event") == "workflow_dispatch"
-                and x.get("id") == run_id for x in _github_runs(commit, fetch=fetch))
-                else "push"),
+            "github_repo": PUBLIC_REPO, "github_event": event,
             "github_workflow": "Numbers4 CI",
             "github_head_sha": commit, "github_run_id": run_id,
             "github_run_created_at": when.astimezone(timezone.utc).isoformat(),
