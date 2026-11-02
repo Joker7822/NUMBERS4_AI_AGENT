@@ -182,6 +182,16 @@ jobs:
           assert report['evaluated_draws']==report['last_evaluated_round']-1
           assert evolution['generation']==report['generation']
           assert state['research_evolution']==evolution
+          verification=evolution['latest_verification']
+          assert verification is not None
+          assert verification['generation']==report['generation']
+          assert verification['evaluated_draws']==report['evaluated_draws']
+          assert verification['tickets_per_draw']==1
+          assert verification['selected_straight_hits']==(
+              report['development']['model_metrics']['adaptive']['straight_hits']+
+              report['late_historical_reanalysis']['model_metrics']['adaptive']['straight_hits'])
+          assert verification['bank_primary_all_rounds_verified'] is False
+          assert verification['prediction_skill_confirmed'] is False
           assert state['research_evolution']['performance_advantage_confirmed'] is False
           assert state['research_evolution']['model_auto_promotion_authorized'] is False
           assert state['prediction_skill_confirmed'] is False
