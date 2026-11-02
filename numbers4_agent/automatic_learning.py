@@ -173,6 +173,35 @@ def freeze_shadow(root: Path, *, target_round: int, draw_date: str,
     }
 
 
+
+def recommend_champion(root: Path, target_round: int) -> dict:
+    """Use the automatically selected, reproducible champion for advice only.
+
+    Fail closed when the preceding primary draw is missing. All suggested
+    numbers remain research advice; never issue or purchase automatically.
+    """
+    if type(target_round) is not int or target_round < 2:
+        raise ValueError("invalid target round")
+    verified = _verified(root)
+    if not verified or verified[-1]["round"] != target_round - 1:
+        raise ValueError("latest immediately preceding bank-verified round required")
+    champion = read_champion(root)["champion"]
+    forecasts = _candidate_models(verified, target_round)
+    number = (uniform_numbers(target_round)[0] if champion == "uniform"
+              else forecasts[champion]["number"])
+    return {
+        "target_round": target_round, "numbers": [number],
+        "mode": "straight", "model_version": VERSION,
+        "selected_champion": champion,
+        "training_verified_rounds": len(verified),
+        "data_cutoff_round": verified[-1]["round"],
+        "source_status": "bank_primary_rakuten_publication_match",
+        "confidence": "not_established",
+        "scope": "research_candidate_only_not_issued",
+        "purchase_authorized": False,
+        "actual_purchase": False,
+    }
+
 def _validated_witnesses(root: Path, forecasts: list[dict]) -> dict[int, dict]:
     witnesses = load(root / WITNESS_PATH)
     forecast_by_round = {r["round"]: r for r in forecasts}
