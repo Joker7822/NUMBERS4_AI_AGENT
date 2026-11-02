@@ -19,7 +19,7 @@ from .rules import four_digits
 from .statistics import binomial_right_tail
 
 JST = timezone(timedelta(hours=9))
-VERSION = "numbers4-straight-retrospective-challenger-v1"
+VERSION = "numbers4-straight-retrospective-challenger-one-ticket-v2"
 SPECS = (
     ("positional_60_alpha10", 60, 10),
     ("positional_250_alpha20", 250, 20),
@@ -29,7 +29,7 @@ GUARD_LOOKBACK = 250
 GUARD_Z = 2.5
 BASELINE = "uniform"
 GATED = "past_only_gated"
-PROBABILITY = 5 / 10000
+PROBABILITY = 1 / 10000
 
 
 class RollingDigits:
@@ -113,8 +113,8 @@ def _summary(events: list[dict], baseline_events: list[dict]) -> dict:
                          for e, ref in zip(events, baseline_events))
     return {
         "evaluated_draws": n,
-        "top5_straight_hits": hits,
-        "top5_straight_hit_rate": round(hits / n, 9),
+        "straight_hits": hits,
+        "straight_hit_rate": round(hits / n, 9),
         "uniform_theoretical_expected_hits": round(n * PROBABILITY, 6),
         "mean_log_score_edge_vs_uniform": round(sum(e["log_edge"] for e in events) / n, 9),
         "mean_brier_improvement_vs_uniform": round(sum(e["brier_edge"] for e in events) / n, 12),
@@ -152,7 +152,7 @@ def evaluate(rows: list[dict], *, split_round: int = 5000) -> dict:
             # result is used for scoring AFTER the choice has been fixed.
             for name, expert in experts.items():
                 q = expert.probabilities()
-                numbers = best_five(q)
+                numbers = best_five(q)[:1]
                 log_edge, brier_edge = grade_prob(q, actual)
                 expert_forecasts[name] = (numbers, log_edge, brier_edge)
             events[BASELINE].append({
@@ -193,13 +193,14 @@ def evaluate(rows: list[dict], *, split_round: int = 5000) -> dict:
     next_round = rows[-1]["round"] + 1
     next_choice = guard_choice(edge_memory)
     next_numbers = (uniform_numbers(next_round) if next_choice == BASELINE
-                    else best_five(experts[next_choice].probabilities()))
+                    else best_five(experts[next_choice].probabilities())[:1])
     return {
         "version": VERSION,
         "status": "retrospective_prequential_exploratory_only",
         "study_design": "posthoc_model_family_not_preregistered",
         "split_type": "chronological_not_untouched_prospective_holdout",
         "source_scope": "secondary_public_archives_not_bank_primary_verified",
+        "tickets_per_draw":1,
         "first_training_round": 1,
         "first_evaluated_round": 2,
         "last_evaluated_round": rows[-1]["round"],
