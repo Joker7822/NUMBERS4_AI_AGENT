@@ -88,3 +88,45 @@ test('round-two replay is historical only and never published as a winning predi
   s.online_prequential_replay.next_research_candidate.data_cutoff_round=5;
   assert.throws(()=>normalizeStatus(s),/再現予測/);
 });
+
+test('hypothetical per-round payouts and non-misses are strictly validated',()=>{
+  const s=source();
+  const online=s.online_prequential_replay;
+  assert.equal(online.status,'historical_walk_forward_reconstruction_only');
+  const total=online.evaluated_draws*1000;
+  online.selected_top5_straight_hits=1;
+  const payout=900000;
+  online.retrospective_finance={
+    version:'numbers4-retrospective-straight-five-finance-v1',
+    status:'historical_simulation_only_not_actual_purchase',
+    ticket_type:'straight',tickets_per_draw:5,ticket_unit_cost_yen:200,
+    first_evaluated_round:2,last_evaluated_round:online.last_evaluated_round,
+    evaluated_rounds:online.evaluated_draws,historical_winning_draws:1,
+    simulated_ticket_cost_yen:total,simulated_payout_yen:payout,
+    simulated_net_yen:payout-total,
+    simulated_roi_percent:Math.round(1000000*(payout-total)/total)/10000,
+    baseline_winning_draws:online.uniform_reference_top5_straight_hits,
+    baseline_simulated_payout_yen:2200000,
+    baseline_simulated_net_yen:2200000-total,
+    winning_rounds:[{
+      round:3,draw_date:'1994-10-21',winning_number:'0097',
+      matched_prediction:'0097',ticket_position:3,selected_model:'uniform',
+      straight_payout_yen:payout,hypothetical_ticket_cost_yen:1000,
+      status:'retrospective_simulated_hit_not_actual_purchase'
+    }],
+    payout_git_blob_sha1:'464a0231226aee980d539cdacdcca75e75a8e25a',
+    payout_source_status:'single_secondary_publisher_not_bank_verified',
+    bank_primary_payouts_verified:false,actual_purchase_records_present:false,
+    actual_spend_yen:null,actual_income_yen:null,actual_profit_yen:null,
+    production_promotion_authorized:false
+  };
+  assert.equal(normalizeStatus(s).online_prequential_replay.retrospective_finance.historical_winning_draws,1);
+  online.retrospective_finance.simulated_payout_yen+=100;
+  assert.throws(()=>normalizeStatus(s),/シミュレーション/);
+  online.retrospective_finance.simulated_payout_yen=payout;
+  online.retrospective_finance.actual_profit_yen=1;
+  assert.throws(()=>normalizeStatus(s),/シミュレーション/);
+  online.retrospective_finance.actual_profit_yen=null;
+  online.retrospective_finance.bank_primary_payouts_verified=true;
+  assert.throws(()=>normalizeStatus(s),/シミュレーション/);
+});

@@ -111,6 +111,49 @@ export function normalizeStatus(s){
       }
     }
   }
+  if(online?.status==='historical_walk_forward_reconstruction_only'&&online.retrospective_finance){
+    const f=online.retrospective_finance;
+    const yen=n=>Number.isSafeInteger(n)&&n>=0;
+    const payout=f.winning_rounds;
+    if(f.version!=='numbers4-retrospective-straight-five-finance-v1'||
+       f.status!=='historical_simulation_only_not_actual_purchase'||
+       f.ticket_type!=='straight'||f.ticket_unit_cost_yen!==200||
+       f.tickets_per_draw!==5||f.first_evaluated_round!==2||
+       f.evaluated_rounds!==online.evaluated_draws||
+       f.last_evaluated_round!==online.last_evaluated_round||
+       f.historical_winning_draws!==online.selected_top5_straight_hits||
+       !yen(f.simulated_ticket_cost_yen)||
+       f.simulated_ticket_cost_yen!==online.evaluated_draws*1000||
+       !yen(f.simulated_payout_yen)||
+       !Number.isSafeInteger(f.simulated_net_yen)||
+       f.simulated_net_yen!==f.simulated_payout_yen-f.simulated_ticket_cost_yen||
+       typeof f.simulated_roi_percent!=='number'||!Number.isFinite(f.simulated_roi_percent)||
+       Math.abs(f.simulated_roi_percent -
+         Math.round(1000000*f.simulated_net_yen/f.simulated_ticket_cost_yen)/10000)>0.0001||
+       !yen(f.baseline_winning_draws)||
+       f.baseline_winning_draws!==online.uniform_reference_top5_straight_hits||
+       !yen(f.baseline_simulated_payout_yen)||
+       !Number.isSafeInteger(f.baseline_simulated_net_yen)||
+       f.baseline_simulated_net_yen!==f.baseline_simulated_payout_yen-f.simulated_ticket_cost_yen||
+       f.payout_source_status!=='single_secondary_publisher_not_bank_verified'||
+       f.bank_primary_payouts_verified!==false||f.actual_purchase_records_present!==false||
+       f.production_promotion_authorized!==false||
+       f.actual_spend_yen!==null||f.actual_income_yen!==null||f.actual_profit_yen!==null||
+       typeof f.payout_git_blob_sha1!=='string'||!/^[0-9a-f]{40}$/.test(f.payout_git_blob_sha1)||
+       !Array.isArray(payout)||payout.length!==f.historical_winning_draws||
+       payout.some((w,i)=>(
+         !Number.isInteger(w.round)||w.round<2||w.round>online.last_evaluated_round||
+         (i>0&&w.round<=payout[i-1].round)||
+         !/^\d{4}-\d{2}-\d{2}$/.test(w.draw_date)||
+         !safeDigits(w.winning_number)||w.matched_prediction!==w.winning_number||
+         !Number.isInteger(w.ticket_position)||w.ticket_position<1||w.ticket_position>5||
+         !yen(w.straight_payout_yen)||w.straight_payout_yen===0||
+         w.hypothetical_ticket_cost_yen!==1000||
+         w.status!=='retrospective_simulated_hit_not_actual_purchase'))||
+       payout.reduce((sum,w)=>sum+w.straight_payout_yen,0)!==f.simulated_payout_yen){
+      throw new Error('過去シミュレーションの当せん履歴・収支根拠が不正です');
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
 }

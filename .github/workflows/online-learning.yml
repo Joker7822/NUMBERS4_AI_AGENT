@@ -8,6 +8,8 @@ on:
       - 'tests/**'
       - 'data/historical_results.csv'
       - 'data/historical_archive_provenance.json'
+      - 'data/secondary_straight_payouts.csv'
+      - 'data/secondary_straight_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
       - 'docs/**'
   push:
@@ -15,13 +17,17 @@ on:
     paths:
       - 'numbers4_agent/online_learning.py'
       - 'numbers4_agent/secondary_feed.py'
+      - 'numbers4_agent/finance.py'
       - 'numbers4_agent/historical_archive.py'
       - 'numbers4_agent/dashboard.py'
       - 'numbers4_agent/cli.py'
       - 'tests/test_online_learning.py'
       - 'tests/test_secondary_feed.py'
+      - 'tests/test_finance.py'
       - 'data/historical_results.csv'
       - 'data/historical_archive_provenance.json'
+      - 'data/secondary_straight_payouts.csv'
+      - 'data/secondary_straight_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
   schedule:
     # GitHub cron is best-effort, NOT a real-time SLA. 23:25 JST weekdays,
@@ -75,6 +81,9 @@ jobs:
           assert not r['prediction_skill_confirmed']
           assert not r['forecast_grading_authorized']
           assert not r['production_model_changed']
+          assert r['retrospective_finance']['bank_primary_payouts_verified'] is False
+          assert r['retrospective_finance']['actual_profit_yen'] is None
+          assert r['retrospective_finance']['historical_winning_draws']==r['selected_top5_straight_hits']
           print('Reconstructed forecasts and matches:',r['evaluated_draws'])
           print('Research-only straight hits:',r['selected_top5_straight_hits'])
           PY
@@ -107,6 +116,12 @@ jobs:
           assert replay['historical_frozen_forecasts'] is False
           assert replay['prediction_skill_confirmed'] is False
           assert replay['production_model_changed'] is False
+          finance=replay['retrospective_finance']
+          assert finance['status']=='historical_simulation_only_not_actual_purchase'
+          assert finance['actual_profit_yen'] is None
+          assert finance['historical_winning_draws']==replay['selected_top5_straight_hits']
+          assert finance['simulated_net_yen']==finance['simulated_payout_yen']-finance['simulated_ticket_cost_yen']
+          assert dashboard['online_prequential_replay']['retrospective_finance']['simulated_net_yen']==finance['simulated_net_yen']
           assert dashboard['prediction_skill_confirmed'] is False
           assert dashboard['automatic_model_promotion'] is False
           assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
@@ -120,10 +135,11 @@ jobs:
               data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl \
               numbers4_agent/models.py numbers4_agent/ledger.py
             git add -- data/historical_results.csv data/historical_archive_provenance.json \
+              data/secondary_straight_payouts.csv data/secondary_straight_payouts_provenance.json \
               research/online_source_audit.json research/online_reference_audit.json \
               research/online_replay.json research/online_round_predictions.csv \
               docs/data/status.json
-            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|data/secondary_straight_payouts.csv|data/secondary_straight_payouts_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unsafe staged paths: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No research-only changes'; exit 0; fi
             git commit -m 'research: refresh secondary Numbers4 history and past-only online evaluation'
@@ -138,6 +154,7 @@ jobs:
             echo 'All graded historical rows are post-hoc reproductions. Not real pre-issued tickets.'
             echo 'Two GitHub mirrors may share a publisher. Bank official confirmation is separate.'
             echo 'No purchases, official grading rights, code execution from source pages, or Production promotions.'
+            echo 'Any revenue, expense, or net shown by finance is explicitly hypothetical, never actual ticket returns.'
             if [ -f /tmp/numbers4-replay.json ]; then
               python - <<'PY'
           import json

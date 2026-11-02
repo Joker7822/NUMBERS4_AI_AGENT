@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-round2-online"></script>
+  <script type="module" src="app.js?v=20261102-finance-winners"></script>
 </head>
 <body>
   <div class="page">
@@ -30,6 +30,12 @@
         <article class="stat"><label>採点できた発行回</label><strong id="graded-count">—</strong><small>事前発行＋2系統一致のみ</small></article>
         <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
       </section>
+      <section class="panel" id="latest-research-forecast">
+        <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測5口（研究専用）</h2></div>
+        <p class="subtle">直近の公開履歴までを使って作成した研究候補です。正式な事前発行・実際の購入・当せん確約ではありません。抽せん日と締切の真正性は別途確認が必要です。</p>
+        <div id="latest-candidate-meta" class="panel-foot">研究予測を読み込み中です。</div>
+        <div id="latest-candidate-numbers" class="ticket-grid" aria-label="最新の研究予測5口"></div>
+      </section>
       <div class="columns">
         <section class="panel">
           <div class="panel-head"><span>01 / PUBLISHED RESULT / TRUST</span><h2>直近の公表結果と照合状態</h2></div>
@@ -50,6 +56,25 @@
         <div id="grade-meta" class="panel-foot">照合できる事前発行予測がありません。</div>
         <div id="grades" class="grade-grid"></div>
       </section>
+      <div class="columns" id="historical-finance">
+        <section class="panel">
+          <div class="panel-head"><span>HISTORY / SIMULATED PROFIT & LOSS</span><h2>過去シミュレーション収支</h2></div>
+          <p id="simulation-scope" class="subtle">過去予測と各回の当せん金を照合しています。</p>
+          <div class="data-row"><span>仮想購入費用（5口×200円）</span><strong id="simulation-spend">—</strong></div>
+          <div class="data-row"><span>仮想当せん金合計</span><strong id="simulation-income">—</strong></div>
+          <div class="data-row"><span>仮想差引収支</span><strong id="simulation-net">—</strong></div>
+          <div class="data-row"><span>仮想収益率</span><strong id="simulation-roi">—</strong></div>
+          <div class="data-row"><span>一様比較モデルの仮想収支</span><strong id="simulation-baseline">—</strong></div>
+          <div class="data-row"><span>実際の購入・収支</span><strong id="actual-profit">未確認</strong></div>
+          <p class="subtle">当せん金額は二次公開データ1件に基づく回別ストレート配当です。みずほ銀行の全回配当との照合は未実施。過去の後付け再現のため、実収益や将来の期待収益ではありません。</p>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><span>HISTORY / NON-MISS ONLY</span><h2>過去の一致結果（ハズレ以外）</h2></div>
+          <p id="historical-wins-meta" class="subtle">検証済みの過去再現予測を確認しています。</p>
+          <div id="historical-wins" class="historical-hits" aria-label="過去の再現予測で一致した回のみ"></div>
+          <p class="subtle">表示された番号は「当時の情報のみを使って後から再現した予測」です。実際に事前発行・購入・換金した実績ではありません。</p>
+        </section>
+      </div>
       <div class="columns">
         <section class="panel">
           <div class="panel-head"><span>04 / RESEARCH CONTROL</span><h2>過去の時系列検証</h2></div>
@@ -76,7 +101,7 @@
         <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
       </section>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.3.1</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>
