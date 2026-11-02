@@ -46,8 +46,18 @@ class PublicationWitnessTests(unittest.TestCase):
                                 self._run("2026-11-02T06:10:00Z"))
             self.assertEqual(r["new_verified_witnesses"],0)
         observed=_validated_witnesses(self.root,load(self.root/FORECAST_PATH))
+        self.assertEqual(observed[7105]["github_event"],"push")
         self.assertIn(7105,observed)
         self.assertEqual(observed[7105]["github_run_id"],41400012345)
+
+    def test_github_token_workflow_dispatch_proves_bot_published_forecast(self):
+        with patch("numbers4_agent.publication_witness._find_introduction_commit",
+                   return_value="a"*40):
+            result=verify_and_record(self.root,fetch=lambda sha:
+                self._run("2026-11-02T06:05:00Z",event="workflow_dispatch"))
+        self.assertEqual(result["new_verified_witnesses"],1)
+        accepted=_validated_witnesses(self.root,load(self.root/FORECAST_PATH))
+        self.assertEqual(accepted[7105]["github_event"],"workflow_dispatch")
 
     def test_late_run_does_not_backdate_forecast(self):
         with patch("numbers4_agent.publication_witness._find_introduction_commit",
