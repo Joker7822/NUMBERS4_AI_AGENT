@@ -278,14 +278,14 @@ def _model_assessment(report: dict) -> dict:
     assessments = {}
     for name, result in models.items():
         gain = result["mean_log_score_edge_vs_uniform"]
-        hit_diff = result["top5_straight_hits"] - uniform["top5_straight_hits"]
+        hit_diff = result["straight_hits"] - uniform["straight_hits"]
         descriptive_good = (
             name != "uniform" and gain > 0 and hit_diff > 0 and
             result["paired_exact_discordance_p_exploratory"] < 0.05
         )
         assessments[name] = {
             "holdout_rounds": result["evaluated_draws"],
-            "straight_top5_hits": result["top5_straight_hits"],
+            "straight_hits": result["straight_hits"],
             "difference_vs_uniform_hits": hit_diff,
             "mean_log_score_edge_vs_uniform": gain,
             "exploratory_screen_passed": descriptive_good,
