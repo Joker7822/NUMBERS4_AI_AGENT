@@ -13,6 +13,38 @@ export function normalizeStatus(s){
       !["conflict","two_source_entered_consistent","auto_verified_two_publishers","no_corroborated_draws"].includes(s.source_status)){
     throw new Error("監査JSONの安全性・形式を確認できません");
   }
+  const e=s.research_evolution;
+  if(e){
+    const states=['not_yet_run','recursive_research_exploration_not_prospective_evidence',
+                  'stale_history_reanalysis'];
+    const positiveInt=n=>Number.isInteger(n)&&n>=0;
+    if(e.version!=='numbers4-recursive-research-evolution-v1'||
+       !states.includes(e.status)||
+       !positiveInt(e.generation)||e.generation>1000||
+       !positiveInt(e.evaluated_draws)||
+       !positiveInt(e.candidate_models)||e.candidate_models>8||
+       !positiveInt(e.research_sources_found)||e.research_sources_found>40||
+       typeof e.web_search_enabled!=='boolean'||
+       e.performance_advantage_confirmed!==false||
+       e.model_auto_promotion_authorized!==false||
+       e.actual_purchase!==false||
+       (e.generation===0)!==(e.status==='not_yet_run')||
+       (e.status!=='not_yet_run'&&
+          (!safeTime(e.generated_at_jst)||!positiveInt(e.research_search_errors)||
+           !positiveInt(e.metadata_based_method_leads)||
+           e.metadata_based_method_leads>e.research_sources_found||
+           e.candidate_models<1||
+           e.repeated_historical_cohorts_not_independent!==true))||
+       (e.status==='recursive_research_exploration_not_prospective_evidence'&&
+          (e.evaluated_draws<1||!safeDigits(e.next_number)||
+           typeof e.next_model!=='string'||
+           !/^(uniform|rolling_[a-z0-9_]+|ema_[a-z0-9_]+|markov_[a-z0-9_]+)$/.test(e.next_model)))||
+       (e.status!=='recursive_research_exploration_not_prospective_evidence'&&
+          (e.next_number!==null||e.next_model!==null||
+           e.evaluated_draws!==0))){
+      throw new Error('研究自己進化の履歴・範囲・予測力の表示は不正です');
+    }
+  }
   const a=s.auto_learning;
   if(a){
     const acceptedModels=['uniform','positional_60_alpha10','positional_250_alpha5','positional_1000_alpha20'];
