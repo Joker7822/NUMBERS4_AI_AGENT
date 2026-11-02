@@ -17,6 +17,8 @@ from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
 from .online_learning import VERSION as ONLINE_VERSION
 from .online_ops import snapshot as operational_snapshot
+from .automatic_learning import (assess as assess_auto_learning,
+                                  VERSION as AUTO_VERSION)
 from hashlib import sha256
 
 VERSION = "numbers4-dashboard-v1"
@@ -28,12 +30,36 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     trusted = corroborated_draws(root)
     archive = archive_summary(root)
     operations = operational_snapshot(root,now)
+    prospective = assess_auto_learning(root)
+    champion_name = prospective["current_champion"]
+    model_automation = {
+        "version": AUTO_VERSION,
+        "status": prospective["status"],
+        "active_champion": champion_name,
+        "eligible_champion": prospective["eligible_champion"],
+        "feature_implemented": True,
+        "protocol_sha256": prospective["protocol_sha256"],
+        "officially_verified_training_rounds": prospective["verified_official_draws_available"],
+        "shadow_forecasts_recorded": prospective["shadow_forecasts_recorded"],
+        "pre_draw_github_witnesses": prospective["independently_witnessed_forecasts"],
+        "eligible_prospective_draws": prospective["eligible_prospective_draws"],
+        "required_prospective_draws": prospective["required_prospective_draws"],
+        "integrity_blocker": prospective["integrity_blocker"],
+        "model_assessments": prospective["model_assessments"],
+        "model_code_from_search_results_executed": False,
+        "unverified_secondary_training_authorized": False,
+        "actual_purchase": False,
+    }
     issued = read_issued(root)
     graded = graded_predictions(root)
     latest = trusted[-1] if trusted else None
     recent_issued = max(issued, key=lambda r: r["target_round"]) if issued else None
     recent_grade = graded[-1] if graded else None
     warnings = []
+    if prospective["integrity_blocker"]:
+        warnings.append("将来予測の公開証拠または一次照合に不備があるため、AIの自動昇格を停止しています。")
+    if prospective["verified_official_draws_available"] == 0:
+        warnings.append("予測AI自動学習に使える銀行照合済み当せん結果は現在0件です。")
     conflicts = [rnd for rnd, state in states.items() if state["status"] == "source_conflict"]
     single = [rnd for rnd, state in states.items() if state["status"] == "single_source_only"]
     if conflicts:
@@ -177,6 +203,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "historical_archive": archive,
         "online_prequential_replay": online,
         "online_operations": operations,
+        "auto_learning": model_automation,
         "historical_accuracy_proof": {
             "status": research.get("status", "not_yet_run"),
             "scope": research.get("scope", "no_historical_source"),
@@ -191,7 +218,8 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "source_file_sha256": file_hash(root / "data" / "source_observations.jsonl"),
         "issuance_file_sha256": file_hash(root / "data" / "issued_forecasts.jsonl"),
         "warnings": warnings,
-        "prediction_skill_confirmed": False, "automatic_model_promotion": False,
+        "prediction_skill_confirmed": False,
+        "automatic_model_promotion": champion_name != "uniform",
         "actual_purchase_profit_yen": None,
     }
 
