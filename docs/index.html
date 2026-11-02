@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102-source-freshness-proof"></script>
+  <script type="module" src="app.js?v=20261102-full-archive"></script>
 </head>
 <body>
   <div class="page">
@@ -53,7 +53,9 @@
       <div class="columns">
         <section class="panel">
           <div class="panel-head"><span>04 / RESEARCH CONTROL</span><h2>過去の時系列検証</h2></div>
-          <div class="data-row"><span>評価に使用できる回数</span><strong id="backtest-count">—</strong></div>
+          <div class="data-row"><span>過去当せん番号の全履歴</span><strong id="archive-count">—</strong></div>
+          <p id="archive-scope" class="subtle">過去の全履歴を確認中です。</p>
+          <div class="data-row"><span>時系列バックテストに使用した回数</span><strong id="backtest-count">—</strong></div>
           <div class="data-row"><span>5口ストレートの過去的中回数</span><strong id="backtest-hits">—</strong></div>
           <div class="data-row"><span>一様無作為の理論基準（5口）</span><strong>0.05%</strong></div>
           <p id="backtest-scope" class="subtle">過去データの予測力検証を実行していません。</p>
@@ -66,7 +68,7 @@
         </section>
       </div>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.2.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.2.1</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>

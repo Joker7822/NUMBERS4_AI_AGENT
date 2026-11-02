@@ -11,6 +11,7 @@ from .evaluation import graded_predictions, walk_forward
 from .ledger import read_issued
 from .sources import JST, reconcile, corroborated_draws
 from .store import file_hash
+from .historical_archive import archive_summary
 
 VERSION = "numbers4-dashboard-v1"
 
@@ -19,6 +20,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     now = (now or datetime.now(JST)).astimezone(JST)
     states = reconcile(root)
     trusted = corroborated_draws(root)
+    archive = archive_summary(root)
     issued = read_issued(root)
     graded = graded_predictions(root)
     latest = trusted[-1] if trusted else None
@@ -40,6 +42,8 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
             warnings.append("直近の登録済み結果が7日超前です。公式銀行の自動取得が停止または未反映の可能性があります。")
     if not trusted and (root / "research" / "historical_unverified.json").is_file():
         warnings.append("楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。")
+    if archive["status"] != "not_loaded":
+        warnings.append("全回の過去履歴は二次公開リポジトリの一致記録です。銀行公式未照合のため、発行済み予測の正式採点には使いません。")
     if not issued:
         warnings.append("事前発行した予測はありません。研究候補を発行済みとして表示しません。")
     else:
@@ -89,6 +93,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "latest_graded_issued_forecast": recent_grade,
         "issued_draws": len(issued), "graded_issued_draws": len(graded),
         "historical_research": walk_forward(root),
+        "historical_archive": archive,
         "historical_accuracy_proof": {
             "status": research.get("status", "not_yet_run"),
             "scope": research.get("scope", "no_historical_source"),

@@ -1,0 +1,31 @@
+{
+  "version": "numbers4-historical-archive-v1",
+  "status": "secondary_public_mirrors_agree_not_officially_verified",
+  "record_count": 7104,
+  "first_round": 1,
+  "last_round": 7104,
+  "first_draw_date": "1994-10-07",
+  "last_draw_date": "2026-10-30",
+  "latest_number": "5805",
+  "git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
+  "officially_verified": false,
+  "forecast_grading_authorized": false,
+  "source_independence_not_established": true,
+  "cross_source_number_mismatches": 0,
+  "evidence_scope": "two_public_GitHub_archives_exact_numbers_agree_bank_first_party_not_verified_same_upstream_possible",
+  "imported_as_of_jst_date": "2026-11-02",
+  "public_source_revisions": [
+    {
+      "url": "https://github.com/hazimekom/numbers4-api/blob/bc99c64c6ddd8e3183a257dfd36ab3fefe62212e/data/numbers4_results_v2.csv",
+      "commit_sha": "bc99c64c6ddd8e3183a257dfd36ab3fefe62212e",
+      "blob_sha": "8e09368b9219fb7506e6d36deb335d8fc546d886",
+      "provides": "draw_round_date_four_digit_result"
+    },
+    {
+      "url": "https://github.com/kodai721229/kujilab/blob/5ec30ce16afed035d151c2e007367601d141dbab/public/data/numbers4.json",
+      "commit_sha": "5ec30ce16afed035d151c2e007367601d141dbab",
+      "blob_sha": "17732611b870b0bcdce576b2e3f5faa22ce59ce3",
+      "provides": "draw_round_four_digit_result"
+    }
+  ]
+}

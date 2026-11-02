@@ -60,6 +60,22 @@ export function normalizeStatus(s){
       (typeof proof.mean_log_likelihood_edge_vs_uniform!=="number"||!Number.isFinite(proof.mean_log_likelihood_edge_vs_uniform)))){
     throw new Error("過去研究の権限と計算結果を検証できません");
   }
+  const archive=s.historical_archive;
+  if(archive){
+    if(archive.officially_verified!==false || archive.forecast_grading_authorized!==false ||
+       !Number.isInteger(archive.record_count) || archive.record_count<0 ||
+       !["not_loaded","secondary_public_mirrors_agree_not_officially_verified"].includes(archive.status) ||
+       (archive.status==="not_loaded"&&archive.record_count!==0) ||
+       (archive.status!=="not_loaded"&&(
+         archive.first_round!==1 || archive.last_round!==archive.record_count ||
+         !Number.isInteger(archive.last_round) ||
+         typeof archive.latest_number!=="string" || !safeDigits(archive.latest_number) ||
+         archive.source_independence_not_established!==true ||
+         typeof archive.git_blob_sha1!=="string" || !/^[0-9a-f]{40}$/.test(archive.git_blob_sha1)
+       ))){
+      throw new Error("過去履歴の出典・検証状態が不正です");
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
 }

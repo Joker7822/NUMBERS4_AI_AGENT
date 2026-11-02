@@ -39,3 +39,24 @@ test('single-publisher reference result is visible only with strict unverified s
   s.latest_unverified_draw.status='auto_verified_two_publishers';
   assert.throws(()=>normalizeStatus(s),/参考情報/);
 });
+
+test('all historical rows are labelled as secondary, never officially graded',()=>{
+  const s=source();
+  s.historical_archive={
+    status:'secondary_public_mirrors_agree_not_officially_verified',
+    record_count:7104,first_round:1,last_round:7104,
+    first_draw_date:'1994-10-07',last_draw_date:'2026-10-30',
+    latest_number:'5805',officially_verified:false,
+    forecast_grading_authorized:false,source_independence_not_established:true,
+    git_blob_sha1:'b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466'
+  };
+  const valid=normalizeStatus(s);
+  assert.equal(valid.historical_archive.record_count,7104);
+  assert.equal(valid.consistent_rounds,source().consistent_rounds);
+  assert.equal(valid.prediction_skill_confirmed,false);
+  s.historical_archive.officially_verified=true;
+  assert.throws(()=>normalizeStatus(s),/過去履歴/);
+  s.historical_archive.officially_verified=false;
+  s.historical_archive.forecast_grading_authorized=true;
+  assert.throws(()=>normalizeStatus(s),/過去履歴/);
+});
