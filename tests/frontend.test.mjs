@@ -212,3 +212,34 @@ test('dashboard displays both STRAIGHT and BOX simulations independently',()=>{
   assert.equal(b.actual_profit_yen,null);
   assert.equal(data.prediction_skill_confirmed,false);
 });
+
+test('online production monitor remains research-only and has real UI fields',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const js=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  const ids=['ops-state','ops-rules','ops-last-rules','ops-source-status','ops-last-feed'];
+  for(const id of ids){
+    assert.ok(html.includes('id="'+id+'"'),'missing monitor UI: '+id);
+    assert.ok(js.includes('"'+id+'"'),'missing monitor binding: '+id);
+  }
+  const s=source();
+  s.online_operations={
+    version:'numbers4-online-production-monitor-status-v1',
+    state:'online_monitoring_active_secondary_research_only',
+    official_rule_status:'official_rule_anchors_consistent',
+    rule_sources_consistent:3,rule_sources_required:3,
+    rule_checked_at_jst:'2026-11-02T15:00:00+09:00',rule_audit_age_hours:0,
+    secondary_feed_status:'validated_no_new_draws',
+    secondary_checked_at_jst:'2026-11-02T15:00:00+09:00',secondary_audit_age_hours:0,
+    max_freshness_hours:96,rule_auto_adoption:false,
+    bank_first_party_draws_verified_by_this_monitor:false,
+    bank_first_party_payouts_verified_by_this_monitor:false,
+    predictive_skill_confirmed:false,model_auto_promotion:false,
+    real_purchases_enabled:false,warnings:[]
+  };
+  assert.equal(normalizeStatus(s).online_operations.rule_sources_consistent,3);
+  s.online_operations.bank_first_party_draws_verified_by_this_monitor=true;
+  assert.throws(()=>normalizeStatus(s),/オンライン本番監査/);
+  s.online_operations.bank_first_party_draws_verified_by_this_monitor=false;
+  s.online_operations.model_auto_promotion=true;
+  assert.throws(()=>normalizeStatus(s),/オンライン本番監査/);
+});

@@ -72,3 +72,30 @@ python -m numbers4_agent.cli --root . audit-references
 `research/online_replay.json` の `retrospective_box_finance` と `docs/data/status.json` を公開画面に用います。従来の `retrospective_finance`（ストレート）は研究監査用に残りますが、**公開画面ではボックス換算の金額を表示**します。
 
 出典：[みずほ銀行のナンバーズ購入ルール](https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html)、[二次公開の回別ボックス配当CSV](https://github.com/hazimekom/numbers4-api/blob/bc99c64c6ddd8e3183a257dfd36ab3fefe62212e/data/numbers4_results_v2.csv)。銀行一次の全回配当照合は未完了です。
+
+## オンライン検索・公式ルール照合を運用監視へ組み込む（2026-11-02）
+
+実装は `numbers4_agent/online_monitor.py`（公開元レジストリ／ルール文言チェック）、
+`numbers4_agent/online_ops.py`（最新監査の鮮度・アラート判定）、
+`.github/workflows/online-learning.yml`（定期実行、GitHub Issues通知、Pages更新）です。
+
+**監視対象のオンライン情報:** 宝くじ公式の[購入方法](https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html)と[当せん条件](https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/)、[みずほ銀行の商品ルール](https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html)、[みずほ銀行の結果案内](https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html)、確率評価手法の学術ページ（参考／未査読）。承認済みURLに限定し、リダイレクト先・容量・HTML可視テキストとルール条件を検査します。
+
+公式ルールの必須チェックは、1口200円、ナンバーズ4の区別、ストレート・ボックス、順不同の当せん条件、4桁同一のボックス不可、ストレート確率1/10,000（一部の公式ソース）です。取得できない場合は「未確認」、必須条件が消えた場合は「要手動確認」。HTMLから断定的な意味理解・変更理由の自動推測は行いません。ページのHTML取得成功＝実際の当せん番号や配当の一次確認ではありません。元の結果抽出パーサーに認証責任が残ります。
+
+**通知:** ルール変更疑い・取得不能・96時間を超える監査遅延は、`docs/data/status.json` の `online_operations` とダッシュボードの監視欄へ反映。運用更新ワークフローは該当時、既存の未解決Issueを探して重複せず1件のGitHub Issueを作成します。GitHub Issuesの通知受信はリポジトリ側のWatch・通知設定に依存します。
+
+**自動更新:** 二次公開元が2件完全一致した回のみ、既存履歴を書き換えず追記し、全時系列の逐次再現とストレート・ボックスの別々の仮想収支を再集計。抽せん前発行履歴・本当の購入履歴・予測モデル本体への自動変更を禁止します。オンライン監視が正常でも予測精度改善の証明にはなりません。
+
+**スケジュール:** 平日23:25 JST、翌日10:10 JST（火～土曜日に再確認）。GitHub Actionsの定期実行には遅延・欠落・無活動による停止があり、「常時監視・即時取得」の保証はできません。
+
+```bash
+python -m numbers4_agent.cli --root . audit-references
+python -m numbers4_agent.cli --root . refresh-secondary
+python -m numbers4_agent.cli --root . replay-history
+python -m numbers4_agent.cli --root . build-dashboard
+python -m unittest discover -s tests -v
+node --test tests/frontend.test.mjs
+```
+
+**公開元発見の範囲:** 現在の本番は固定した信頼できるURL群のオンライン巡回であり、Web全域の自律検索エンジンではありません。未知の情報源はレビューを経るまで自動採用しません。

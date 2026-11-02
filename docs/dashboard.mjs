@@ -214,6 +214,37 @@ export function normalizeStatus(s){
       throw new Error('ボックス購入の再現的中・配当・収支の証拠が不正です');
     }
   }
+  const ops=s.online_operations;
+  if(ops){
+    const goodStates=['not_verified','source_unavailable','stale',
+      'manual_review_required','online_monitoring_active_secondary_research_only'];
+    const ruleStates=['not_checked','legacy_read_only_unreviewed',
+      'official_rule_anchors_consistent','degraded_official_rules_unverified',
+      'rule_change_requires_review'];
+    const feedStates=['not_checked','validated_no_new_draws',
+      'appended_secondary_history_not_officially_verified',
+      'network_unavailable_old_archive_preserved'];
+    const timestamp=t=>t===null||safeTime(t);
+    const age=t=>t===null||(typeof t==='number'&&Number.isFinite(t)&&t>=0);
+    if(ops.version!=='numbers4-online-production-monitor-status-v1'||
+       !goodStates.includes(ops.state)||!ruleStates.includes(ops.official_rule_status)||
+       !feedStates.includes(ops.secondary_feed_status)||
+       !Number.isInteger(ops.rule_sources_consistent)||
+       ops.rule_sources_consistent<0||ops.rule_sources_consistent>3||
+       ops.rule_sources_required!==3||
+       !timestamp(ops.rule_checked_at_jst)||!timestamp(ops.secondary_checked_at_jst)||
+       !age(ops.rule_audit_age_hours)||!age(ops.secondary_audit_age_hours)||
+       ops.max_freshness_hours!==96||
+       ops.rule_auto_adoption!==false||
+       ops.bank_first_party_draws_verified_by_this_monitor!==false||
+       ops.bank_first_party_payouts_verified_by_this_monitor!==false||
+       ops.predictive_skill_confirmed!==false||
+       ops.model_auto_promotion!==false||
+       ops.real_purchases_enabled!==false||
+       !Array.isArray(ops.warnings)||ops.warnings.some(x=>typeof x!=='string')){
+      throw new Error('オンライン本番監査の出典・権限・状態が不正です');
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
 }

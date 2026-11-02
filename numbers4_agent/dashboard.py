@@ -16,6 +16,7 @@ from .historical_archive import archive_summary, load_archive
 from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
 from .online_learning import VERSION as ONLINE_VERSION
+from .online_ops import snapshot as operational_snapshot
 from hashlib import sha256
 
 VERSION = "numbers4-dashboard-v1"
@@ -26,6 +27,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
     states = reconcile(root)
     trusted = corroborated_draws(root)
     archive = archive_summary(root)
+    operations = operational_snapshot(root,now)
     issued = read_issued(root)
     graded = graded_predictions(root)
     latest = trusted[-1] if trusted else None
@@ -49,6 +51,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         warnings.append("楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。")
     if archive["status"] != "not_loaded":
         warnings.append("全回の過去履歴は二次公開リポジトリの一致記録です。銀行公式未照合のため、発行済み予測の正式採点には使いません。")
+    warnings.extend(operations["warnings"])
     if not issued:
         warnings.append("事前発行した予測はありません。研究候補を発行済みとして表示しません。")
     else:
@@ -161,6 +164,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "historical_research": walk_forward(root),
         "historical_archive": archive,
         "online_prequential_replay": online,
+        "online_operations": operations,
         "historical_accuracy_proof": {
             "status": research.get("status", "not_yet_run"),
             "scope": research.get("scope", "no_historical_source"),

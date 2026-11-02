@@ -19,6 +19,8 @@ on:
     paths:
       - 'numbers4_agent/online_learning.py'
       - 'numbers4_agent/secondary_feed.py'
+      - 'numbers4_agent/online_monitor.py'
+      - 'numbers4_agent/online_ops.py'
       - 'numbers4_agent/finance.py'
       - 'numbers4_agent/box_finance.py'
       - 'numbers4_agent/historical_archive.py'
@@ -26,6 +28,7 @@ on:
       - 'numbers4_agent/cli.py'
       - 'tests/test_online_learning.py'
       - 'tests/test_secondary_feed.py'
+      - 'tests/test_online_monitor.py'
       - 'tests/test_finance.py'
       - 'tests/test_box_finance.py'
       - 'data/historical_results.csv'
@@ -43,6 +46,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: numbers4-research-online-main
@@ -140,6 +144,11 @@ jobs:
           assert box['simulated_payout_yen']-box['simulated_ticket_cost_yen']==box['simulated_net_yen']
           assert box['bank_primary_payouts_verified'] is False and box['actual_profit_yen'] is None
           assert dashboard['online_prequential_replay']['retrospective_box_finance']['simulated_net_yen']==box['simulated_net_yen']
+          ops=dashboard['online_operations']
+          assert ops['rule_auto_adoption'] is False
+          assert ops['bank_first_party_draws_verified_by_this_monitor'] is False
+          assert ops['model_auto_promotion'] is False
+          assert ops['real_purchases_enabled'] is False
           assert dashboard['prediction_skill_confirmed'] is False
           assert dashboard['automatic_model_promotion'] is False
           assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
@@ -165,6 +174,30 @@ jobs:
             if git push origin HEAD:main; then echo 'Published audited research-only artifacts'; exit 0; fi
             if [ "$attempt" -eq 3 ]; then echo '::error::Could not publish bounded research'; exit 1; fi
           done
+      - name: Notify once when official-rule monitoring needs intervention
+        if: github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          state="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('docs/data/status.json')
+          s=json.loads(p.read_text(encoding='utf-8'))
+          print(s['online_operations']['state'])
+          PY
+          )"
+          echo "Online operational monitor: $state"
+          if [ "$state" = "manual_review_required" ] || [ "$state" = "stale" ] || [ "$state" = "source_unavailable" ]; then
+            title="Numbers4: online evidence monitoring needs manual review"
+            if ! gh issue list --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
+              gh issue create --title "$title" \
+                --body "The Numbers4 live evidence monitor reported **$state**. Review [the latest source audit](https://github.com/${GITHUB_REPOSITORY}/blob/main/research/online_reference_audit.json), [secondary feed audit](https://github.com/${GITHUB_REPOSITORY}/blob/main/research/online_source_audit.json), and the Actions job. No official results, payouts, or models are automatically promoted."
+            fi
+            echo "::warning::Online evidence requires review: $state"
+          fi
       - name: Document research limits
         if: always()
         run: |
