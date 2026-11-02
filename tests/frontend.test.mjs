@@ -63,6 +63,9 @@ test('all historical rows are labelled as secondary, never officially graded',()
 
 test('round-two replay is historical only and never published as a winning prediction',()=>{
   const s=source();
+  // This isolated 4-round legacy replay fixture is not the latest 7103-round
+  // generation. Remove that unrelated projection instead of fabricating its evidence.
+  delete s.research_evolution;
   s.historical_archive={
     status:'secondary_public_mirrors_agree_not_officially_verified',
     record_count:4,first_round:1,last_round:4,
