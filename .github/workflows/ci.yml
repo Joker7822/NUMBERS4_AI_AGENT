@@ -113,6 +113,9 @@ jobs:
           assert len(latest['recent_rounds'])==min(12,ev['evaluated_draws'])
           assert latest['bank_primary_all_rounds_verified'] is False
           assert latest['prediction_skill_confirmed'] is False
+          from numbers4_agent.publication import audit_research_pages_snapshot
+          assert audit_research_pages_snapshot(
+              ev, status['research_evolution'], status) == 'fresh'
           assert status['research_evolution']['performance_advantage_confirmed'] is False
           print('EVOLUTION_REPLAY_RESULT_START')
           print(json.dumps({
