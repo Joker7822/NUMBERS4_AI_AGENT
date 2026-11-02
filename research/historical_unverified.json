@@ -2,7 +2,7 @@
   "version": "numbers4-research-source-v1",
   "verified_official": false,
   "publisher": "rakuten_lottery_publication_only",
-  "fetched_at_jst": "2026-11-02T19:36:44+09:00",
+  "fetched_at_jst": "2026-11-03T07:25:54+09:00",
   "rows": [
     {
       "round": 6868,
@@ -1662,9 +1662,16 @@
       "winning_number": "5805",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202610/",
       "sha256": "920746b0592b0160848dcdb9526842cf18d14b9ccb0f6c9faf60178af8cbd70e"
+    },
+    {
+      "round": 7105,
+      "draw_date": "2026-11-02",
+      "winning_number": "0149",
+      "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
+      "sha256": "705bae9349cfd8ac447269ffaae8afd38fd132381b9baec71852c948f5119276"
     }
   ],
-  "rows_count": 237,
+  "rows_count": 238,
   "official_confirmed_count_in_this_sync": 0,
   "warning": "These single-publisher historical rows cannot grade issued forecasts or prove predictive skill"
 }
