@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-recursive-evolution";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-continuous-acquisition";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -165,7 +165,9 @@ function render(data){
       ev.evaluated_draws.toLocaleString('ja-JP')+"回（第2回から）":"未再計算／履歴更新待ち");
   set("evolution-models",ev?ev.candidate_models+"候補":"—");
   set("evolution-sources",ev?
-      ev.research_sources_found+"件（"+(ev.web_search_enabled?"公開Web検索あり":"文献検索中心／Web検索キー未設定または未実行")+"）":"—");
+      "今回 "+ev.research_sources_found+"件 / 新規 "+(ev.new_unique_sources??"—")+
+      "件 / 累計 "+(ev.lifetime_unique_sources??"—")+"件（"+
+      (ev.web_search_enabled?"公開Web検索あり":"Crossref文献検索／Brave検索キー未設定")+"）":"—");
   set("evolution-next",ev?.next_number?
       "研究1口 "+ev.next_number+" / "+ev.next_model+"（未発行・未購入）":"未更新");
   set("evolution-time",ev?.generated_at_jst?
