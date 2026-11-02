@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T14:37:47+09:00",
+  "generated_at_jst": "2026-11-02T15:17:39+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -70,7 +70,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
-    "generated_at_jst": "2026-11-02T14:37:18+09:00",
+    "generated_at_jst": "2026-11-02T15:17:39+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -1267,6 +1267,26 @@
       "original_predictions_unchanged": true,
       "interpretation": "Post-hoc BOX interpretation of prequential 5-ticket STRAIGHT predictions. All-equal-digit BOX choices are not bought and cost zero; no replacement tickets. Permutations purchased separately receive per-ticket prizes. Secondary publisher prizes are unverified by bank. No actual purchase."
     }
+  },
+  "online_operations": {
+    "version": "numbers4-online-production-monitor-status-v1",
+    "state": "online_monitoring_active_secondary_research_only",
+    "official_rule_status": "official_rule_anchors_consistent",
+    "rule_sources_consistent": 3,
+    "rule_sources_required": 3,
+    "rule_checked_at_jst": "2026-11-02T15:17:32+09:00",
+    "rule_audit_age_hours": 0.002,
+    "secondary_feed_status": "validated_no_new_draws",
+    "secondary_checked_at_jst": "2026-11-02T15:17:31+09:00",
+    "secondary_audit_age_hours": 0.002,
+    "max_freshness_hours": 96,
+    "rule_auto_adoption": false,
+    "bank_first_party_draws_verified_by_this_monitor": false,
+    "bank_first_party_payouts_verified_by_this_monitor": false,
+    "predictive_skill_confirmed": false,
+    "model_auto_promotion": false,
+    "real_purchases_enabled": false,
+    "warnings": []
   },
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",

@@ -1,29 +1,91 @@
 {
-  "version": "numbers4-related-sources-online-audit-v1",
-  "checked_at_jst": "2026-11-02T14:37:13+09:00",
+  "version": "numbers4-operational-official-rule-monitor-v2",
+  "checked_at_jst": "2026-11-02T15:17:32+09:00",
+  "status": "official_rule_anchors_consistent",
+  "required_rule_sources": 3,
+  "rule_sources_consistent": 3,
+  "rule_sources_unavailable": 0,
+  "rule_sources_changed": 0,
+  "result_page_status": "result_page_reachable_draws_not_verified",
   "topics": [
+    {
+      "topic": "official_purchase_rules",
+      "url": "https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html",
+      "category": "rule",
+      "status": "rule_anchors_consistent",
+      "response_sha256": "477e7bde8c9997e993de94da02d8940332af8ae608d0b83c8580bc20fb99b523",
+      "size_bytes": 56621,
+      "required_markers": [
+        "product",
+        "ticket_200",
+        "straight",
+        "box",
+        "box_order"
+      ],
+      "missing_markers": []
+    },
+    {
+      "topic": "official_game_rules",
+      "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
+      "category": "rule",
+      "status": "rule_anchors_consistent",
+      "response_sha256": "430b1f45335a3c6d03c12a68fce6403ca0c8c3524a6ac98d4b10054e403b15af",
+      "size_bytes": 39412,
+      "required_markers": [
+        "product",
+        "straight",
+        "box",
+        "box_order",
+        "all_same_box_invalid",
+        "straight_probability"
+      ],
+      "missing_markers": []
+    },
     {
       "topic": "mizuho_rules",
       "url": "https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html",
-      "status": "fetched_read_only_unreviewed",
+      "category": "rule",
+      "status": "rule_anchors_consistent",
       "response_sha256": "96df23ae0556291c76eb0271e0a491b412cd795a86fee381b1538e3927df88af",
-      "size_bytes": 31069
+      "size_bytes": 31069,
+      "required_markers": [
+        "product",
+        "ticket_200",
+        "straight",
+        "box",
+        "box_order",
+        "all_same_box_invalid"
+      ],
+      "missing_markers": []
     },
     {
-      "topic": "official_n4_rules",
-      "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
-      "status": "fetched_read_only_unreviewed",
-      "response_sha256": "16d5620cc67f9131c8656f19ff78dbb272a91dc7454c241e53dd808e8e008f1d",
-      "size_bytes": 39413
+      "topic": "mizuho_results_page",
+      "url": "https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html",
+      "category": "result_page",
+      "status": "result_page_reachable_draws_not_verified",
+      "response_sha256": "2c00696069d601dea39067c88948a08b93d2027cec241e58f7b7ea30a2edd5bc",
+      "size_bytes": 20453,
+      "required_markers": [
+        "product",
+        "draw_heading"
+      ],
+      "missing_markers": []
     },
     {
-      "topic": "scoring_rule_research",
+      "topic": "scoring_method_reference",
       "url": "https://stat.uw.edu/research/tech-reports/strictly-proper-scoring-rules-prediction-and-estimation",
+      "category": "research_reference",
       "status": "unavailable_or_unverified",
-      "reason": "online source unavailable"
+      "reason": "ConnectionError"
     }
   ],
+  "automatic_lottery_rules_adoption": false,
+  "official_draw_result_verified_by_this_audit": false,
+  "official_payouts_verified_by_this_audit": false,
   "paper_relevance_confirmed": false,
   "automatic_external_code_execution": false,
-  "lottery_predictive_improvement_confirmed": false
+  "lottery_predictive_improvement_confirmed": false,
+  "model_auto_promotion_authorized": false,
+  "inspection_policy": "allowlisted_official_sources_rule_anchor_checks_only",
+  "interpretation": "Fixed trusted online search registry, semantically checked rule markers. A successful site read is not official draw or payout verification."
 }
