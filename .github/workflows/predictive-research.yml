@@ -182,22 +182,23 @@ jobs:
           assert report['evaluated_draws']==report['last_evaluated_round']-1
           assert evolution['generation']==report['generation']
           assert state['research_evolution']==evolution
-          verification=evolution['latest_verification']
-          assert verification is not None
-          assert verification['generation']==report['generation']
-          assert verification['evaluated_draws']==report['evaluated_draws']
-          assert verification['tickets_per_draw']==1
-          assert verification['selected_straight_hits']==(
-              report['development']['model_metrics']['adaptive']['straight_hits']+
-              report['late_historical_reanalysis']['model_metrics']['adaptive']['straight_hits'])
-          assert verification['bank_primary_all_rounds_verified'] is False
-          assert verification['prediction_skill_confirmed'] is False
-          assert state['research_evolution']['performance_advantage_confirmed'] is False
-          assert state['research_evolution']['model_auto_promotion_authorized'] is False
-          assert state['prediction_skill_confirmed'] is False
-          assert state['actual_purchase_profit_yen'] is None
-          print('Publish research generation',evolution['generation'],
-                'across',evolution['evaluated_draws'],'historical rounds')
+          from numbers4_agent.publication import audit_research_pages_snapshot
+          publication_state=audit_research_pages_snapshot(report,evolution,state)
+          if publication_state=='fresh':
+              print('Publish fresh research generation',evolution['generation'],
+                    'across',evolution['evaluated_draws'],'historical rounds')
+          elif publication_state=='stale_waiting_for_next_research':
+              # An independent online refresh may append a draw between
+              # generation commit and Pages deploy. Explicitly acknowledge
+              # stale research, allow only the current replay fallback, and
+              # wait for the next successful research cycle to catch up.
+              print('::warning::New history arrived during research deployment; '
+                    'showing a clearly stale evolution assessment until the '
+                    'next full replay. No stale evolution number is published.')
+              print('Archive at round',state['historical_archive']['last_round'],
+                    '/ research through',report['archive_latest_round'])
+          else:
+              raise ValueError('unknown research publication freshness state')
           PY
           git diff --exit-code -- data/ numbers4_agent/
       - uses: actions/configure-pages@v5
