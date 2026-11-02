@@ -1,6 +1,6 @@
 {
   "version": "numbers4-related-sources-online-audit-v1",
-  "checked_at_jst": "2026-11-02T13:44:28+09:00",
+  "checked_at_jst": "2026-11-02T14:20:16+09:00",
   "topics": [
     {
       "topic": "mizuho_rules",
@@ -13,8 +13,8 @@
       "topic": "official_n4_rules",
       "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
       "status": "fetched_read_only_unreviewed",
-      "response_sha256": "57464da56c8d75caccaeed3558f3b13d7f3d0be5443ff7c5508dd39dfa764873",
-      "size_bytes": 39413
+      "response_sha256": "ba510c6a9785a58b03939e1cb00f9f2bfd02bd33eec08a8142e2101e3987f4ae",
+      "size_bytes": 39412
     },
     {
       "topic": "scoring_rule_research",
