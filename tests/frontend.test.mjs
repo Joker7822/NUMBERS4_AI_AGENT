@@ -184,3 +184,31 @@ test('BOX finance is never mistaken for actual purchases or STRAIGHT outcomes',(
   f.bank_primary_payouts_verified=true;
   assert.throws(()=>normalizeStatus(s),/ボックス購入/);
 });
+
+test('dashboard displays both STRAIGHT and BOX simulations independently',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const code=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  const straightIds=['simulation-straight-wins','simulation-straight-spend','simulation-straight-income',
+    'simulation-straight-net','simulation-straight-roi','simulation-straight-baseline',
+    'historical-straight-wins','historical-straight-wins-meta','actual-straight-profit'];
+  const boxIds=['simulation-box-wins','simulation-box-tickets','simulation-ineligible',
+    'simulation-spend','simulation-income','simulation-net','simulation-roi',
+    'historical-wins','historical-wins-meta','actual-profit'];
+  for(const id of straightIds.concat(boxIds)){
+    assert.ok(html.includes('id="'+id+'"'), 'missing UI output '+id);
+    assert.ok(code.includes('"'+id+'"'), 'missing UI binding '+id);
+  }
+  const data=normalizeStatus(source());
+  assert.equal(data.online_prequential_replay.status,'historical_walk_forward_reconstruction_only');
+  const s=data.online_prequential_replay.retrospective_finance;
+  const b=data.online_prequential_replay.retrospective_box_finance;
+  assert.equal(s.ticket_type,'straight');
+  assert.equal(b.ticket_type,'box');
+  assert.equal(s.simulated_net_yen,s.simulated_payout_yen-s.simulated_ticket_cost_yen);
+  assert.equal(b.simulated_net_yen,b.simulated_payout_yen-b.simulated_ticket_cost_yen);
+  assert.equal(s.historical_winning_draws,s.winning_rounds.length);
+  assert.equal(b.historical_winning_draws,b.winning_rounds.length);
+  assert.equal(s.actual_profit_yen,null);
+  assert.equal(b.actual_profit_yen,null);
+  assert.equal(data.prediction_skill_confirmed,false);
+});
