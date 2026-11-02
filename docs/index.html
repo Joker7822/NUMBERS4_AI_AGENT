@@ -42,10 +42,10 @@
         <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
       </section>
       <section class="panel" id="latest-research-forecast">
-        <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測5口（ストレート・ボックス共通の研究候補）</h2></div>
+        <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測1口（ストレート・ボックス共通の研究候補）</h2></div>
         <p class="subtle">直近の公開履歴から作成した研究候補を両方の申込タイプで再評価します。数字は両方式で共通ですが、ストレートは並び順まで一致、ボックスは並び順不問です。ボックス専用モデルへの再学習はしていません。4桁同一はボックス購入不可。正式な事前発行・購入実績ではありません。</p>
         <div id="latest-candidate-meta" class="panel-foot">研究予測を読み込み中です。</div>
-        <div id="latest-candidate-numbers" class="ticket-grid" aria-label="最新の研究予測5口"></div>
+        <div id="latest-candidate-numbers" class="ticket-grid" aria-label="最新の研究予測1口"></div>
       </section>
       <div class="columns">
         <section class="panel">
@@ -55,7 +55,7 @@
           <div id="draw-details" class="panel-foot">結果がまだ登録されていません。</div>
         </section>
         <section class="panel">
-          <div class="panel-head"><span>02 / ADVICE ONLY</span><h2>最新の事前発行5口</h2></div>
+          <div class="panel-head"><span>02 / ADVICE ONLY</span><h2>最新の事前発行1口</h2></div>
           <p class="subtle">研究候補や抽せん後に作成された番号は表示しません。</p>
           <div id="issued-meta" class="panel-foot">発行済み記録はありません。</div>
           <div id="issued-numbers" class="ticket-grid"></div>
@@ -100,7 +100,7 @@
           <div class="data-row"><span>仮想収益率</span><strong id="simulation-roi">—</strong></div>
           <div class="data-row"><span>一様比較モデルのボックス仮想収支</span><strong id="simulation-baseline">—</strong></div>
           <div class="data-row"><span>実際の購入・収支</span><strong id="actual-profit">未確認</strong></div>
-          <p class="subtle">ボックスの回別配当は第三者公開データ1件に基づきます。4桁すべて同じ場合はボックス購入不可で配当欄も空欄です。順不同一致、同じ組合せの複数購入は各口を計上します。みずほ銀行の全回配当照合は未実施。実際の収支ではありません。</p>
+          <p class="subtle">ボックスの回別配当は第三者公開データ1件に基づきます。4桁すべて同じ場合はボックス購入不可で配当欄も空欄です。順不同一致、各回最大1口だけを仮想計上します。みずほ銀行の全回配当照合は未実施。実際の収支ではありません。</p>
         </section>
         <section class="panel">
           <div class="panel-head"><span>HISTORY / NON-MISS ONLY</span><h2>過去のボックス的中結果（ハズレ以外）</h2></div>
@@ -115,10 +115,10 @@
           <div class="data-row"><span>過去当せん番号の全履歴</span><strong id="archive-count">—</strong></div>
           <p id="archive-scope" class="subtle">過去の全履歴を確認中です。</p>
           <div class="data-row"><span>時系列バックテストに使用した回数</span><strong id="backtest-count">—</strong></div>
-          <div class="data-row"><span>参考：旧研究ストレート5口の一致数</span><strong id="backtest-hits">—</strong></div>
-          <div class="data-row"><span>一様無作為の理論基準（5口）</span><strong>0.05%</strong></div>
+          <div class="data-row"><span>参考：旧5口方式の過去一致数</span><strong id="backtest-hits">—</strong></div>
+          <div class="data-row"><span>旧5口方式の一様無作為の理論基準</span><strong>0.05%</strong></div>
           <p id="backtest-scope" class="subtle">過去データの予測力検証を実行していません。</p>
-          <p class="subtle">上記はストレート5口がすべて異なる場合の単回基準です。後付けの過去データ分析は真の将来予測力を証明しません。</p>
+          <p class="subtle">上記は旧5口方式の参考値です。新しい1口方式のストレート理論確率は0.01%です。後付けの過去データ分析は真の将来予測力を証明しません。</p>
         </section>
         <section class="panel">
           <div class="panel-head"><span>05 / AUDIT TRAIL</span><h2>運用上の注意</h2></div>
@@ -128,6 +128,7 @@
       </div>
       <section class="panel" id="online-prequential">
         <div class="panel-head"><span>06 / HISTORICAL PREQUENTIAL REPLAY</span><h2>第2回から全回の逐次予測・照合</h2></div>
+        <div class="data-row"><span>1口ストレートの理論一致率</span><strong>0.01%（1/10,000）</strong></div>
         <div class="data-row"><span>過去データのみで予測・照合した回数</span><strong id="online-replay-count">—</strong></div>
         <div class="data-row"><span>ストレート・ボックス別の一致回数・口数</span><strong id="online-replay-hits">—</strong></div>
         <div class="data-row"><span>確率モデルと一様抽せんの差</span><strong id="online-replay-edge">—</strong></div>
