@@ -19,7 +19,7 @@ PAYOUT_META=Path("data/secondary_straight_payouts_provenance.json")
 VERSION="numbers4-secondary-straight-payouts-v1"
 STATUS="single_secondary_publisher_not_bank_verified"
 TICKET_PRICE_YEN=200
-TICKETS_PER_ROUND=5
+TICKETS_PER_ROUND=1
 
 
 def git_blob_sha1(data: bytes) -> str:
@@ -86,7 +86,7 @@ def load_payouts(root: Path, archive_rows: list[dict]) -> tuple[list[int], dict]
 
 def summarize_reconstruction(grades: list[dict], archive_rows: list[dict],
                              payouts: list[int]) -> dict:
-    """Only exact 5-ticket STRAIGHT matches, scored against prior-only replay."""
+    """Only exact one-ticket STRAIGHT matches, scored against prior-only replay."""
     if len(archive_rows)<2 or len(payouts)!=len(archive_rows) or len(grades)!=len(archive_rows)-1:
         raise ValueError("cannot evaluate incomplete hypothetical portfolio")
     winners=[]
@@ -134,7 +134,7 @@ def summarize_reconstruction(grades: list[dict], archive_rows: list[dict],
     evaluated=len(grades)
     total_cost=evaluated*TICKETS_PER_ROUND*TICKET_PRICE_YEN
     return {
-        "version":"numbers4-retrospective-straight-five-finance-v1",
+        "version":"numbers4-retrospective-straight-one-finance-v2",
         "status":"historical_simulation_only_not_actual_purchase",
         "ticket_type":"straight","tickets_per_draw":TICKETS_PER_ROUND,
         "ticket_unit_cost_yen":TICKET_PRICE_YEN,
@@ -157,5 +157,5 @@ def summarize_reconstruction(grades: list[dict], archive_rows: list[dict],
         "actual_income_yen":None,
         "actual_profit_yen":None,
         "production_promotion_authorized":False,
-        "interpretation":"Counterfactual research: 5 distinct straight entries at 200 yen each, every draw from 2 onward. Only historical payouts from a single secondary publisher; no actual ticket purchases or verified income."
+        "interpretation":"Counterfactual research: 1 straight entry at 200 yen each, every draw from 2 onward. Only historical payouts from a single secondary publisher; no actual ticket purchases or verified income."
     }
