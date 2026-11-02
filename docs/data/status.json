@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T17:15:48+09:00",
+  "generated_at_jst": "2026-11-02T18:41:26+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -391,10 +391,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-02T17:14:59+09:00",
-    "rule_audit_age_hours": 0.014,
+    "rule_audit_age_hours": 1.441,
     "secondary_feed_status": "validated_no_new_draws",
     "secondary_checked_at_jst": "2026-11-02T17:14:58+09:00",
-    "secondary_audit_age_hours": 0.014,
+    "secondary_audit_age_hours": 1.441,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -403,6 +403,55 @@
     "model_auto_promotion": false,
     "real_purchases_enabled": false,
     "warnings": []
+  },
+  "auto_learning": {
+    "version": "numbers4-prospective-auto-learning-v1",
+    "status": "no_shadow_forecasts",
+    "active_champion": "uniform",
+    "eligible_champion": "uniform",
+    "feature_implemented": true,
+    "protocol_sha256": "af460376621be3baac8432825c291fb6968e2847b9a2f21338975a40f8e02eeb",
+    "officially_verified_training_rounds": 0,
+    "shadow_forecasts_recorded": 0,
+    "pre_draw_github_witnesses": 0,
+    "eligible_prospective_draws": 0,
+    "required_prospective_draws": 500,
+    "integrity_blocker": null,
+    "model_assessments": {
+      "positional_60_alpha10": {
+        "verified_prospective_draws": 0,
+        "candidate_straight_hits": 0,
+        "uniform_reference_straight_hits": 0,
+        "log_e_against_independent_uniform": 0,
+        "log_threshold": 5.703782475,
+        "anytime_valid_uniform_null_alpha_family": 0.01,
+        "screen_passed": false,
+        "production_eligible": false
+      },
+      "positional_250_alpha5": {
+        "verified_prospective_draws": 0,
+        "candidate_straight_hits": 0,
+        "uniform_reference_straight_hits": 0,
+        "log_e_against_independent_uniform": 0,
+        "log_threshold": 5.703782475,
+        "anytime_valid_uniform_null_alpha_family": 0.01,
+        "screen_passed": false,
+        "production_eligible": false
+      },
+      "positional_1000_alpha20": {
+        "verified_prospective_draws": 0,
+        "candidate_straight_hits": 0,
+        "uniform_reference_straight_hits": 0,
+        "log_e_against_independent_uniform": 0,
+        "log_threshold": 5.703782475,
+        "anytime_valid_uniform_null_alpha_family": 0.01,
+        "screen_passed": false,
+        "production_eligible": false
+      }
+    },
+    "model_code_from_search_results_executed": false,
+    "unverified_secondary_training_authorized": false,
+    "actual_purchase": false
   },
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",
@@ -421,6 +470,7 @@
   "source_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "issuance_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "warnings": [
+    "予測AI自動学習に使える銀行照合済み当せん結果は現在0件です。",
     "Numbers4の2公開元照合済み結果が未登録です。公式銀行の取得に失敗した場合は採点しません。",
     "楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。",
     "全回の過去履歴は二次公開リポジトリの一致記録です。銀行公式未照合のため、発行済み予測の正式採点には使いません。",
