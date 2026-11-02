@@ -23,8 +23,11 @@ on:
       - 'numbers4_agent/cli.py'
       - 'tests/test_online_learning.py'
       - 'tests/test_secondary_feed.py'
+      - 'tests/test_finance.py'
       - 'data/historical_results.csv'
       - 'data/historical_archive_provenance.json'
+      - 'data/secondary_straight_payouts.csv'
+      - 'data/secondary_straight_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
   schedule:
     # GitHub cron is best-effort, NOT a real-time SLA. 23:25 JST weekdays,
@@ -136,7 +139,7 @@ jobs:
               research/online_source_audit.json research/online_reference_audit.json \
               research/online_replay.json research/online_round_predictions.csv \
               docs/data/status.json
-            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|data/secondary_straight_payouts.csv|data/secondary_straight_payouts_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json) || true)"
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|data/secondary_straight_payouts.csv|data/secondary_straight_payouts_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unsafe staged paths: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No research-only changes'; exit 0; fi
             git commit -m 'research: refresh secondary Numbers4 history and past-only online evaluation'
@@ -152,63 +155,6 @@ jobs:
             echo 'Two GitHub mirrors may share a publisher. Bank official confirmation is separate.'
             echo 'No purchases, official grading rights, code execution from source pages, or Production promotions.'
             echo 'Any revenue, expense, or net shown by finance is explicitly hypothetical, never actual ticket returns.'
-            if [ -f /tmp/numbers4-replay.json ]; then
-              python - <<'PY'
-          import json
-          from pathlib import Path
-          r=json.loads(Path('/tmp/numbers4-replay.json').read_text())
-          print('Rounds: '+str(r['evaluated_draws']))
-          print('Selected hits: '+str(r['selected_top5_straight_hits']))
-          print('Baseline hits: '+str(r['uniform_reference_top5_straight_hits']))
-          PY
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-
-  deploy-research-dashboard:
-    needs: round-two-replay-and-online-audit
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    concurrency:
-      group: numbers4-pages
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Checkout latest main after publishing research evidence
-        run: |
-          git fetch origin main
-          git reset --hard origin/main
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-      - id: deployment
-        uses: actions/deploy-pages@v4
- || true)"
-            if [ -n "$unexpected" ]; then echo "::error::Unsafe staged paths: $unexpected"; exit 1; fi
-            if git diff --cached --quiet; then echo 'No research-only changes'; exit 0; fi
-            git commit -m 'research: refresh secondary Numbers4 history and past-only online evaluation'
-            if git push origin HEAD:main; then echo 'Published audited research-only artifacts'; exit 0; fi
-            if [ "$attempt" -eq 3 ]; then echo '::error::Could not publish bounded research'; exit 1; fi
-          done
-      - name: Document research limits
-        if: always()
-        run: |
-          {
-            echo '## Historical round-2 replay and online source audit'
-            echo 'All graded historical rows are post-hoc reproductions. Not real pre-issued tickets.'
-            echo 'Two GitHub mirrors may share a publisher. Bank official confirmation is separate.'
-            echo 'No purchases, official grading rights, code execution from source pages, or Production promotions.'
             if [ -f /tmp/numbers4-replay.json ]; then
               python - <<'PY'
           import json
