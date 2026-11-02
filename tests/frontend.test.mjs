@@ -243,3 +243,18 @@ test('online production monitor remains research-only and has real UI fields',()
   s.online_operations.model_auto_promotion=true;
   assert.throws(()=>normalizeStatus(s),/オンライン本番監査/);
 });
+
+test('historical chance benchmark cannot be forged into prospective proof',()=>{
+  const s=source();
+  s.online_prequential_replay.research_statistical_audit={
+    scope:'descriptive_historical_reconstruction_not_preregistered',
+    statistical_significance_is_prospective_proof:true,
+    selected_hit_tail_probability_given_uniform_null:0.284292006,
+    nonuniform_model_selected_rounds:41,
+  };
+  assert.throws(()=>normalizeStatus(s),/過去研究の偶然確率/);
+  s.online_prequential_replay.research_statistical_audit.statistical_significance_is_prospective_proof=false;
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.online_prequential_replay.research_statistical_audit.selected_hit_tail_probability_given_uniform_null=2;
+  assert.throws(()=>normalizeStatus(s),/過去研究の偶然確率/);
+});
