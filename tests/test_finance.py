@@ -19,12 +19,12 @@ def sample():
     grades=[
         {"round":2,"draw_date":"1994-10-14","actual":"0097",
          "data_cutoff_round":1,"selected_model":"uniform",
-         "selected_numbers":"0001 0002 0097 0004 0005","selected_hit":1,
-         "uniform_numbers":"1000 1001 1002 1003 1004","uniform_hit":0},
+         "selected_numbers":"0097","selected_hit":1,
+         "uniform_numbers":"1000","uniform_hit":0},
         {"round":3,"draw_date":"1994-10-21","actual":"1234",
          "data_cutoff_round":2,"selected_model":"positional_250_alpha5",
-         "selected_numbers":"2222 3333 4444 5555 6666","selected_hit":0,
-         "uniform_numbers":"1234 8888 1111 9999 0000","uniform_hit":1},
+         "selected_numbers":"2222","selected_hit":0,
+         "uniform_numbers":"1234","uniform_hit":1},
     ]
     payouts=[1000000,900000,1100000]
     return rows,grades,payouts
@@ -35,13 +35,14 @@ class FinanceTests(unittest.TestCase):
         rows,grades,payouts=sample()
         r=summarize_reconstruction(grades,rows,payouts)
         self.assertEqual(r["evaluated_rounds"],2)
-        self.assertEqual(r["simulated_ticket_cost_yen"],2000)
+        self.assertEqual(r["tickets_per_draw"],1)
+        self.assertEqual(r["simulated_ticket_cost_yen"],400)
         self.assertEqual(r["simulated_payout_yen"],900000)
-        self.assertEqual(r["simulated_net_yen"],898000)
+        self.assertEqual(r["simulated_net_yen"],899600)
         self.assertEqual(r["historical_winning_draws"],1)
-        self.assertEqual(r["baseline_simulated_net_yen"],1098000)
+        self.assertEqual(r["baseline_simulated_net_yen"],1099600)
         self.assertEqual(r["winning_rounds"][0]["matched_prediction"],"0097")
-        self.assertEqual(r["winning_rounds"][0]["ticket_position"],3)
+        self.assertEqual(r["winning_rounds"][0]["ticket_position"],1)
         self.assertIsNone(r["actual_profit_yen"])
         self.assertFalse(r["bank_primary_payouts_verified"])
 
@@ -53,7 +54,7 @@ class FinanceTests(unittest.TestCase):
 
     def test_duplicate_numbers_fail(self):
         rows,grades,payouts=sample()
-        grades[0]["selected_numbers"]="0097 0097 0003 0004 0005"
+        grades[0]["selected_numbers"]="0097 0097"
         with self.assertRaisesRegex(ValueError,"invalid number"):
             summarize_reconstruction(grades,rows,payouts)
 
