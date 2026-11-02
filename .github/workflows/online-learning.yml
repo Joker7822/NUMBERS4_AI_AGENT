@@ -88,19 +88,21 @@ jobs:
           assert r['first_evaluated_round']==2
           assert r['last_evaluated_round']==a['last_round']
           assert r['evaluated_draws']==a['record_count']-1
+          assert r['tickets_per_draw']==1
+          assert r['retrospective_finance']['simulated_ticket_cost_yen']==r['evaluated_draws']*200
           assert not r['prediction_skill_confirmed']
           assert not r['forecast_grading_authorized']
           assert not r['production_model_changed']
           assert r['retrospective_finance']['bank_primary_payouts_verified'] is False
           assert r['retrospective_finance']['actual_profit_yen'] is None
-          assert r['retrospective_finance']['historical_winning_draws']==r['selected_top5_straight_hits']
+          assert r['retrospective_finance']['historical_winning_draws']==r['selected_straight_hits']
           box=r['retrospective_box_finance']
           assert box['ticket_type']=='box' and box['original_predictions_unchanged'] is True
           assert box['simulated_ticket_cost_yen']==box['simulated_purchased_tickets']*200
-          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==r['evaluated_draws']*5
+          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==r['evaluated_draws']
           assert box['bank_primary_payouts_verified'] is False and box['actual_profit_yen'] is None
           print('Reconstructed forecasts and matches:',r['evaluated_draws'])
-          print('Research-only straight hits:',r['selected_top5_straight_hits'])
+          print('Research-only straight hits:',r['selected_straight_hits'])
           PY
           git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl
       - name: Refresh bounded secondary research evidence, evaluate and commit allowlisted artifacts
@@ -129,18 +131,20 @@ jobs:
           assert replay['first_evaluated_round']==2
           assert replay['evaluated_draws']==replay['last_evaluated_round']-1
           assert replay['historical_frozen_forecasts'] is False
+          assert replay['tickets_per_draw']==1
+          assert replay['retrospective_finance']['simulated_ticket_cost_yen']==replay['evaluated_draws']*200
           assert replay['prediction_skill_confirmed'] is False
           assert replay['production_model_changed'] is False
           finance=replay['retrospective_finance']
           assert finance['status']=='historical_simulation_only_not_actual_purchase'
           assert finance['actual_profit_yen'] is None
-          assert finance['historical_winning_draws']==replay['selected_top5_straight_hits']
+          assert finance['historical_winning_draws']==replay['selected_straight_hits']
           assert finance['simulated_net_yen']==finance['simulated_payout_yen']-finance['simulated_ticket_cost_yen']
           assert dashboard['online_prequential_replay']['retrospective_finance']['simulated_net_yen']==finance['simulated_net_yen']
           box=replay['retrospective_box_finance']
           assert box['ticket_type']=='box' and box['original_predictions_unchanged'] is True
           assert box['simulated_ticket_cost_yen']==box['simulated_purchased_tickets']*200
-          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==replay['evaluated_draws']*5
+          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==replay['evaluated_draws']
           assert box['simulated_payout_yen']-box['simulated_ticket_cost_yen']==box['simulated_net_yen']
           assert box['bank_primary_payouts_verified'] is False and box['actual_profit_yen'] is None
           assert dashboard['online_prequential_replay']['retrospective_box_finance']['simulated_net_yen']==box['simulated_net_yen']
@@ -154,8 +158,8 @@ jobs:
           assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
           print('Current archive:',replay['archive_latest_round'])
           print('Walk-forward rounds:',replay['evaluated_draws'])
-          print('Research-only selected hits:',replay['selected_top5_straight_hits'])
-          print('Uniform reference hits:',replay['uniform_reference_top5_straight_hits'])
+          print('Research-only selected hits:',replay['selected_straight_hits'])
+          print('Uniform reference hits:',replay['uniform_reference_straight_hits'])
           print('Source refresh status:',source['status'])
           PY
             git diff --exit-code -- \
@@ -214,8 +218,8 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('/tmp/numbers4-replay.json').read_text())
           print('Rounds: '+str(r['evaluated_draws']))
-          print('Selected hits: '+str(r['selected_top5_straight_hits']))
-          print('Baseline hits: '+str(r['uniform_reference_top5_straight_hits']))
+          print('Selected hits: '+str(r['selected_straight_hits']))
+          print('Baseline hits: '+str(r['uniform_reference_straight_hits']))
           PY
             fi
           } >> "$GITHUB_STEP_SUMMARY"
