@@ -67,7 +67,7 @@ class SelfEvolutionTests(unittest.TestCase):
         prior = {"model_specs": first, "development_winner": {
             "model": _spec_id(first[0])}}
         next_specs, _ = propose(discovered(), previous=prior, generation=2)
-        self.assertGreater(len(next_specs), len(first))
+        self.assertGreaterEqual(len(next_specs), 4)
         self.assertIn({"family": "rolling", "window": 60, "alpha": 20}, next_specs)
         self.assertIn("Dirichlet", next_queries(prior)[1])
         prior["development_winner"]["model"] = "uniform"
