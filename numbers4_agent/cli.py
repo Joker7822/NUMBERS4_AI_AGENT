@@ -15,6 +15,7 @@ from .proof import run as research_proof, save_report
 from .historical_archive import archive_summary
 from .online_learning import write_replay
 from .straight_challenger import write_report as write_straight_benchmark
+from .open_web import inspect_urls as inspect_public_web
 from .secondary_feed import refresh as refresh_secondary, audit_related
 
 
@@ -58,6 +59,12 @@ def parser() -> argparse.ArgumentParser:
                             help="exploratory report only; never overwrite issuance ledgers")
     sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
     sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
+    research_web = sub.add_parser("research-web",
+                                  help="inspect opt-in public HTTPS pages beyond the official source allowlist")
+    research_web.add_argument("--url", action="append", default=[],
+                              help="one public HTTPS page, repeat for additional pages")
+    research_web.add_argument("--url-file", type=Path,
+                              help="optional UTF-8 file of one HTTPS URL per line")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
@@ -102,6 +109,13 @@ def main(argv: list[str] | None = None) -> int:
             report=root/"research/online_reference_audit.json"
             report.parent.mkdir(parents=True,exist_ok=True)
             report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+        elif args.command == "research-web":
+            urls = list(args.url)
+            if args.url_file is not None:
+                urls.extend(line.strip() for line in
+                            args.url_file.read_text(encoding="utf-8-sig").splitlines()
+                            if line.strip() and not line.lstrip().startswith("#"))
+            result = inspect_public_web(urls)
         elif args.command == "fetch-official":
             result = sync(root, months_back=args.months_back)
         elif args.command == "prove":
@@ -113,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
             result["source_rounds"] = reconcile(root)
         print_json(result)
         return 0
-    except (ValueError, TypeError, KeyError) as exc:
+    except (ValueError, TypeError, KeyError, OSError) as exc:
         print(f"検証エラー: {exc}", file=sys.stderr)
         return 2
 
