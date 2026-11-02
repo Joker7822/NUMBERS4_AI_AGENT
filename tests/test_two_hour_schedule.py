@@ -31,7 +31,10 @@ class TwoHourlyPipelineTests(unittest.TestCase):
         self.assertIn("needs: discover-evolve-and-replay-all", research)
         self.assertIn("deploy-current-evolved-dashboard:", research)
         self.assertIn("git reset --hard origin/main", research)
-        self.assertIn("latest_verification", research)
+        # The deployment audit moved into a shared, unit-tested module.
+        self.assertIn("audit_research_pages_snapshot(report,evolution,state)", research)
+        publication = (ROOT / "numbers4_agent/publication.py").read_text(encoding="utf-8")
+        self.assertIn("latest_verification", publication)
         self.assertIn("python -m numbers4_agent.cli --root . refresh-secondary", history)
         self.assertIn("python -m numbers4_agent.cli --root . replay-history", history)
         self.assertIn("result=cycle(Path('.'),queries=questions or None,", research)
