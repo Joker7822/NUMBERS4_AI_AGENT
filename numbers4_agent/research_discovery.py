@@ -26,8 +26,7 @@ JST = timezone(timedelta(hours=9))
 VERSION = "numbers4-predictive-research-discovery-v1"
 CROSSREF_HOST = "api.crossref.org"
 BRAVE_HOST = "api.search.brave.com"
-MAX_QUERIES = 8
-RESULTS_PER_QUERY = 5
+RESULTS_PER_QUERY = 20  # provider-compliant page size, not a lifetime acquisition cap
 MAX_METADATA_BYTES = 1_000_000
 DEFAULT_TOPICS = (
     "lottery draw statistical randomness tests prediction",
@@ -47,8 +46,8 @@ RESEARCH_CATEGORIES = (
 
 
 def _queries(queries: list[str]) -> list[str]:
-    if not isinstance(queries, list) or not 1 <= len(queries) <= MAX_QUERIES:
-        raise ValueError("provide between one and eight research queries")
+    if not isinstance(queries, list) or not queries:
+        raise ValueError("provide at least one research query")
     result = []
     for term in queries:
         if (not isinstance(term, str) or not term.strip() or len(term) > 250
@@ -102,8 +101,10 @@ def _fixed_api_get(host: str, target: str, *, token: str | None = None,
         connection.close()
 
 
-def _crossref_request(query: str, *, fetch=None) -> dict:
-    args = urlencode({"query": query, "rows": RESULTS_PER_QUERY,
+def _crossref_request(query: str, *, offset: int = 0, fetch=None) -> dict:
+    if type(offset) is not int or not 0 <= offset <= 10000:
+        raise ValueError("Crossref offset outside provider-supported range")
+    args = urlencode({"query": query, "rows": RESULTS_PER_QUERY, "offset": offset,
                       "select": "DOI,title,abstract,published,type,container-title,score,relation"})
     url = f"https://{CROSSREF_HOST}/works?{args}"
     if fetch is None:
@@ -113,8 +114,11 @@ def _crossref_request(query: str, *, fetch=None) -> dict:
     return json.loads(raw.decode("utf-8"))
 
 
-def _brave_request(query: str, token: str, *, fetch=None) -> dict:
-    args = urlencode({"q": query, "count": RESULTS_PER_QUERY, "safesearch": "strict"})
+def _brave_request(query: str, token: str, *, offset: int = 0, fetch=None) -> dict:
+    if type(offset) is not int or not 0 <= offset <= 9:
+        raise ValueError("Brave offset outside provider-supported range")
+    args = urlencode({"q": query, "count": RESULTS_PER_QUERY, "offset": offset,
+                      "safesearch": "strict"})
     if fetch is None:
         raw = _fixed_api_get(BRAVE_HOST, f"/res/v1/web/search?{args}", token=token)
     else:
