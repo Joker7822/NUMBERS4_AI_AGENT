@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-source-freshness-proof";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-full-archive";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -28,6 +28,14 @@ function render(data){
   }
   const research=data.historical_research||{};
   const proof=data.historical_accuracy_proof;
+  const archive=data.historical_archive;
+  set("archive-count",archive?.status==="secondary_public_mirrors_agree_not_officially_verified"?
+    archive.record_count.toLocaleString("ja-JP")+"回":"未登録");
+  set("archive-scope",archive?.status==="secondary_public_mirrors_agree_not_officially_verified"?
+    "第"+archive.first_round+"回（"+archive.first_draw_date+"）〜第"+archive.last_round+
+    "回（"+archive.last_draw_date+"）・2公開リポジトリで数字一致。みずほ銀行公式との全件照合は未実施。"+
+    " 予測の正式採点・精度実証には使用しません。":
+    "第1回からの全回履歴はまだ登録されていません。");
   set("backtest-count",proof.evaluated_draws+"回");
   set("backtest-hits",proof.status==="historical_exploratory_only"?proof.top5_model_hits+"回":"未検証");
   set("backtest-scope",proof.status==="historical_exploratory_only"?

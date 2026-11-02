@@ -12,6 +12,7 @@ from .models import ranked_candidates
 from .sources import corroborated_draws, record_observation, reconcile
 from .official_fetch import sync
 from .proof import run as research_proof, save_report
+from .historical_archive import archive_summary
 
 
 def print_json(data: object) -> None:
@@ -44,6 +45,7 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("audit", help="print snapshot and source conflicts")
     sub.add_parser("evaluate", help="grade existing pre-issued tickets against two entered sources")
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
+    sub.add_parser("audit-history", help="validate full secondary archive from round 1 (not officially verified)")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
@@ -71,6 +73,8 @@ def main(argv: list[str] | None = None) -> int:
             result = {"status": "two_source_manual_entry_only", "graded": graded_predictions(root)}
         elif args.command == "backtest":
             result = walk_forward(root)
+        elif args.command == "audit-history":
+            result = archive_summary(root)
         elif args.command == "fetch-official":
             result = sync(root, months_back=args.months_back)
         elif args.command == "prove":
