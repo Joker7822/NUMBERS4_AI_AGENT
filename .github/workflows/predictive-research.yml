@@ -31,7 +31,7 @@ jobs:
           python-version: '3.12'
       - name: Validate search safety and retrospective model metrics
         run: |
-          python -m unittest tests.test_research_discovery tests.test_open_web tests.test_straight_challenger -v
+          python -m unittest discover -s tests -v
       - name: Search predictive method literature, then benchmark existing frozen models
         env:
           BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
