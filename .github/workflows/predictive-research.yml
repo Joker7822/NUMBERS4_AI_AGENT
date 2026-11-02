@@ -125,3 +125,60 @@ jobs:
             echo '- Each generation chooses research search targets using previous development results only; late historical cohorts are reused and cannot establish prediction skill.'
             echo '- No purchase, official bank attestation, or PRODUCTION model promotion is authorized by past-only replays.'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-current-evolved-dashboard:
+    needs: discover-evolve-and-replay-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: numbers4-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reopen current main after bot published new research generation
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify committed evolution report and rebuild public-only snapshot
+        run: |
+          python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-evolved-pages-status.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from numbers4_agent.evolution import public_status
+          from numbers4_agent.historical_archive import archive_summary
+          root=Path('.')
+          report=json.loads((root/'research/evolution_report.json').read_text())
+          state=json.loads((root/'docs/data/status.json').read_text())
+          evolution=public_status(root,archive_summary(root))
+          assert report['generation']>=1
+          assert report['evaluated_draws']==report['last_evaluated_round']-1
+          assert evolution['generation']==report['generation']
+          assert state['research_evolution']==evolution
+          assert state['research_evolution']['performance_advantage_confirmed'] is False
+          assert state['research_evolution']['model_auto_promotion_authorized'] is False
+          assert state['prediction_skill_confirmed'] is False
+          assert state['actual_purchase_profit_yen'] is None
+          print('Publish research generation',evolution['generation'],
+                'across',evolution['evaluated_draws'],'historical rounds')
+          PY
+          git diff --exit-code -- data/ numbers4_agent/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

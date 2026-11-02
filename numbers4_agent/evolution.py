@@ -225,6 +225,12 @@ def propose(discovery: dict, *, previous: dict | None = None,
              if isinstance(spec, dict) and _spec_id(spec) == parent_name), None)
         if parent_spec is not None:
             seed.append(_mutate(parent_spec, generation))
+        else:
+            # No development model beat the uniform reference. Continue
+            # controlled, bounded exploration rather than quietly reusing
+            # the same losing parameter set in every generation.
+            base = FALLBACK_SPECS[(generation - 2) % len(FALLBACK_SPECS)]
+            seed.append(_mutate(base, generation))
         # Explore a different approved family after observing prior development
         # performance, but never transfer exploratory history to formal proof.
         if generation % 3 == 0:
@@ -532,6 +538,7 @@ def cycle(root: Path, *, queries: list[str] | None = None,
         "external_paper_code_executed": False,
         "research_proposed_specs_derived_from_safe_registry": True,
         "previous_generation_feedback_used_for_hypothesis_mutation": previous is not None,
+        "previous_generation_search_queries_adapted": previous is not None,
         "past_only_research_replay_recomputed": True,
         "parallel_original_one_ticket_replay_recomputed": True,
         "original_replay_version": regular["version"],

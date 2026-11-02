@@ -84,7 +84,7 @@ jobs:
           from pathlib import Path
           ev=json.loads(Path('/tmp/numbers4-evolution-ci.json').read_text())
           status=json.loads(Path('/tmp/numbers4-evolution-status.json').read_text())
-          assert ev['generation']==1
+          assert ev['generation']>=1
           assert ev['first_evaluated_round']==2
           assert ev['evaluated_draws']==ev['last_evaluated_round']-1
           assert ev['parallel_original_one_ticket_replay_recomputed'] is True
@@ -93,7 +93,7 @@ jobs:
           assert ev['model_auto_promotion_authorized'] is False
           assert ev['research_generation_is_prospective_preregistration'] is False
           assert ev['research_discovery']['status']=='explicitly_offline_no_sources_retrieved'
-          assert status['research_evolution']['generation']==1
+          assert status['research_evolution']['generation']==ev['generation']
           assert status['research_evolution']['evaluated_draws']==ev['evaluated_draws']
           assert status['research_evolution']['performance_advantage_confirmed'] is False
           print('EVOLUTION_REPLAY_RESULT_START')
