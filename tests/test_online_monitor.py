@@ -76,7 +76,7 @@ class OnlineMonitorTests(unittest.TestCase):
         self.assertFalse(data['official_draw_result_verified_by_this_audit'])
 
     def _write(self,root,ref,feed):
-        (root/'research').mkdir()
+        (root/'research').mkdir(exist_ok=True)
         (root/'research/online_reference_audit.json').write_text(json.dumps(ref),encoding='utf-8')
         (root/'research/online_source_audit.json').write_text(json.dumps(feed),encoding='utf-8')
 
