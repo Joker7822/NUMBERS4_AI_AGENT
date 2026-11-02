@@ -21,6 +21,9 @@ from .research_discovery import (
     DEFAULT_TOPICS, write_research_cycle as write_predictive_research_cycle,
 )
 from .secondary_feed import refresh as refresh_secondary, audit_related
+from .automatic_learning import (freeze_shadow, assess as assess_prospective,
+                                  apply_policy, recommend_champion)
+from .publication_witness import verify_and_record as verify_shadow_publication
 
 
 def print_json(data: object) -> None:
@@ -40,7 +43,7 @@ def parser() -> argparse.ArgumentParser:
     recommend = sub.add_parser("recommend", help="produce non-issued research candidates")
     recommend.add_argument("--target-round", type=int, required=True)
     recommend.add_argument("--mode", choices=["straight", "box", "set"], default="straight")
-    recommend.add_argument("--method", choices=["uniform", "positional"], default="positional")
+    recommend.add_argument("--method", choices=["champion", "uniform", "positional"], default="champion")
     recommend.add_argument("--count", type=int, default=1)
     publish = sub.add_parser("issue", help="append one explicit advice-only, pre-deadline forecast")
     publish.add_argument("--target-round", type=int, required=True)
@@ -50,6 +53,13 @@ def parser() -> argparse.ArgumentParser:
     publish.add_argument("--numbers", nargs=1, required=True, metavar="NNNN")
     publish.add_argument("--model-version", required=True)
     publish.add_argument("--ack-advice-only", action="store_true", required=True)
+    frozen = sub.add_parser("freeze-shadow",
+                            help="freeze one-bank-verified-history, draw-day shadow model forecast")
+    frozen.add_argument("--target-round", type=int, required=True)
+    frozen.add_argument("--draw-date", required=True)
+    sub.add_parser("witness-shadow", help="verify public GitHub push-run predraw publication receipts")
+    sub.add_parser("assess-challengers", help="audit true prospective official-only candidate metrics")
+    sub.add_parser("auto-promote", help="advance or rollback champion ONLY if rigorous gates pass")
     sub.add_parser("audit", help="print snapshot and source conflicts")
     sub.add_parser("evaluate", help="grade existing pre-issued tickets against two entered sources")
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
@@ -93,8 +103,22 @@ def main(argv: list[str] | None = None) -> int:
             result = record_observation(root, round_number=args.round, draw_date=args.draw_date,
                                         number=args.number, source=args.source, url=args.url)
         elif args.command == "recommend":
-            result = ranked_candidates(corroborated_draws(root), args.target_round,
-                                       mode=args.mode, count=args.count, method=args.method)
+            if args.method == "champion":
+                if args.count != 1 or args.mode != "straight":
+                    raise ValueError("automatic champion is a one-ticket STRAIGHT-only model")
+                result = recommend_champion(root, args.target_round)
+            else:
+                result = ranked_candidates(corroborated_draws(root), args.target_round,
+                                           mode=args.mode, count=args.count, method=args.method)
+        elif args.command == "freeze-shadow":
+            result = freeze_shadow(root, target_round=args.target_round,
+                                   draw_date=args.draw_date)
+        elif args.command == "witness-shadow":
+            result = verify_shadow_publication(root)
+        elif args.command == "assess-challengers":
+            result = assess_prospective(root)
+        elif args.command == "auto-promote":
+            result = apply_policy(root)
         elif args.command == "issue":
             result = issue(root, target_round=args.target_round, draw_date=args.draw_date,
                            mode=args.mode, numbers=args.numbers,
