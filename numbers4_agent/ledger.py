@@ -8,6 +8,7 @@ from .sources import JST, iso_date, aware_time, corroborated_draws
 from .store import append, load, file_hash
 
 ISSUED_FILE = "issued_forecasts.jsonl"
+CURRENT_TICKET_POLICY = "one_ticket_per_draw_v1"
 MAX_PUBLICATION_CLOCK = time(18, 30)
 
 
@@ -19,14 +20,15 @@ def read_issued(root: Path) -> list[dict]:
         if not isinstance(rnd, int) or isinstance(rnd, bool) or rnd < 1 or rnd in known:
             raise ValueError("duplicate or invalid published forecast round")
         known.add(rnd)
-        if not isinstance(r.get("numbers"), list) or len(r["numbers"]) != 5:
-            raise ValueError("exactly five issued forecasts are required")
+        expected = 1 if r.get("ticket_policy") == CURRENT_TICKET_POLICY else 5 if r.get("ticket_policy") is None else -1
+        if not isinstance(r.get("numbers"), list) or len(r["numbers"]) != expected:
+            raise ValueError("issued forecast count violates current or legacy policy")
         mode = PlayType(r["mode"])
         for n in r["numbers"]:
             validate_play(n, mode)
-        if len(set(r["numbers"])) != 5:
+        if len(set(r["numbers"])) != expected:
             raise ValueError("duplicate issued numbers")
-        if mode is not PlayType.STRAIGHT and len({"".join(sorted(n)) for n in r["numbers"]}) != 5:
+        if mode is not PlayType.STRAIGHT and len({"".join(sorted(n)) for n in r["numbers"]}) != expected:
             raise ValueError("overlapping box/set permutations")
         raw_deadline = aware_time(r["freeze_deadline_jst"])
         raw_created = aware_time(r["issued_at_jst"])
@@ -61,14 +63,14 @@ def issue(root: Path, *, target_round: int, draw_date: str,
         raise ValueError("deadline must be on draw day at or before 18:30 JST")
     if now >= deadline:
         raise ValueError("deadline has passed; retroactive issuance forbidden")
-    if len(numbers) != 5:
-        raise ValueError("a published portfolio must contain exactly five tickets")
+    if not isinstance(numbers, list) or len(numbers) != 1:
+        raise ValueError("a new published forecast must contain exactly one ticket")
     selected_mode = PlayType(mode)
     for n in numbers:
         validate_play(n, selected_mode)
-    if len(set(numbers)) != 5:
+    if len(set(numbers)) != 1:
         raise ValueError("duplicate issued number")
-    if selected_mode is not PlayType.STRAIGHT and len({"".join(sorted(n)) for n in numbers}) != 5:
+    if selected_mode is not PlayType.STRAIGHT and len({"".join(sorted(n)) for n in numbers}) != 1:
         raise ValueError("box/set tickets have redundant permutations")
     existing = read_issued(root)
     if any(r["target_round"] == target_round for r in existing):
@@ -81,6 +83,7 @@ def issue(root: Path, *, target_round: int, draw_date: str,
     return append(root / "data" / ISSUED_FILE, {
         "target_round": target_round, "draw_date": draw_date,
         "mode": selected_mode.value, "numbers": list(numbers),
+        "ticket_policy":CURRENT_TICKET_POLICY,
         "freeze_deadline_jst": deadline.isoformat(timespec="seconds"),
         "issued_at_jst": now.isoformat(timespec="seconds"),
         "model_version": model_version,
