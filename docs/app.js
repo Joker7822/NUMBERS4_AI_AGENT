@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-replay-verification";
+import {normalizeStatus} from "./dashboard.mjs?v=20261103-latest-forecast-sync";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -65,19 +65,40 @@ function render(data){
       '第'+next.target_round+'回研究候補 '+next.numbers.join(' / ')+
       ' （'+next.model+'、第'+next.data_cutoff_round+'回まで使用、未発行・銀行未照合）':
       '正式な事前発行予測ではありません。');
-  set("latest-candidate-meta",safeNext?
-      '第'+next.target_round+'回向け / 第'+next.data_cutoff_round+'回までの結果から算出 / '+
-      next.model+' / 研究専用・事前発行なし・購入なし':
-      '研究予測をまだ生成していません。');
+  // Always display the *latest valid* research candidate, not the old replay
+  // when a newer, checksum-verified self-evolution generation has succeeded.
+  const current=data.latest_research_forecast;
+  const forecastSource=current?.source==='validated_research_evolution'?
+      '自己進化研究モデル（最新検証世代）':
+      current?.source==='validated_single_ticket_replay'?
+      '最新履歴からの逐次リプレイ（自己進化再計算待ち）':'未確認';
+  set("latest-candidate-meta",current?
+      '第'+current.target_round+'回向け / '+current.number+
+      ' / 第'+current.data_cutoff_round+'回までの二次履歴で計算 / '+
+      current.model+' / '+forecastSource+' / 研究専用・未発行・未購入':
+      '現在の履歴と整合する研究予測がありません。予測結果が更新されるまで表示を保留します。');
+  set("latest-candidate-source",current?
+      forecastSource+(current.research_generation!==null?
+      '・第'+current.research_generation+'世代':''):"予測を確認できません");
+  set("latest-candidate-computed",current?
+      japaneseTime(current.computed_at_jst):"—");
+  set("latest-candidate-last-change",current?
+      japaneseTime(current.last_changed_at_jst):"—");
+  set("latest-candidate-change",current?
+      (current.changed_since_previous_snapshot?
+      '予測候補に変更あり（対象回・数字・モデル・情報源のいずれか）':
+      '前回公開分から予測候補に変更なし'):"予測の生成待ち");
   const forecastGrid=byId("latest-candidate-numbers");forecastGrid.replaceChildren();
-  if(safeNext)next.numbers.forEach((num,i)=>{
+  if(current){
+    const num=current.number;
     const card=create("div","ticket");
     const eligible=new Set(num).size>1;
-    card.append(create("small","", "共通研究候補 "+(i+1)),
+    card.append(create("small","","最新の研究1口"),
                 create("strong","",num),
-                create("small","",eligible?"ストレート可・ボックス可":"ストレート可・ボックス不可（4桁同一）"));
+                create("small","",eligible?
+                  "ストレート可・ボックス可":"ストレート可・ボックス不可（4桁同一）"));
     forecastGrid.append(card);
-  });
+  }
   const f=box;
   set("simulation-scope",financeReady?
     "第"+f.first_evaluated_round+"〜"+f.last_evaluated_round+"回 / "+
@@ -291,4 +312,13 @@ export async function refresh(){
     set("status-pill","データ検証不可");byId("status-pill").className="pill block";
   }finally{button.disabled=false}
 }
-byId("refresh").addEventListener("click",refresh);refresh();
+byId("refresh").addEventListener("click",refresh);
+refresh();
+// A tab left open reflects the newly published candidate without manual reload.
+const FORECAST_REFRESH_INTERVAL_MS=120_000;
+setInterval(()=>{
+  if(!document.hidden&&!byId("refresh").disabled)refresh();
+},FORECAST_REFRESH_INTERVAL_MS);
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden&&!byId("refresh").disabled)refresh();
+});

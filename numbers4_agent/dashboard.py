@@ -25,6 +25,136 @@ from hashlib import sha256
 VERSION = "numbers4-dashboard-v1"
 
 
+LATEST_FORECAST_VERSION = "numbers4-latest-research-forecast-v1"
+LATEST_FORECAST_SOURCE_EVOLUTION = "validated_research_evolution"
+LATEST_FORECAST_SOURCE_REPLAY = "validated_single_ticket_replay"
+
+
+def latest_research_forecast(archive: dict, evolution: dict, online: dict) -> dict | None:
+    """Select the newest *research-only* one-ticket candidate from checked sources.
+
+    Never use a stale evolution forecast following a newer historical draw.
+    Self-evolution supersedes basic past-only replay only when their underlying
+    archive is the current, independently checksum-checked secondary archive.
+    This is neither a predraw issued forecast nor a purchase recommendation.
+    """
+    if (archive.get("status") !=
+            "secondary_public_mirrors_agree_not_officially_verified"):
+        return None
+    last = archive.get("last_round")
+    if type(last) is not int or last < 1:
+        return None
+
+    if (evolution.get("status") ==
+            "recursive_research_exploration_not_prospective_evidence"
+            and evolution.get("next_number") is not None
+            and evolution.get("latest_verification") is not None):
+        verified = evolution["latest_verification"]
+        if (verified.get("last_round") == last
+                and verified.get("archive_git_blob_sha1") ==
+                archive.get("git_blob_sha1")
+                and verified.get("generation") == evolution.get("generation")
+                and verified.get("prediction_skill_confirmed") is False
+                and verified.get("bank_primary_all_rounds_verified") is False):
+            number = four_digits(evolution["next_number"])
+            return {
+                "version": LATEST_FORECAST_VERSION,
+                "source": LATEST_FORECAST_SOURCE_EVOLUTION,
+                "target_round": last + 1,
+                "data_cutoff_round": last,
+                "number": number,
+                "model": evolution["next_model"],
+                "research_generation": evolution["generation"],
+                "computed_at_jst": evolution["generated_at_jst"],
+                "archive_git_blob_sha1": archive["git_blob_sha1"],
+                "status": "research_only_not_issued_not_purchased",
+                "actual_purchase": False,
+                "officially_verified": False,
+                "prediction_skill_confirmed": False,
+            }
+
+    if (online.get("status") == "historical_walk_forward_reconstruction_only"
+            and online.get("tickets_per_draw") == 1
+            and online.get("archive_git_blob_sha1") ==
+            archive.get("git_blob_sha1")
+            and online.get("last_evaluated_round") == last):
+        next_one = online.get("next_research_candidate")
+        if (isinstance(next_one, dict)
+                and next_one.get("target_round") == last + 1
+                and next_one.get("data_cutoff_round") == last
+                and next_one.get("status") ==
+                "research_only_not_issued_not_purchased"
+                and next_one.get("accuracy_claim") is False
+                and isinstance(next_one.get("numbers"), list)
+                and len(next_one["numbers"]) == 1):
+            return {
+                "version": LATEST_FORECAST_VERSION,
+                "source": LATEST_FORECAST_SOURCE_REPLAY,
+                "target_round": last + 1,
+                "data_cutoff_round": last,
+                "number": four_digits(next_one["numbers"][0]),
+                "model": next_one["model"],
+                "research_generation": None,
+                "computed_at_jst": online["generated_at_jst"],
+                "archive_git_blob_sha1": archive["git_blob_sha1"],
+                "status": "research_only_not_issued_not_purchased",
+                "actual_purchase": False,
+                "officially_verified": False,
+                "prediction_skill_confirmed": False,
+            }
+    return None
+
+
+def _forecast_identity(item: dict | None) -> tuple | None:
+    if item is None:
+        return None
+    return (item["source"], item["target_round"], item["data_cutoff_round"],
+            item["number"], item["model"])
+
+
+def _add_change_metadata(root: Path, item: dict | None,
+                         now: datetime) -> dict | None:
+    """Preserve the last changed timestamp while the forecast stays identical.
+
+    Read only the previous *public snapshot*; never rewrite an issued forecast
+    or use its contents to train/grade a research model.
+    """
+    if item is None:
+        return None
+    old = None
+    status_file = root / "docs/data/status.json"
+    if status_file.is_file():
+        try:
+            previous = json.loads(status_file.read_text(encoding="utf-8"))
+            if previous.get("version") == VERSION:
+                old = previous.get("latest_research_forecast")
+        except (ValueError, OSError, TypeError):
+            pass
+    same = isinstance(old, dict) and _forecast_identity(item) == (
+        old.get("source"), old.get("target_round"), old.get("data_cutoff_round"),
+        old.get("number"), old.get("model"))
+    last_changed = (old.get("last_changed_at_jst") if same else None)
+    if not (isinstance(last_changed, str) and
+            _valid_snapshot_time(last_changed, now)):
+        last_changed = now.isoformat(timespec="seconds")
+    return {
+        **item,
+        "last_changed_at_jst": last_changed,
+        "changed_since_previous_snapshot": not same,
+    }
+
+
+def _valid_snapshot_time(value: str, now: datetime) -> bool:
+    try:
+        t = datetime.fromisoformat(value)
+        return (t.tzinfo is not None and
+                t.astimezone(JST) <= now.astimezone(JST))
+    except ValueError:
+        return False
+
+
+
+
 def snapshot(root: Path, now: datetime | None = None) -> dict:
     now = (now or datetime.now(JST)).astimezone(JST)
     states = reconcile(root)
@@ -207,6 +337,8 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "historical_archive": archive,
         "online_prequential_replay": online,
         "research_evolution": evolution,
+        "latest_research_forecast": _add_change_metadata(
+            root, latest_research_forecast(archive, evolution, online), now),
         "online_operations": operations,
         "auto_learning": model_automation,
         "historical_accuracy_proof": {

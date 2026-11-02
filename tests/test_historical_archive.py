@@ -10,20 +10,24 @@ from numbers4_agent.historical_archive import (
 
 
 class HistoricalArchiveTests(unittest.TestCase):
-    def test_all_7104_draws_contiguous_with_leading_zeroes(self):
+    def test_all_available_draws_contiguous_with_leading_zeroes(self):
         rows, meta = load_archive(Path("."))
-        self.assertEqual(len(rows), 7104)
-        self.assertEqual([r["round"] for r in rows], list(range(1, 7105)))
+        # The bot appends authentic secondary-history rows periodically; don't
+        # freeze a test to the 2026-10-30 archive size.
+        self.assertGreaterEqual(len(rows), 7104)
+        self.assertEqual([r["round"] for r in rows], list(range(1, len(rows)+1)))
         self.assertEqual(rows[0], {"round": 1, "draw_date": "1994-10-07",
                                    "winning_number": "1149"})
         self.assertEqual(rows[2]["winning_number"], "0097")
-        self.assertEqual(rows[-1], {"round": 7104, "draw_date": "2026-10-30",
-                                    "winning_number": "5805"})
+        self.assertEqual(rows[7103], {"round": 7104, "draw_date": "2026-10-30",
+                                      "winning_number": "5805"})
+        self.assertEqual(rows[-1]["round"], len(rows))
         self.assertFalse(meta["officially_verified"])
         self.assertFalse(meta["forecast_grading_authorized"])
         summary = archive_summary(Path("."))
         self.assertEqual(summary["status"], STATUS)
-        self.assertEqual(summary["record_count"], 7104)
+        self.assertEqual(summary["record_count"], len(rows))
+        self.assertEqual(summary["last_round"], len(rows))
 
     def fixture(self):
         directory = tempfile.TemporaryDirectory()

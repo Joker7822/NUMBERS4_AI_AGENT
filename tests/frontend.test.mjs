@@ -42,16 +42,11 @@ test('single-publisher reference result is visible only with strict unverified s
 
 test('all historical rows are labelled as secondary, never officially graded',()=>{
   const s=source();
-  s.historical_archive={
-    status:'secondary_public_mirrors_agree_not_officially_verified',
-    record_count:7104,first_round:1,last_round:7104,
-    first_draw_date:'1994-10-07',last_draw_date:'2026-10-30',
-    latest_number:'5805',officially_verified:false,
-    forecast_grading_authorized:false,source_independence_not_established:true,
-    git_blob_sha1:'b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466'
-  };
+  const actual=s.historical_archive;
+  assert.equal(actual.status,'secondary_public_mirrors_agree_not_officially_verified');
+  assert.ok(actual.record_count>=7104);
   const valid=normalizeStatus(s);
-  assert.equal(valid.historical_archive.record_count,7104);
+  assert.equal(valid.historical_archive.record_count,actual.record_count);
   assert.equal(valid.consistent_rounds,source().consistent_rounds);
   assert.equal(valid.prediction_skill_confirmed,false);
   s.historical_archive.officially_verified=true;
@@ -380,9 +375,15 @@ test('latest historical one-ticket validation is displayed but never upgraded to
   const s=source();
   const e=s.research_evolution;
   const report=JSON.parse(readFileSync(new URL('../research/evolution_report.json',import.meta.url),'utf8'));
-  assert.equal(e.status,'recursive_research_exploration_not_prospective_evidence');
+  // Secondary draw history can advance before research evolution catches up.
+  // This fixture tests one internally consistent *hypothetical fresh generation*.
+  e.status='recursive_research_exploration_not_prospective_evidence';
+  e.evaluated_draws=s.historical_archive.last_round-1;
+  e.candidate_models=report.model_ids.length;
+  e.next_model='uniform';
+  e.next_number='1234';
   const models=['uniform','adaptive',...report.model_ids];
-  const last=e.evaluated_draws+1;
+  const last=s.historical_archive.last_round;
   const n=last-5000;
   const v={
     scope:'secondary_history_exploratory_reconstruction_only',
@@ -445,4 +446,50 @@ test('latest historical verification UI has full-period, late-cohort and round-b
   assert.ok(html.includes('最新12回の再予測照合'));
   assert.ok(html.includes('二次公開履歴に基づく後付け研究'));
   assert.ok(js.includes('create("tr")'));
+});
+
+
+test('current one-ticket research forecast is valid and its last-change state cannot claim issuance',()=>{
+  const s=source();
+  s.latest_research_forecast={
+    version:'numbers4-latest-research-forecast-v1',
+    source:'validated_research_evolution',
+    target_round:7106,data_cutoff_round:7105,
+    number:'2903',model:'rolling_250_alpha10',
+    research_generation:12,
+    computed_at_jst:'2026-11-02T07:30:00+09:00',
+    last_changed_at_jst:'2026-11-02T07:40:00+09:00',
+    changed_since_previous_snapshot:true,
+    archive_git_blob_sha1:'a'.repeat(40),
+    status:'research_only_not_issued_not_purchased',
+    actual_purchase:false,officially_verified:false,
+    prediction_skill_confirmed:false,
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.latest_research_forecast.number='29034';
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.number='2903';
+  s.latest_research_forecast.actual_purchase=true;
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.actual_purchase=false;
+  s.latest_research_forecast.data_cutoff_round=7106;
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.data_cutoff_round=7105;
+  s.latest_research_forecast.last_changed_at_jst='2099-01-01T00:00:00+09:00';
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+});
+
+test('open dashboard auto-updates changed research candidate and shows computation and change time',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of ['latest-candidate-meta','latest-candidate-numbers',
+                   'latest-candidate-source','latest-candidate-computed',
+                   'latest-candidate-last-change','latest-candidate-change']){
+    assert.ok(html.includes('id="'+id+'"'),id);
+    assert.ok(app.includes('"'+id+'"'),id);
+  }
+  assert.ok(app.includes('data.latest_research_forecast'));
+  assert.ok(app.includes('FORECAST_REFRESH_INTERVAL_MS=120_000'));
+  assert.ok(app.includes('document.addEventListener("visibilitychange"'));
+  assert.ok(html.includes('画面を開いたままでも2分おき'));
 });
