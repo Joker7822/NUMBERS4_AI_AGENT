@@ -75,6 +75,16 @@ jobs:
               print('bank HTML chars:',len(html))
               print('bank script URL paths:',scripts[:30])
               print('bank visible 7104:', '7104' in html)
+              at=html.find('ナンバーズ4抽せん数字一覧表')
+              print('bank results container excerpt:',re.sub(r'<[^>]+>',' ',html[at:at+650]).strip()[:400])
+              for js_path in ('/common2024/js/transfer/lottery.js','/common2024/js/include_takarakuji.js'):
+                  try:
+                      with urllib.request.urlopen('https://www.mizuhobank.co.jp'+js_path,timeout=12) as js_resp:
+                          js=js_resp.read(120_000).decode('utf-8','replace')
+                      found=list(dict.fromkeys(re.findall(r'[^\\n;]{0,100}(?:numbers4|takarakuji|\\.json|\\.xml|\\.cgi|backnumber)[^\\n;]{0,140}',js,re.I)))
+                      print('bank JS',js_path,'chars',len(js),'hints',found[:20])
+                  except Exception as exc:
+                      print('bank JS diagnostic',js_path,type(exc).__name__)
               print('bank source API hints:',list(dict.fromkeys(re.findall(r'[\"\x27]([^\"\x27 ]*(?:api|numbers4|backnumber|result|json)[^\"\x27 ]*)[\"\x27]',html,re.I)))[:35])
           except Exception as exc:
               print('bank diagnostic failed:',type(exc).__name__)
