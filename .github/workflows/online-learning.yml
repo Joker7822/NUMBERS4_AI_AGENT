@@ -39,10 +39,12 @@ on:
       - 'data/secondary_box_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
   schedule:
-    # GitHub cron is best-effort, NOT a real-time SLA. 23:25 JST weekdays,
-    # with a next-business-morning retry at 10:10 JST Tuesday-Saturday.
-    - cron: '25 14 * * 1-5'
-    - cron: '10 1 * * 2-6'
+    # Run every two hours, every day: 00:00, 02:00, ... 22:00 JST.
+    # GitHub cron uses UTC: 01:00, 03:00, ... 23:00 UTC.
+    # Best-effort scheduling; GitHub Actions can delay or skip cron runs.
+    # On completion, predictive-research.yml continues with model evolution,
+    # draw-2-to-latest re-evaluation, and the verified dashboard deployment.
+    - cron: '0 1-23/2 * * *'
 
 permissions:
   contents: write
