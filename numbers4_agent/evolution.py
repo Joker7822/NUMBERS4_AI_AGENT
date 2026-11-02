@@ -33,7 +33,6 @@ ROUND_CSV = Path("research/evolution_round_predictions.csv")
 JOURNAL = Path("research/evolution_journal.jsonl")
 SPLIT_ROUND = 5000
 MAX_MODELS = 8
-MAX_GENERATIONS = 1000
 GUARD_LOOKBACK = 250
 GUARD_Z = 2.5
 ROUND_FIELDS = (
@@ -209,8 +208,8 @@ def _mutate(parent: dict, generation: int) -> dict:
 
 def propose(discovery: dict, *, previous: dict | None = None,
             generation: int = 1) -> tuple[list[dict], list[dict]]:
-    if type(generation) is not int or not 1 <= generation <= MAX_GENERATIONS:
-        raise ValueError("invalid bounded evolution generation")
+    if type(generation) is not int or generation < 1:
+        raise ValueError("invalid evolution generation")
     hints, links = _metadata_leads(discovery)
     seed = [dict(x) for x in FALLBACK_SPECS]
     if "markov" in hints:
@@ -410,8 +409,6 @@ def next_queries(previous: dict | None) -> list[str]:
 
 def _read_previous(root: Path) -> tuple[list[dict], dict | None]:
     chain = read_chain(root / JOURNAL)
-    if len(chain) >= MAX_GENERATIONS:
-        raise ValueError("bounded research generation limit reached")
     file = root / REPORT
     if chain and not file.is_file():
         raise ValueError("missing evolution report for existing journal")
