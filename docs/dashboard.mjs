@@ -154,6 +154,66 @@ export function normalizeStatus(s){
       throw new Error('過去シミュレーションの当せん履歴・収支根拠が不正です');
     }
   }
+  if(online?.status==='historical_walk_forward_reconstruction_only'&&online.retrospective_box_finance){
+    const f=online.retrospective_box_finance;
+    const isMoney=n=>Number.isSafeInteger(n)&&n>=0;
+    const win=f.winning_rounds;
+    const actualBox=n=>typeof n==='string'&&safeDigits(n)&&new Set(n).size>1;
+    const sameBox=(a,b)=>a.split('').sort().join('')===b.split('').sort().join('');
+    if(f.version!=='numbers4-retrospective-box-five-finance-v1'||
+       f.status!=='historical_simulation_only_not_actual_purchase'||
+       f.ticket_type!=='box'||f.requested_tickets_per_round!==5||
+       f.ticket_unit_cost_yen!==200||
+       f.first_evaluated_round!==2||f.evaluated_rounds!==online.evaluated_draws||
+       f.last_evaluated_round!==online.last_evaluated_round||
+       !isMoney(f.simulated_purchased_tickets)||!isMoney(f.excluded_ineligible_tickets)||
+       f.simulated_purchased_tickets+f.excluded_ineligible_tickets!==f.evaluated_rounds*5||
+       !isMoney(f.simulated_ticket_cost_yen)||
+       f.simulated_ticket_cost_yen!==f.simulated_purchased_tickets*200||
+       !isMoney(f.simulated_payout_yen)||
+       !Number.isSafeInteger(f.simulated_net_yen)||
+       f.simulated_net_yen!==f.simulated_payout_yen-f.simulated_ticket_cost_yen||
+       (f.simulated_ticket_cost_yen>0
+         ?typeof f.simulated_roi_percent!=='number'||
+          !Number.isFinite(f.simulated_roi_percent)||
+          Math.abs(f.simulated_roi_percent-
+            Math.round(1000000*f.simulated_net_yen/f.simulated_ticket_cost_yen)/10000)>0.0001
+         :f.simulated_roi_percent!==null)||
+       !isMoney(f.historical_winning_draws)||!isMoney(f.historical_winning_tickets)||
+       f.historical_winning_tickets>f.simulated_purchased_tickets||
+       !isMoney(f.baseline_purchased_tickets)||!isMoney(f.baseline_excluded_ineligible_tickets)||
+       f.baseline_purchased_tickets+f.baseline_excluded_ineligible_tickets!==f.evaluated_rounds*5||
+       !isMoney(f.baseline_ticket_cost_yen)||f.baseline_ticket_cost_yen!==f.baseline_purchased_tickets*200||
+       !isMoney(f.baseline_winning_tickets)||f.baseline_winning_tickets>f.baseline_purchased_tickets||
+       !isMoney(f.baseline_simulated_payout_yen)||!Number.isSafeInteger(f.baseline_simulated_net_yen)||
+       f.baseline_simulated_net_yen!==f.baseline_simulated_payout_yen-f.baseline_ticket_cost_yen||
+       f.payout_source_status!=='single_secondary_publisher_not_bank_verified'||
+       f.bank_primary_payouts_verified!==false||f.actual_purchase_records_present!==false||
+       f.original_predictions_unchanged!==true||f.production_promotion_authorized!==false||
+       f.actual_spend_yen!==null||f.actual_income_yen!==null||f.actual_profit_yen!==null||
+       typeof f.payout_git_blob_sha1!=='string'||!/^[0-9a-f]{40}$/.test(f.payout_git_blob_sha1)||
+       !Array.isArray(win)||win.length!==f.historical_winning_draws||
+       win.some((w,i)=>(
+         !Number.isInteger(w.round)||w.round<2||w.round>online.last_evaluated_round||
+         (i>0&&w.round<=win[i-1].round)||
+         !/^\d{4}-\d{2}-\d{2}$/.test(w.draw_date)||
+         !actualBox(w.winning_number)||
+         !Array.isArray(w.matched_tickets)||w.matched_tickets.length<1||
+         w.matched_tickets.length>5||w.winning_ticket_count!==w.matched_tickets.length||
+         !isMoney(w.box_payout_yen_per_ticket)||w.box_payout_yen_per_ticket===0||
+         w.hypothetical_box_payout_yen!==w.box_payout_yen_per_ticket*w.winning_ticket_count||
+         w.status!=='retrospective_simulated_box_win_not_actual_purchase'||
+         w.matched_tickets.some((t,j)=>(
+           !Number.isInteger(t.ticket_position)||t.ticket_position<1||t.ticket_position>5||
+           !actualBox(t.predicted_number)||!sameBox(t.predicted_number,w.winning_number)||
+           (j>0&&t.ticket_position<=w.matched_tickets[j-1].ticket_position)
+         ))
+       ))||
+       win.reduce((sum,w)=>sum+w.winning_ticket_count,0)!==f.historical_winning_tickets||
+       win.reduce((sum,w)=>sum+w.hypothetical_box_payout_yen,0)!==f.simulated_payout_yen){
+      throw new Error('ボックス購入の再現的中・配当・収支の証拠が不正です');
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
 }

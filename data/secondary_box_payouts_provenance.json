@@ -1,0 +1,27 @@
+{
+  "version": "numbers4-secondary-box-payouts-v1",
+  "status": "single_secondary_publisher_not_bank_verified",
+  "git_blob_sha1": "fddbb69e36a70103733e8e55a351b66187fac70c",
+  "record_count": 7104,
+  "first_round": 1,
+  "last_round": 7104,
+  "first_draw_date": "1994-10-07",
+  "last_draw_date": "2026-10-30",
+  "first_number": "1149",
+  "latest_number": "5805",
+  "eligible_box_draws": 7096,
+  "ineligible_box_draws": 8,
+  "ticket_price_yen": 200,
+  "bank_primary_payouts_verified": false,
+  "secondary_payout_independence_proven": false,
+  "forecast_grading_authorized": false,
+  "actual_purchase_records_present": false,
+  "source": {
+    "url": "https://github.com/hazimekom/numbers4-api/blob/bc99c64c6ddd8e3183a257dfd36ab3fefe62212e/data/numbers4_results_v2.csv",
+    "commit_sha": "bc99c64c6ddd8e3183a257dfd36ab3fefe62212e",
+    "blob_sha": "8e09368b9219fb7506e6d36deb335d8fc546d886"
+  },
+  "other_source_number_crosscheck": "https://github.com/kodai721229/kujilab/blob/5ec30ce16afed035d151c2e007367601d141dbab/public/data/numbers4.json",
+  "official_rule_url": "https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html",
+  "interpretation": "Box payout is blank exactly when all four digits coincide, because box cannot be purchased. Secondary publisher payouts only. Backtest results are hypothetical purchases, not actual income."
+}

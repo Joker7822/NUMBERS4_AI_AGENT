@@ -130,3 +130,57 @@ test('hypothetical per-round payouts and non-misses are strictly validated',()=>
   online.retrospective_finance.bank_primary_payouts_verified=true;
   assert.throws(()=>normalizeStatus(s),/シミュレーション/);
 });
+
+test('BOX finance is never mistaken for actual purchases or STRAIGHT outcomes',()=>{
+  const s=source();
+  const online=s.online_prequential_replay;
+  assert.equal(online.status,'historical_walk_forward_reconstruction_only');
+  const bought=online.evaluated_draws*5-2;
+  const spend=bought*200;
+  const payout=84000;
+  online.retrospective_box_finance={
+    version:'numbers4-retrospective-box-five-finance-v1',
+    status:'historical_simulation_only_not_actual_purchase',
+    ticket_type:'box',requested_tickets_per_round:5,ticket_unit_cost_yen:200,
+    evaluated_rounds:online.evaluated_draws,first_evaluated_round:2,
+    last_evaluated_round:online.last_evaluated_round,
+    simulated_purchased_tickets:bought,excluded_ineligible_tickets:2,
+    historical_winning_draws:1,historical_winning_tickets:2,
+    simulated_ticket_cost_yen:spend,simulated_payout_yen:payout,
+    simulated_net_yen:payout-spend,
+    simulated_roi_percent:Math.round(1000000*(payout-spend)/spend)/10000,
+    baseline_purchased_tickets:bought,baseline_excluded_ineligible_tickets:2,
+    baseline_winning_tickets:1,
+    baseline_ticket_cost_yen:spend,
+    baseline_simulated_payout_yen:42000,
+    baseline_simulated_net_yen:42000-spend,
+    winning_rounds:[{
+      round:212,draw_date:'1996-12-03',
+      winning_number:'9475',selected_model:'uniform',
+      matched_tickets:[{ticket_position:1,predicted_number:'7594'},
+                       {ticket_position:2,predicted_number:'9475'}],
+      winning_ticket_count:2,box_payout_yen_per_ticket:42000,
+      hypothetical_box_payout_yen:84000,
+      status:'retrospective_simulated_box_win_not_actual_purchase'
+    }],
+    payout_git_blob_sha1:'fddbb69e36a70103733e8e55a351b66187fac70c',
+    payout_source_status:'single_secondary_publisher_not_bank_verified',
+    bank_primary_payouts_verified:false,
+    actual_purchase_records_present:false,
+    actual_spend_yen:null,actual_income_yen:null,actual_profit_yen:null,
+    original_predictions_unchanged:true,production_promotion_authorized:false
+  };
+  assert.equal(normalizeStatus(s).online_prequential_replay.retrospective_box_finance.historical_winning_tickets,2);
+  const f=online.retrospective_box_finance;
+  f.simulated_payout_yen+=1;
+  assert.throws(()=>normalizeStatus(s),/ボックス購入/);
+  f.simulated_payout_yen=payout;
+  f.winning_rounds[0].matched_tickets[0].predicted_number='7593';
+  assert.throws(()=>normalizeStatus(s),/ボックス購入/);
+  f.winning_rounds[0].matched_tickets[0].predicted_number='7594';
+  f.actual_profit_yen=1;
+  assert.throws(()=>normalizeStatus(s),/ボックス購入/);
+  f.actual_profit_yen=null;
+  f.bank_primary_payouts_verified=true;
+  assert.throws(()=>normalizeStatus(s),/ボックス購入/);
+});
