@@ -1,0 +1,127 @@
+name: Numbers4 Official-Primary Results and Historical Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'numbers4_agent/official_fetch.py'
+      - 'numbers4_agent/proof.py'
+      - 'numbers4_agent/sources.py'
+      - 'numbers4_agent/evaluation.py'
+      - 'numbers4_agent/dashboard.py'
+      - 'numbers4_agent/cli.py'
+      - 'tests/test_official_fetch.py'
+      - '.github/workflows/official-results.yml'
+  pull_request:
+    paths:
+      - 'numbers4_agent/**'
+      - 'tests/test_official_fetch.py'
+      - '.github/workflows/official-results.yml'
+  schedule:
+    # Numbers4 results typically publish after 18:45 JST. Allow publisher lag.
+    - cron: '15 13 * * 1-5'  # 22:15 JST, Monday-Friday
+    - cron: '30 0 * * 2-6'   # 09:30 JST, Tuesday-Saturday retry
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: numbers4-official-feed-main
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate immutable historical ledger, source parsers and forecast controls
+        run: |
+          python -m compileall -q numbers4_agent tests
+          python -m unittest discover -s tests -v
+      - name: Pull publisher evidence; never declare unverified outcomes official
+        if: github.event_name == 'pull_request'
+        run: |
+          python -m numbers4_agent.cli --root . fetch-official --months-back 3 > /tmp/numbers4-fetch.json
+          python -m numbers4_agent.cli --root . prove --output research/historical_backtest.json > /tmp/numbers4-research.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          fetch=json.loads(Path('/tmp/numbers4-fetch.json').read_text())
+          proof=json.loads(Path('/tmp/numbers4-research.json').read_text())
+          assert fetch['automatic_model_promotion'] is False
+          assert proof['prospective_skill_confirmed'] is False
+          assert proof['existing_issued_predictions_changed'] is False
+          print('publisher status:', fetch['status'])
+          print('bank rows:', fetch['bank_rows'], 'secondary rows:', fetch['rakuten_rows'])
+          print('exploratory report:',proof['research_unverified_history'])
+          PY
+          git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl
+      - name: Fetch newest main and publish only verified results / exploratory report
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'numbers4-ai-agent[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m numbers4_agent.cli --root . fetch-official --months-back 12 > /tmp/numbers4-fetch.json
+            python -m numbers4_agent.cli --root . prove --output research/historical_backtest.json > /tmp/numbers4-research.json
+            python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-dashboard.json
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/numbers4-fetch.json').read_text())
+          proof=json.loads(Path('/tmp/numbers4-research.json').read_text())
+          assert report['verified_claim_only_on_matching_records'] is True
+          assert report['automatic_model_promotion'] is False
+          assert proof['prospective_skill_confirmed'] is False
+          assert proof['production_changed'] is False
+          assert proof['existing_issued_predictions_changed'] is False
+          print('verified bank-plus-secondary rows:', report['publisher_matched_rows'])
+          print('new verified rows:', report['new_verified_rows'])
+          print('historical only:', proof['research_unverified_history'])
+          PY
+            git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl
+            for output in data/auto_verified_draws.jsonl research/historical_unverified.json research/historical_backtest.json docs/data/status.json; do
+              if [ -f "$output" ]; then git add -- "$output"; fi
+            done
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/auto_verified_draws.jsonl|research/historical_(unverified|backtest).json|docs/data/status.json)$' || true)"
+            if [ -n "$unexpected" ]; then echo "::error::Unexpected staged path: $unexpected"; exit 1; fi
+            if git diff --cached --quiet; then echo 'No change to publish'; exit 0; fi
+            git commit -m 'data: publish independently matched Numbers4 results and exploratory diagnostics'
+            if git push origin HEAD:main; then echo 'Publisher evidence and research report committed'; exit 0; fi
+            if [ "$attempt" -eq 3 ]; then echo '::error::Could not commit data safely'; exit 1; fi
+          done
+      - name: Publisher evidence and statistical limitations
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Numbers4 read-only publisher check'
+            if [ -f /tmp/numbers4-fetch.json ]; then
+              python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-fetch.json').read_text())
+          print('- Status: '+r['status'])
+          print('- Mizuho bank observations: '+str(r['bank_rows']))
+          print('- Rakuten observations: '+str(r['rakuten_rows']))
+          print('- Bank+secondary matched: '+str(r['publisher_matched_rows']))
+          print('- Newly appended verified: '+str(r['new_verified_rows']))
+          print('- Errors: '+str(len(r['errors'])))
+          PY
+            fi
+            echo '- Single-publisher historical data remain unverified; research-only.'
+            echo '- No post-draw issued tickets, lottery purchases, or automatic model promotions.'
+            echo '- Retrospective performance never establishes genuine prospective skill.'
+          } >> "$GITHUB_STEP_SUMMARY"

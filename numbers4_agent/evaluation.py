@@ -28,7 +28,7 @@ def graded_predictions(root: Path) -> list[dict]:
             "tickets": [{"number": n, "result": g} for n, g in zip(issue["numbers"], verdicts)],
             "winning_tickets": sum(g != "miss" for g in verdicts),
             "issued_at_jst": issue["issued_at_jst"],
-            "verification": "two_source_manual_attestations_consistent",
+            "verification": ("bank_primary_rakuten_publication_match" if draw["status"] == "auto_verified_two_publishers" else "two_source_manual_attestations_consistent"),
             "actual_purchase": False, "actual_profit_yen": None,
             "reference_cost_yen": 5 * PRICE_PER_TICKET_YEN,
         })

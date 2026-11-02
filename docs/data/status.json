@@ -1,12 +1,13 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T12:26:01+09:00",
+  "generated_at_jst": "2026-11-02T12:47:16+09:00",
   "product": "Numbers4",
-  "official_auto_fetch_enabled": false,
-  "data_scope": "human_entered_official_source_claims_with_hash_chain",
+  "official_auto_fetch_enabled": true,
+  "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
   "source_status": "no_corroborated_draws",
   "observed_rounds": 0,
   "consistent_rounds": 0,
+  "auto_verified_rounds": 0,
   "latest_consistent_draw": null,
   "published_forecast": null,
   "latest_graded_issued_forecast": null,
@@ -18,10 +19,21 @@
     "evaluated_draws": 0,
     "forecast_skill_confirmed": false
   },
+  "historical_accuracy_proof": {
+    "status": "not_yet_run",
+    "scope": "no_historical_source",
+    "evaluated_draws": 0,
+    "top5_model_hits": null,
+    "top5_reference_hits": null,
+    "uniform_expected_top5_hit_draws": null,
+    "mean_log_likelihood_edge_vs_uniform": null,
+    "descriptive_moving_block_bootstrap_95pct": null,
+    "prediction_skill_confirmed": false
+  },
   "source_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "issuance_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "warnings": [
-    "Numbers4の照合済み結果が未登録です。履歴の成績を生成しません。",
+    "Numbers4の2公開元照合済み結果が未登録です。公式銀行の取得に失敗した場合は採点しません。",
     "事前発行した予測はありません。研究候補を発行済みとして表示しません。"
   ],
   "prediction_skill_confirmed": false,

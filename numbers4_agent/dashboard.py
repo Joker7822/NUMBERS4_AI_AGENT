@@ -28,29 +28,49 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         warnings.append("2系統の当せん結果が一致しない回があります。照合・採点しません。")
     if single:
         warnings.append("独立した2系統の登録がそろっていない回があります。")
+    auto_draws = [r for r in trusted if r["status"] == "auto_verified_two_publishers"]
     if not trusted:
-        warnings.append("Numbers4の照合済み結果が未登録です。履歴の成績を生成しません。")
+        warnings.append("Numbers4の2公開元照合済み結果が未登録です。公式銀行の取得に失敗した場合は採点しません。")
     else:
         age_days=(now.date()-datetime.fromisoformat(latest["draw_date"]).date()).days
         if age_days > 7:
-            warnings.append("直近の登録済み結果が7日超前です。自動更新ではありません。")
+            warnings.append("直近の登録済み結果が7日超前です。公式銀行の自動取得が停止または未反映の可能性があります。")
     if not issued:
         warnings.append("事前発行した予測はありません。研究候補を発行済みとして表示しません。")
     else:
         if recent_issued["target_round"] not in {r["round"] for r in trusted}:
             warnings.append("最新の発行済み5口はまだ2ソース入力の一致結果で採点できません。")
+    research_path = root / "research" / "historical_backtest.json"
+    research = {}
+    if research_path.is_file():
+        report = json.loads(research_path.read_text(encoding="utf-8"))
+        research = report.get("research_unverified_history", {})
+        if research.get("prediction_skill_confirmed") is not False or research.get("production_promotion_allowed") is not False:
+            raise ValueError("unauthorized research-to-production claim")
     return {
         "version": VERSION, "generated_at_jst": now.isoformat(timespec="seconds"),
-        "product": "Numbers4", "official_auto_fetch_enabled": False,
-        "data_scope": "human_entered_official_source_claims_with_hash_chain",
-        "source_status": "conflict" if conflicts else "two_source_entered_consistent" if trusted else "no_corroborated_draws",
+        "product": "Numbers4", "official_auto_fetch_enabled": True,
+        "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
+        "source_status": "conflict" if conflicts else "auto_verified_two_publishers" if auto_draws else "two_source_entered_consistent" if trusted else "no_corroborated_draws",
         "observed_rounds": len(states), "consistent_rounds": len(trusted),
+        "auto_verified_rounds": len(auto_draws),
         "latest_consistent_draw": latest,
         "published_forecast": ({k: recent_issued[k] for k in ("target_round", "draw_date", "mode", "numbers", "issued_at_jst", "model_version", "actual_purchase")}
                                if recent_issued else None),
         "latest_graded_issued_forecast": recent_grade,
         "issued_draws": len(issued), "graded_issued_draws": len(graded),
         "historical_research": walk_forward(root),
+        "historical_accuracy_proof": {
+            "status": research.get("status", "not_yet_run"),
+            "scope": research.get("scope", "no_historical_source"),
+            "evaluated_draws": research.get("evaluated_draws", 0),
+            "top5_model_hits": research.get("top5_model_hits"),
+            "top5_reference_hits": research.get("top5_reference_hits"),
+            "uniform_expected_top5_hit_draws": research.get("uniform_expected_top5_hit_draws"),
+            "mean_log_likelihood_edge_vs_uniform": research.get("mean_log_likelihood_edge_vs_uniform"),
+            "descriptive_moving_block_bootstrap_95pct": research.get("descriptive_moving_block_bootstrap_95pct"),
+            "prediction_skill_confirmed": False,
+        },
         "source_file_sha256": file_hash(root / "data" / "source_observations.jsonl"),
         "issuance_file_sha256": file_hash(root / "data" / "issued_forecasts.jsonl"),
         "warnings": warnings,

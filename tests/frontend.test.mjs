@@ -9,7 +9,7 @@ test('actual checked-in public Numbers4 status is honest and safe',()=>{
   assert.equal(data.consistent_rounds>=0,true);
   assert.equal(data.issued_draws>=0,true);
   assert.equal(data.prediction_skill_confirmed,false);
-  assert.equal(data.official_auto_fetch_enabled,false);
+  assert.equal(data.official_auto_fetch_enabled,true);
 });
 test('cannot fake a successful prediction or source proof',()=>{
   const s=source();s.prediction_skill_confirmed=true;

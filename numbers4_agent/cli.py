@@ -10,6 +10,8 @@ from .evaluation import graded_predictions, walk_forward
 from .ledger import issue
 from .models import ranked_candidates
 from .sources import corroborated_draws, record_observation, reconcile
+from .official_fetch import sync
+from .proof import run as research_proof, save_report
 
 
 def print_json(data: object) -> None:
@@ -42,6 +44,10 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("audit", help="print snapshot and source conflicts")
     sub.add_parser("evaluate", help="grade existing pre-issued tickets against two entered sources")
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
+    fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
+    fetch.add_argument("--months-back", type=int, default=12)
+    proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
+    proof.add_argument("--output", type=Path, default=Path("research/historical_backtest.json"))
     dash = sub.add_parser("build-dashboard", help="produce public snapshot without changing evidence")
     dash.add_argument("--output", type=Path, default=Path("docs/data/status.json"))
     return ap
@@ -65,6 +71,10 @@ def main(argv: list[str] | None = None) -> int:
             result = {"status": "two_source_manual_entry_only", "graded": graded_predictions(root)}
         elif args.command == "backtest":
             result = walk_forward(root)
+        elif args.command == "fetch-official":
+            result = sync(root, months_back=args.months_back)
+        elif args.command == "prove":
+            result = save_report(root, root / args.output)
         elif args.command == "build-dashboard":
             result = write_dashboard(root, args.output)
         else:

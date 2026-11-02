@@ -1,20 +1,20 @@
-// Pure validator. Never interpret manually entered observations as auto-fetched official data.
+// Pure validator. Distinguish bank/Rakuten matching records from manual claims.
 export const VERSION="numbers4-dashboard-v1";
 const safeDigits=n=>typeof n==="string"&&/^[0-9]{4}$/.test(n);
 const safeTime=t=>typeof t==="string"&&!Number.isNaN(Date.parse(t))&&/[+-]\d\d:\d\d$/.test(t);
 export function normalizeStatus(s){
   if(!s||s.version!==VERSION||s.product!=="Numbers4"||
-      s.official_auto_fetch_enabled!==false||s.prediction_skill_confirmed!==false||
+      s.official_auto_fetch_enabled!==true||s.prediction_skill_confirmed!==false||
       s.automatic_model_promotion!==false||s.actual_purchase_profit_yen!==null||
       !safeTime(s.generated_at_jst)||!Number.isInteger(s.consistent_rounds)||
-      !Number.isInteger(s.observed_rounds)||!Number.isInteger(s.issued_draws)||
+      !Number.isInteger(s.observed_rounds)||!Number.isInteger(s.issued_draws)||!Number.isInteger(s.auto_verified_rounds)||s.auto_verified_rounds<0||s.auto_verified_rounds>s.consistent_rounds||
       s.graded_issued_draws>s.issued_draws||!Number.isInteger(s.graded_issued_draws)||
       !Array.isArray(s.warnings)||s.warnings.some(x=>typeof x!=="string")||
-      !["conflict","two_source_entered_consistent","no_corroborated_draws"].includes(s.source_status)){
+      !["conflict","two_source_entered_consistent","auto_verified_two_publishers","no_corroborated_draws"].includes(s.source_status)){
     throw new Error("監査JSONの安全性・形式を確認できません");
   }
   const d=s.latest_consistent_draw;
-  if(d&&(d.status!=="two_source_entered_consistent"||!safeDigits(d.winning_number)||
+  if(d&&(!["two_source_entered_consistent","auto_verified_two_publishers"].includes(d.status)||!safeDigits(d.winning_number)||
        !Number.isInteger(d.round)||typeof d.draw_date!=="string")){
     throw new Error("照合結果の形式が不正です");
   }
@@ -32,7 +32,7 @@ export function normalizeStatus(s){
       return mode==="box"?"box":"set_box";
     return "miss";
   };
-  if(g&&(!d||g.verification!=="two_source_manual_attestations_consistent"||
+  if(g&&(!d||!["two_source_manual_attestations_consistent","bank_primary_rakuten_publication_match"].includes(g.verification)||
          g.actual_purchase!==false||g.actual_profit_yen!==null||
          !Number.isInteger(g.round)||!safeDigits(g.winning_number)||
          !["straight","box","set"].includes(g.mode)||
@@ -44,6 +44,13 @@ export function normalizeStatus(s){
          (p&&g.round===p.target_round&&(g.mode!==p.mode||
             g.tickets.some((t,i)=>t.number!==p.numbers[i]))))){
     throw new Error("採点済み予測の整合性が不正です");
+  }
+  const proof=s.historical_accuracy_proof;
+  if(!proof || !["not_yet_run","insufficient_history","historical_exploratory_only"].includes(proof.status) ||
+     proof.prediction_skill_confirmed!==false||!Number.isInteger(proof.evaluated_draws)||proof.evaluated_draws<0||
+     (proof.mean_log_likelihood_edge_vs_uniform!=null&&
+      (typeof proof.mean_log_likelihood_edge_vs_uniform!=="number"||!Number.isFinite(proof.mean_log_likelihood_edge_vs_uniform)))){
+    throw new Error("過去研究の権限と計算結果を検証できません");
   }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
