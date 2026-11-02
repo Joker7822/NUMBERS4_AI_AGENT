@@ -4,64 +4,124 @@ on:
   workflow_dispatch:
     inputs:
       queries:
-        description: 'Optional research queries, one per line (max 8). Empty uses 4 preset scientific topics.'
+        description: 'Optional research queries, one per line, at most eight. Empty uses adaptive search.'
         required: false
         type: string
+  push:
+    branches: [main]
+    paths:
+      - 'numbers4_agent/evolution.py'
+      - 'numbers4_agent/research_discovery.py'
+      - 'tests/test_evolution.py'
+      - '.github/workflows/predictive-research.yml'
+  workflow_run:
+    workflows: ['Numbers4 Historical Round2 Replay and Online Research Update']
+    types: [completed]
+    branches: [main]
   schedule:
-    # Weekdays 11:15 JST, best-effort GitHub cron; not a real-time service.
+    # Every weekday 11:15 JST, in addition to completed historical refreshes.
     - cron: '15 2 * * 1-5'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: numbers4-method-discovery-research
+  group: numbers4-recursive-research-main
   cancel-in-progress: false
 
 jobs:
-  discover-and-test-only:
+  discover-evolve-and-replay-all:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate search safety and retrospective model metrics
+      - name: Validate chronology and untrusted-paper isolation
         run: |
           python -m unittest discover -s tests -v
-      - name: Search predictive method literature, then benchmark existing frozen models
+      - name: Search, evolve bounded methods, reconstruct EVERY draw from number 2, commit auditable report
         env:
           BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
           RESEARCH_QUERIES: ${{ inputs.queries }}
+        shell: bash
         run: |
-          python - <<'PY'
+          set -euo pipefail
+          git config user.name 'numbers4-ai-agent[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python - <<'PY'
           import json, os
           from pathlib import Path
-          from numbers4_agent.research_discovery import DEFAULT_TOPICS, write_research_cycle
-          values=[line.strip() for line in os.environ.get('RESEARCH_QUERIES','').splitlines()
-                  if line.strip() and not line.lstrip().startswith('#')]
-          report=write_research_cycle(
-              Path('.'), Path('/tmp/numbers4-predictive-method-research.json'),
-              queries=values or list(DEFAULT_TOPICS),
-              brave_api_key=os.environ.get('BRAVE_SEARCH_API_KEY') or None)
-          assert report['genuine_future_out_of_sample_verified_draws']==0
-          assert report['model_auto_promotion_authorized'] is False
-          assert report['external_code_executed'] is False
-          assert report['production_forecast_ledger_modified'] is False
-          print('Research candidate sources:', report['discovery']['candidate_count'])
-          print('Search provider errors:', len(report['discovery']['errors']))
-          print('Online web search configured:', report['discovery']['web_search_enabled'])
-          for name, model in report['experiment']['model_assessments'].items():
-              print(name, 'historic straight matches', model['straight_hits'],
-                    'log-score edge', model['mean_log_score_edge_vs_uniform'])
+          from numbers4_agent.evolution import cycle
+          raw=os.environ.get('RESEARCH_QUERIES','')
+          questions=[line.strip() for line in raw.splitlines()
+                     if line.strip() and not line.lstrip().startswith('#')]
+          result=cycle(Path('.'),queries=questions or None,
+                       brave_api_key=os.environ.get('BRAVE_SEARCH_API_KEY') or None)
+          assert result['first_evaluated_round']==2
+          assert result['evaluated_draws']==result['last_evaluated_round']-1
+          assert result['past_only_research_replay_recomputed'] is True
+          assert result['parallel_original_one_ticket_replay_recomputed'] is True
+          assert result['model_auto_promotion_authorized'] is False
+          assert result['genuine_prospective_independently_verified_draws']==0
+          assert result['production_model_changed'] is False
+          assert result['external_paper_code_executed'] is False
+          assert result['automatic_purchase'] is False
+          summary={
+            'generation':result['generation'],
+            'research_sources_found':result['research_discovery']['candidate_count'],
+            'research_search_errors':len(result['research_discovery']['errors']),
+            'online_search_attempted':result['research_discovery']['status']=='online_discovery_attempted',
+            'rounds_rerun_from_two':result['evaluated_draws'],
+            'new_rounds_since_last_cycle':result['current_archive_new_rounds_since_previous_generation'],
+            'next_research_candidate':result['next_research_candidate'],
+            'development_winner':result['development_winner']['model'],
+            'repeated_historical_test_not_prospective_proof':True,
+          }
+          Path('/tmp/numbers4-evolution-summary.json').write_text(
+              json.dumps(summary,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+          print('RECURSIVE_EVOLUTION_SUMMARY_START')
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          print('RECURSIVE_EVOLUTION_SUMMARY_END')
           PY
+            python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-evolution-dashboard.json
+            git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl data/production_champion.json
+            git add -- research/evolution_report.json research/evolution_round_predictions.csv \
+              research/evolution_journal.jsonl research/online_replay.json \
+              research/online_round_predictions.csv docs/data/status.json
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(research/(evolution_(report.json|round_predictions.csv|journal.jsonl)|online_replay.json|online_round_predictions.csv)|docs/data/status.json)$' || true)"
+            if [ -n "$unexpected" ]; then echo "::error::Unexpected staged file: $unexpected"; exit 1; fi
+            if git diff --cached --quiet; then echo 'No research report changes'; exit 0; fi
+            git commit -m 'research: evolve verified-method hypotheses and full round-two retro replay'
+            if git push origin HEAD:main; then
+              echo 'Auditable research generation committed without model/purchase changes'
+              exit 0
+            fi
+            if [ "$attempt" -eq 3 ]; then echo '::error::Evolution update race'; exit 1; fi
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: numbers4-unverified-predictive-method-research
-          path: /tmp/numbers4-predictive-method-research.json
+          name: numbers4-recursive-evolution-summary
+          path: /tmp/numbers4-evolution-summary.json
           if-no-files-found: warn
           retention-days: 30
+      - name: Formal evidence and risk boundary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Adaptive online research, NOT prospective lottery skill'
+            echo '- Every run rebuilds predictions from draw 2 through latest available secondary archive.'
+            echo '- New papers are hypothesis leads mapped to safe, reviewed method templates; no arbitrary external code execution.'
+            echo '- Each generation chooses research search targets using previous development results only; late historical cohorts are reused and cannot establish prediction skill.'
+            echo '- No purchase, official bank attestation, or PRODUCTION model promotion is authorized by past-only replays.'
+          } >> "$GITHUB_STEP_SUMMARY"
