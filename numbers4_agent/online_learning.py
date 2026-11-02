@@ -20,6 +20,7 @@ from .historical_archive import archive_summary, load_archive
 from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
 from .rules import four_digits
+from .statistics import binomial_right_tail
 
 VERSION = "numbers4-prequential-online-replay-v1"
 JST = timezone(timedelta(hours=9))
@@ -161,6 +162,11 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
         for name,_,_ in MODELS:
             windows[name].append(row["winning_number"])
     n=len(grades)
+    # Comparisons are observational: the model family and threshold were
+    # designed after access to historical outcomes, not preregistered.
+    selected_only_hits=sum(g["selected_hit"] and not g["uniform_hit"] for g in grades)
+    reference_only_hits=sum(g["uniform_hit"] and not g["selected_hit"] for g in grades)
+    nonuniform_rounds=sum(count for name,count in selected_models.items() if name!="uniform")
     # Latest model candidate is recomputed only from results already in the
     # archive. Its target date is UNKNOWN until the official schedule is
     # checked. It is NEVER an issued, purchased or verified forecast.
@@ -187,6 +193,18 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
         "selected_top5_straight_hits":selected_hits,
         "uniform_reference_top5_straight_hits":reference_hits,
         "uniform_theoretical_top5_expected_hits":round(n*5/10000,6),
+        "research_statistical_audit":{
+            "scope":"descriptive_historical_reconstruction_not_preregistered",
+            "null_hypothesis":"independent_uniform_10000_possible_outcomes",
+            "five_distinct_straight_prob_per_draw":5/10000,
+            "selected_hit_tail_probability_given_uniform_null":
+                round(binomial_right_tail(n,selected_hits,5/10000),9),
+            "nonuniform_model_selected_rounds":nonuniform_rounds,
+            "selected_only_hits_vs_uniform_reference":selected_only_hits,
+            "uniform_reference_only_hits_vs_selected":reference_only_hits,
+            "statistical_significance_is_prospective_proof":False,
+            "interpretation":"A chance benchmark for historical hits, not evidence of forecast skill.",
+        },
         "selected_mean_log_score_edge_vs_uniform":round(sum(selected_scores)/n,9),
         "selected_mean_brier_improvement_vs_uniform":round(sum(selected_brier)/n,12),
         "research_model_selection_rounds":dict(selected_models),

@@ -104,6 +104,21 @@ export function normalizeStatus(s){
          new Set(next.numbers).size!==5){
         throw new Error('未来を混入した再現予測・架空の本番昇格は拒否します');
       }
+      const audit=online.research_statistical_audit;
+      if(audit!=null&&(
+          typeof audit!=='object'||
+          audit.scope!=='descriptive_historical_reconstruction_not_preregistered'||
+          audit.statistical_significance_is_prospective_proof!==false||
+          typeof audit.selected_hit_tail_probability_given_uniform_null!=='number'||
+          !Number.isFinite(audit.selected_hit_tail_probability_given_uniform_null)||
+          audit.selected_hit_tail_probability_given_uniform_null<0||
+          audit.selected_hit_tail_probability_given_uniform_null>1||
+          !Number.isInteger(audit.nonuniform_model_selected_rounds)||
+          audit.nonuniform_model_selected_rounds<0||
+          audit.nonuniform_model_selected_rounds>online.evaluated_draws
+      )){
+        throw new Error('過去研究の偶然確率を未来の予測実証として表示できません');
+      }
       if(s.historical_archive?.status==='secondary_public_mirrors_agree_not_officially_verified'&&
          (online.last_evaluated_round!==s.historical_archive.last_round||
           online.archive_git_blob_sha1!==s.historical_archive.git_blob_sha1)){

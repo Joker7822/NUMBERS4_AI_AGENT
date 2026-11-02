@@ -109,7 +109,18 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
                 "selected_top5_straight_hits","uniform_reference_top5_straight_hits",
                 "uniform_theoretical_top5_expected_hits","selected_mean_log_score_edge_vs_uniform",
                 "selected_mean_brier_improvement_vs_uniform","research_model_selection_rounds",
+                "research_statistical_audit",
                 "next_research_candidate","archive_git_blob_sha1","generated_at_jst")}
+            audit=online["research_statistical_audit"]
+            if audit is not None and (
+                audit.get("scope")!="descriptive_historical_reconstruction_not_preregistered"
+                or audit.get("statistical_significance_is_prospective_proof") is not False
+                or not isinstance(audit.get("selected_hit_tail_probability_given_uniform_null"),(int,float))
+                or not 0 <= audit["selected_hit_tail_probability_given_uniform_null"] <= 1
+                or not isinstance(audit.get("nonuniform_model_selected_rounds"),int)
+                or not 0 <= audit["nonuniform_model_selected_rounds"] <= online["evaluated_draws"]
+            ):
+                raise ValueError("unsafe historical chance benchmark")
             online.update({"prediction_skill_confirmed":False,"officially_verified":False,
                            "forecast_grading_authorized":False,"production_model_changed":False})
             finance=replay.get("retrospective_finance")

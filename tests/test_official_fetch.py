@@ -103,6 +103,30 @@ class OfficialFetchTests(unittest.TestCase):
             sync(self.root,now=self.now,months_back=2,opener=open_mocks(rak=faulty))
         self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
+    def test_corrupt_research_cache_blocks_all_official_ledger_writes(self):
+        """Reject a stale or conflicting secondary cache before verified writes."""
+        cache=self.root/'research'/'historical_unverified.json'
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps({
+            'version':'numbers4-research-source-v1',
+            'verified_official':False,
+            'rows':[{'round':7103,'draw_date':'2026-10-29',
+                     'winning_number':'9999'}]
+        }))
+        with self.assertRaisesRegex(ResultFetchError,'revised an existing draw'):
+            sync(self.root,now=self.now,months_back=2,opener=open_mocks())
+        self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
+
+    def test_invalid_research_provenance_blocks_verified_writes(self):
+        cache=self.root/'research'/'historical_unverified.json'
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps({
+            'version':'unexpected-version', 'verified_official':False, 'rows':[]
+        }))
+        with self.assertRaisesRegex(ResultFetchError,'invalid provenance'):
+            sync(self.root,now=self.now,months_back=2,opener=open_mocks())
+        self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
+
     def test_network_host_strict_and_redirects_blocked(self):
         with self.assertRaisesRegex(ResultFetchError, 'unapproved'):
             _download('https://www.mizuhobank.co.jp.attacker.example', 'www.mizuhobank.co.jp',opener=open_mocks())

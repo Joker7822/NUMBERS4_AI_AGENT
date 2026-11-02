@@ -230,22 +230,9 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
         publication_time = datetime.fromisoformat(b["draw_date"] + "T18:30:00+09:00")
         if now < publication_time:
             raise ResultFetchError("official draw date has not passed release window")
-    for rnd in common:
-        b, r = bank[rnd], rakuten[rnd]
-        if rnd in previous:
-            continue
-        record = {
-            "round": rnd, "draw_date": b["draw_date"], "winning_number": b["winning_number"],
-            "verified_at_jst": now.isoformat(timespec="seconds"),
-            "verification": "bank_primary_rakuten_publication_match",
-            "bank_url": b["url"], "bank_response_sha256": b["sha256"],
-            "corroborator_url": r["url"], "corroborator_response_sha256": r["sha256"],
-            "not_a_digital_signature": True,
-        }
-        append(path, record)
-        new += 1
-    # A sidecar is NEVER a verified official result; it exists solely to run
-    # explicitly labeled descriptive historical experiments, not to grade bets.
+    # Validate the research sidecar BEFORE writing a single verified draw.
+    # An invalid or revised cache must never leave a partially accepted batch.
+    cache = None
     if record_unverified and rakuten:
         dest = root / "research" / RAW_RESEARCH
         old = json.loads(dest.read_text(encoding="utf-8")) if dest.is_file() else None
@@ -264,6 +251,23 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
             "official_confirmed_count_in_this_sync": len(common) - len(conflicts),
             "warning": "These single-publisher historical rows cannot grade issued forecasts or prove predictive skill",
         }
+    for rnd in common:
+        b, r = bank[rnd], rakuten[rnd]
+        if rnd in previous:
+            continue
+        record = {
+            "round": rnd, "draw_date": b["draw_date"], "winning_number": b["winning_number"],
+            "verified_at_jst": now.isoformat(timespec="seconds"),
+            "verification": "bank_primary_rakuten_publication_match",
+            "bank_url": b["url"], "bank_response_sha256": b["sha256"],
+            "corroborator_url": r["url"], "corroborator_response_sha256": r["sha256"],
+            "not_a_digital_signature": True,
+        }
+        append(path, record)
+        new += 1
+    # A sidecar is NEVER a verified official result; it exists solely to run
+    # explicitly labeled descriptive historical experiments, not to grade bets.
+    if cache is not None:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(json.dumps(cache, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {
