@@ -153,6 +153,29 @@ function render(data){
   set("backtest-scope",proof.status==="historical_exploratory_only"?
     "楽天公開履歴（銀行未照合）での過去研究。log-score差: "+String(proof.mean_log_likelihood_edge_vs_uniform)+
     "。将来予測力は未実証。":"真の結果履歴が不足しているため、予測精度の実証はできません。");
+  const automated=data.auto_learning;
+  const modelLabels={
+    uniform:'一様基準（未昇格）',
+    positional_60_alpha10:'桁別Dirichlet（直近60回）',
+    positional_250_alpha5:'桁別Dirichlet（直近250回）',
+    positional_1000_alpha20:'桁別Dirichlet（直近1,000回）'
+  };
+  const learningStatuses={
+    no_shadow_forecasts:'待機：抽せん前の比較予測なし',
+    evidence_integrity_blocked:'停止：証拠の不整合',
+    insufficient_true_prospective_draws:'将来検証を蓄積中',
+    eligible_under_preregistered_uniform_null:'昇格条件の統計判定に適合',
+    no_confirmed_advantage:'優位性が確認できません'
+  };
+  set("auto-learning-status",automated?learningStatuses[automated.status]:"未登録");
+  set("auto-learning-champion",automated?modelLabels[automated.active_champion]:"未登録");
+  set("auto-learning-bank-count",automated?automated.officially_verified_training_rounds+"回":"未確認");
+  set("auto-learning-witnesses",automated?automated.pre_draw_github_witnesses+"件":"未確認");
+  set("auto-learning-prospective",automated?
+      automated.eligible_prospective_draws+" / "+automated.required_prospective_draws+"回":"未確認");
+  set("auto-learning-promotion",automated?
+      (data.automatic_model_promotion?"検証条件付きの自動昇格が有効":
+       "未昇格・一様基準維持"+(automated.integrity_blocker?"（証拠不足で停止）":"")):"未登録");
   const ops=data.online_operations;
   const states={
     online_monitoring_active_secondary_research_only:"公式ルール監視正常・二次履歴研究運用中",
