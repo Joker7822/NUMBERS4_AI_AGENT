@@ -15,6 +15,12 @@ class DashboardTests(unittest.TestCase):
             self.assertIsNone(s["latest_graded_issued_forecast"])
             self.assertIsNone(s["actual_purchase_profit_yen"])
             self.assertFalse(s["prediction_skill_confirmed"])
+            self.assertTrue(s["auto_learning"]["feature_implemented"])
+            self.assertEqual(s["auto_learning"]["active_champion"],"uniform")
+            self.assertEqual(s["auto_learning"]["officially_verified_training_rounds"],0)
+            self.assertEqual(s["auto_learning"]["eligible_prospective_draws"],0)
+            self.assertEqual(s["auto_learning"]["required_prospective_draws"],500)
+            self.assertFalse(s["automatic_model_promotion"])
             self.assertGreater(len(s["warnings"]),0)
             output=root/"docs/data/status.json"
             write_dashboard(root,output)
