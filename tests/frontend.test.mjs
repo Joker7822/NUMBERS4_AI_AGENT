@@ -372,3 +372,74 @@ test('self-evolution research controls are visible but clearly exploratory',()=>
   }
   assert.ok(html.includes('同じ過去データを再利用するため'));
 });
+
+test('latest historical one-ticket validation is displayed but never upgraded to official proof',()=>{
+  const s=source();
+  const e=s.research_evolution;
+  const report=JSON.parse(readFileSync(new URL('../research/evolution_report.json',import.meta.url),'utf8'));
+  assert.equal(e.status,'recursive_research_exploration_not_prospective_evidence');
+  const models=['uniform','adaptive',...report.model_ids];
+  const last=e.evaluated_draws+1;
+  const n=last-5000;
+  const v={
+    scope:'secondary_history_exploratory_reconstruction_only',
+    generation:e.generation,generated_at_jst:e.generated_at_jst,
+    source_status:'secondary_public_mirrors_agree_not_officially_verified',
+    archive_git_blob_sha1:'a'.repeat(40),
+    round_predictions_sha256:'b'.repeat(64),
+    tickets_per_draw:1,first_round:2,last_round:last,
+    evaluated_draws:e.evaluated_draws,
+    selected_straight_hits:1,uniform_reference_straight_hits:1,
+    selected_mean_log_score_edge_vs_uniform:0,
+    full_expected_uniform_hits:e.evaluated_draws/10000,
+    late_cohort:{
+      first_round:5001,last_round:last,evaluated_draws:n,
+      model_metrics:models.map(model=>({
+        model,straight_hits:0,mean_log_score_edge_vs_uniform:0,
+        mean_brier_edge_vs_uniform:0
+      })),
+      repeatedly_inspected_not_independent_holdout:true,
+    },
+    recent_rounds:Array.from({length:12},(_,i)=>({
+      round:last-i,draw_date:'2026-10-30',
+      data_cutoff_round:last-i-1,
+      selected_number:'1234',selected_model:'uniform',
+      actual:'9999',selected_hit:false,
+      uniform_number:'1234',uniform_hit:false,
+    })),
+    all_rounds_checked_against_archive:true,
+    independently_verified_prepublished_forecasts:false,
+    bank_primary_all_rounds_verified:false,
+    prediction_skill_confirmed:false,
+    automatic_model_promotion_authorized:false,
+    actual_purchase:false
+  };
+  e.latest_verification=v;
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  v.recent_rounds[0].selected_hit=true;
+  assert.throws(()=>normalizeStatus(s),/最新の過去予測結果/);
+  v.recent_rounds[0].selected_hit=false;
+  v.bank_primary_all_rounds_verified=true;
+  assert.throws(()=>normalizeStatus(s),/最新の過去予測結果/);
+  v.bank_primary_all_rounds_verified=false;
+  v.selected_straight_hits=v.evaluated_draws+1;
+  assert.throws(()=>normalizeStatus(s),/最新の過去予測結果/);
+});
+
+test('latest historical verification UI has full-period, late-cohort and round-by-round tables',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const js=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of [
+    'replay-audit-generation','replay-audit-scope','replay-audit-hits',
+    'replay-audit-uniform','replay-audit-difference','replay-audit-logscore',
+    'replay-audit-expected','replay-audit-state','replay-audit-late-meta',
+    'replay-audit-models','replay-audit-recent',
+  ]){
+    assert.ok(html.includes('id="'+id+'"'),id);
+    assert.ok(js.includes('"'+id+'"'),id);
+  }
+  assert.ok(html.includes('後期区間のモデル別比較'));
+  assert.ok(html.includes('最新12回の再予測照合'));
+  assert.ok(html.includes('二次公開履歴に基づく後付け研究'));
+  assert.ok(js.includes('create("tr")'));
+});

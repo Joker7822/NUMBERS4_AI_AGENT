@@ -95,6 +95,24 @@ jobs:
           assert ev['research_discovery']['status']=='explicitly_offline_no_sources_retrieved'
           assert status['research_evolution']['generation']==ev['generation']
           assert status['research_evolution']['evaluated_draws']==ev['evaluated_draws']
+          latest=status['research_evolution']['latest_verification']
+          assert latest['scope']=='secondary_history_exploratory_reconstruction_only'
+          assert latest['generation']==ev['generation']
+          assert latest['tickets_per_draw']==1
+          assert latest['first_round']==2
+          assert latest['last_round']==ev['last_evaluated_round']
+          assert latest['evaluated_draws']==ev['evaluated_draws']
+          assert latest['selected_straight_hits']==(
+              ev['development']['model_metrics']['adaptive']['straight_hits']+
+              ev['late_historical_reanalysis']['model_metrics']['adaptive']['straight_hits'])
+          assert latest['uniform_reference_straight_hits']==(
+              ev['development']['model_metrics']['uniform']['straight_hits']+
+              ev['late_historical_reanalysis']['model_metrics']['uniform']['straight_hits'])
+          assert latest['late_cohort']['first_round']==ev['late_historical_reanalysis']['first_round']
+          assert len(latest['late_cohort']['model_metrics'])==len(ev['model_ids'])+2
+          assert len(latest['recent_rounds'])==min(12,ev['evaluated_draws'])
+          assert latest['bank_primary_all_rounds_verified'] is False
+          assert latest['prediction_skill_confirmed'] is False
           assert status['research_evolution']['performance_advantage_confirmed'] is False
           print('EVOLUTION_REPLAY_RESULT_START')
           print(json.dumps({

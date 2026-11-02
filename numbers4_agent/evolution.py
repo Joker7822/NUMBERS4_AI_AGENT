@@ -426,6 +426,141 @@ def _read_previous(root: Path) -> tuple[list[dict], dict | None]:
 
 
 
+
+def _verified_latest_replay_projection(root: Path, report: dict) -> dict:
+    """Verify every retrospectively reconstructed one-ticket CSV outcome.
+
+    The *research* report has already been hash-matched to the append-only
+    generation journal. Recompute the displayed hits and selected score from
+    the round-level file AND cross-check its dates/numbers with the source
+    archive. Reject inconsistent summaries rather than publishing fake wins.
+    """
+    rows, source = load_archive(root)
+    if (not rows or source.get("git_blob_sha1") != report["archive_git_blob_sha1"]
+            or report.get("tickets_per_draw") != 1
+            or report.get("first_evaluated_round") != 2
+            or report.get("last_evaluated_round") != rows[-1]["round"]
+            or report.get("evaluated_draws") != len(rows) - 1
+            or report.get("performance_advantage_confirmed") is not False
+            or report.get("production_model_changed") is not False):
+        raise ValueError("latest historical research provenance mismatch")
+    with (root / ROUND_CSV).open(encoding="utf-8", newline="") as f:
+        predicted = list(csv.DictReader(f))
+    if len(predicted) != len(rows) - 1:
+        raise ValueError("historical round-by-round prediction count mismatch")
+    valid_models = set(report["model_ids"]) | {"uniform"}
+    split = report["development"]["last_round"]
+    if (report["development"]["first_round"] != 2
+            or report["late_historical_reanalysis"]["first_round"] != split + 1
+            or report["late_historical_reanalysis"]["last_round"] != rows[-1]["round"]):
+        raise ValueError("historical comparison period changed")
+    selected_count, reference_count = 0, 0
+    selected_log_sum = 0.0
+    section_counts = {"development": [0, 0, 0, 0.0],
+                      "late_historical_reanalysis": [0, 0, 0, 0.0]}
+    recent = deque(maxlen=12)
+    for i, (trial, actual_row) in enumerate(zip(predicted, rows[1:]), 2):
+        try:
+            round_n = int(trial["round"])
+            cutoff = int(trial["data_cutoff_round"])
+            chosen = four_digits(trial["selected_number"])
+            reference = four_digits(trial["uniform_number"])
+            actual = four_digits(trial["actual"])
+            hit = int(trial["selected_hit"])
+            ref_hit = int(trial["uniform_hit"])
+            edge = float(trial["selected_log_edge"])
+        except (KeyError, ValueError, TypeError) as exc:
+            raise ValueError("malformed retrospective prediction evidence") from exc
+        model = trial["research_selected_model"]
+        if (round_n != i or cutoff != i - 1 or
+                actual_row["round"] != i or
+                trial["draw_date"] != actual_row["draw_date"] or
+                actual != actual_row["winning_number"] or
+                model not in valid_models or not isfinite(edge) or
+                abs(edge) > 100 or
+                (model == "uniform" and (chosen != reference or edge != 0.0)) or
+                hit != int(chosen == actual) or
+                ref_hit != int(reference == actual) or
+                trial["source_status"] !=
+                "secondary_public_mirrors_agree_not_officially_verified"):
+            raise ValueError("retrospective round/date/prediction mismatch")
+        section = "development" if i <= split else "late_historical_reanalysis"
+        section_counts[section][0] += 1
+        section_counts[section][1] += hit
+        section_counts[section][2] += ref_hit
+        section_counts[section][3] += edge
+        selected_count += hit
+        reference_count += ref_hit
+        selected_log_sum += edge
+        recent.append({
+            "round": i, "draw_date": trial["draw_date"],
+            "data_cutoff_round": cutoff, "actual": actual,
+            "selected_number": chosen, "selected_model": model,
+            "selected_hit": bool(hit),
+            "uniform_number": reference, "uniform_hit": bool(ref_hit),
+        })
+    for name, counts in section_counts.items():
+        cohort = report[name]
+        if counts[0] != cohort["last_round"] - cohort["first_round"] + 1:
+            raise ValueError("historical cohort size does not match replay")
+        metrics = cohort["model_metrics"]
+        if (counts[1] != metrics["adaptive"]["straight_hits"]
+                or counts[2] != metrics["uniform"]["straight_hits"]
+                or counts[0] != metrics["adaptive"]["draws"]
+                or counts[0] != metrics["uniform"]["draws"]
+                or abs(round(counts[3] / counts[0], 9) -
+                       metrics["adaptive"]["mean_log_score_edge_vs_uniform"]) > 1e-8):
+            raise ValueError("reported historical model comparison differs from per-round data")
+    late = report["late_historical_reanalysis"]
+    model_rows = []
+    for model in ["uniform", "adaptive", *report["model_ids"]]:
+        metric = late["model_metrics"][model]
+        if (metric["draws"] != late["last_round"] - late["first_round"] + 1
+                or type(metric["straight_hits"]) is not int
+                or not 0 <= metric["straight_hits"] <= metric["draws"]
+                or not isfinite(metric["mean_log_score_edge_vs_uniform"])
+                or not isfinite(metric["mean_brier_edge_vs_uniform"])
+                or metric["confirmed_prospective_skill"] is not False):
+            raise ValueError("untrustworthy historical challenger metric")
+        model_rows.append({
+            "model": model, "straight_hits": metric["straight_hits"],
+            "mean_log_score_edge_vs_uniform":
+                metric["mean_log_score_edge_vs_uniform"],
+            "mean_brier_edge_vs_uniform": metric["mean_brier_edge_vs_uniform"],
+        })
+    return {
+        "scope": "secondary_history_exploratory_reconstruction_only",
+        "generation": report["generation"],
+        "generated_at_jst": report["generated_at_jst"],
+        "source_status": "secondary_public_mirrors_agree_not_officially_verified",
+        "archive_git_blob_sha1": report["archive_git_blob_sha1"],
+        "round_predictions_sha256": report["research_round_csv_sha256"],
+        "tickets_per_draw": 1,
+        "first_round": 2, "last_round": rows[-1]["round"],
+        "evaluated_draws": len(predicted),
+        "selected_straight_hits": selected_count,
+        "uniform_reference_straight_hits": reference_count,
+        "selected_mean_log_score_edge_vs_uniform":
+            round(selected_log_sum / len(predicted), 9),
+        "full_expected_uniform_hits": round(len(predicted) / 10000, 6),
+        "late_cohort": {
+            "first_round": late["first_round"],
+            "last_round": late["last_round"],
+            "evaluated_draws": late["last_round"] - late["first_round"] + 1,
+            "model_metrics": model_rows,
+            "repeatedly_inspected_not_independent_holdout": True,
+        },
+        "recent_rounds": list(reversed(recent)),
+        "all_rounds_checked_against_archive": True,
+        "independently_verified_prepublished_forecasts": False,
+        "bank_primary_all_rounds_verified": False,
+        "prediction_skill_confirmed": False,
+        "automatic_model_promotion_authorized": False,
+        "actual_purchase": False,
+    }
+
+
+
 def public_status(root: Path, archive: dict) -> dict:
     """Read and verify research evolution artifacts for the public dashboard."""
     chain, previous = _read_previous(root)
@@ -437,6 +572,7 @@ def public_status(root: Path, archive: dict) -> dict:
             "lifetime_unique_sources": None, "new_unique_sources": 0,
             "requests_attempted": 0,
             "next_model": None, "next_number": None, "generated_at_jst": None,
+            "latest_verification": None,
             "performance_advantage_confirmed": False,
             "model_auto_promotion_authorized": False,
             "actual_purchase": False,
@@ -478,6 +614,8 @@ def public_status(root: Path, archive: dict) -> dict:
         "model_auto_promotion_authorized": False,
         "actual_purchase": False,
         "repeated_historical_cohorts_not_independent": True,
+        "latest_verification": (_verified_latest_replay_projection(root, previous)
+                                if archive_fresh else None),
         "description": "All draws from round 2 are retrospectively reconstructed each generation; no actual pre-issued prediction or independent confirmation.",
     }
 

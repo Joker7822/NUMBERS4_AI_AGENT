@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-continuous-acquisition";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-replay-verification";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -172,6 +172,69 @@ function render(data){
       "研究1口 "+ev.next_number+" / "+ev.next_model+"（未発行・未購入）":"未更新");
   set("evolution-time",ev?.generated_at_jst?
       japaneseTime(ev.generated_at_jst):"未実行");
+  const validated=ev?.status==='recursive_research_exploration_not_prospective_evidence'?
+      ev.latest_verification:null;
+  const fmtCount=n=>n.toLocaleString('ja-JP');
+  const fmtScore=n=>(n>0?'+':'')+n.toFixed(9);
+  const displayModel=name=>({
+    uniform:'一様基準1口',
+    adaptive:'逐次選択（過去の評価による）'
+  })[name]||name;
+  set("replay-audit-generation",validated?
+      "第"+validated.generation+"世代 / "+japaneseTime(validated.generated_at_jst):"未検証");
+  set("replay-audit-scope",validated?
+      "第"+validated.first_round+"〜"+validated.last_round+"回 / "+
+      fmtCount(validated.evaluated_draws)+"回・各1口":"研究履歴の再計算待ち");
+  set("replay-audit-hits",validated?
+      fmtCount(validated.selected_straight_hits)+"回 / "+fmtCount(validated.evaluated_draws)+"回":"—");
+  set("replay-audit-uniform",validated?
+      fmtCount(validated.uniform_reference_straight_hits)+"回 / "+fmtCount(validated.evaluated_draws)+"回":"—");
+  set("replay-audit-difference",validated?
+      (validated.selected_straight_hits-validated.uniform_reference_straight_hits>0?'+':'')+
+      (validated.selected_straight_hits-validated.uniform_reference_straight_hits)+"回":"—");
+  set("replay-audit-logscore",validated?
+      fmtScore(validated.selected_mean_log_score_edge_vs_uniform)+"（正値が一様より良い）":"—");
+  set("replay-audit-expected",validated?
+      validated.full_expected_uniform_hits.toLocaleString('ja-JP')+"回":"—");
+  set("replay-audit-state",validated?
+      "全"+fmtCount(validated.evaluated_draws)+"行を元の二次履歴と回号・日付・番号で再照合済み。"+
+      "銀行公式との全件照合や抽せん前の予測発行は確認されていません。"+
+      "予測優位性は未実証です。":
+      (ev?.status==='stale_history_reanalysis'?
+       "現在の履歴と最新世代の再予測が一致しないため、古い検証値は表示しません。":
+       "研究世代の回別検証データがまだ生成されていません。"));
+  const modelsTable=byId("replay-audit-models");
+  const recentTable=byId("replay-audit-recent");
+  modelsTable.replaceChildren();
+  recentTable.replaceChildren();
+  set("replay-audit-late-meta",validated?
+      "第"+validated.late_cohort.first_round+"〜"+
+      validated.late_cohort.last_round+"回 / "+
+      fmtCount(validated.late_cohort.evaluated_draws)+
+      "回。平均log-score差は一様1口との差（正値は改善、負値は悪化）。同じ後期区間を繰り返し参照しており独立ホールドアウトではありません。":
+      "最新世代の検証結果がないためモデル比較を保留します。");
+  const addTableRow=(target,columns)=>{
+    const tr=create("tr");
+    columns.forEach((value,i)=>tr.append(create(i===0?"th":"td","",value)));
+    target.append(tr);
+  };
+  if(validated){
+    for(const model of validated.late_cohort.model_metrics)
+      addTableRow(modelsTable,[
+        displayModel(model.model),model.straight_hits+"回",fmtScore(model.mean_log_score_edge_vs_uniform)
+      ]);
+    for(const round of validated.recent_rounds)
+      addTableRow(recentTable,[
+        "第"+round.round+"回 / "+round.draw_date,
+        round.selected_number+"（"+displayModel(round.selected_model)+"）"+
+          " / 学習最終回 "+round.data_cutoff_round,
+        round.actual,
+        round.selected_hit?"一致":"不一致"
+      ]);
+  }else{
+    addTableRow(modelsTable,["検証待ち","—","—"]);
+    addTableRow(recentTable,["検証待ち","—","—","—"]);
+  }
   const automated=data.auto_learning;
   const modelLabels={
     uniform:'一様基準（未昇格）',
