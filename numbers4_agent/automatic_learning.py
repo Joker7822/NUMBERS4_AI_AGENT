@@ -107,7 +107,9 @@ def read_champion(root: Path) -> dict:
     if (not isinstance(state, dict) or state.get("version") != VERSION or
             state.get("protocol_sha256") != PROTOCOL_HASH or
             state.get("champion") not in MODELS or
-            not isinstance(state.get("assessment_sha256"), str)):
+            not isinstance(state.get("assessment_sha256"), str) or
+        len(state["assessment_sha256"]) != 64 or
+        any(c not in "0123456789abcdef" for c in state["assessment_sha256"])):
         raise ValueError("invalid or mismatched champion model state")
     return state
 
@@ -143,6 +145,10 @@ def freeze_shadow(root: Path, *, target_round: int, draw_date: str,
         if target_round != last["round"] + 1:
             raise ValueError("shadow forecast sequence has a missing round")
     champion = read_champion(root)["champion"]
+    if champion != "uniform":
+        review = assess(root)
+        if review["integrity_blocker"] or review["eligible_champion"] != champion:
+            raise ValueError("promoted champion lacks current verified prospective evidence")
     spec_models = _candidate_models(verified, target_round)
     reference = uniform_numbers(target_round)[0]
     record = append(root / FORECAST_PATH, {
@@ -186,6 +192,10 @@ def recommend_champion(root: Path, target_round: int) -> dict:
     if not verified or verified[-1]["round"] != target_round - 1:
         raise ValueError("latest immediately preceding bank-verified round required")
     champion = read_champion(root)["champion"]
+    if champion != "uniform":
+        review = assess(root)
+        if review["integrity_blocker"] or review["eligible_champion"] != champion:
+            raise ValueError("active research champion lacks current verified evidence")
     forecasts = _candidate_models(verified, target_round)
     number = (uniform_numbers(target_round)[0] if champion == "uniform"
               else forecasts[champion]["number"])
