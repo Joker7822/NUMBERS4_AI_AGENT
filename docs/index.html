@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102">
-  <script type="module" src="app.js?v=20261102"></script>
+  <script type="module" src="app.js?v=20261102-official-fetch-proof"></script>
 </head>
 <body>
   <div class="page">
@@ -25,7 +25,7 @@
       </section>
       <div id="error" role="alert" class="error" hidden></div>
       <section class="stats" aria-label="主要指標">
-        <article class="stat"><label>2系統一致の登録抽せん</label><strong id="draw-count">—</strong><small>公式情報の手動記録を突合</small></article>
+        <article class="stat"><label>公開元照合済み抽せん</label><strong id="draw-count">—</strong><small>銀行＋販売元または手入力を照合</small></article>
         <article class="stat"><label>事前発行の記録</label><strong id="issue-count">—</strong><small>発行と実際の購入は別</small></article>
         <article class="stat"><label>採点できた発行回</label><strong id="graded-count">—</strong><small>事前発行＋2系統一致のみ</small></article>
         <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
@@ -33,7 +33,7 @@
       <div class="columns">
         <section class="panel">
           <div class="panel-head"><span>01 / OFFICIAL RESULTS</span><h2>直近の照合結果</h2></div>
-          <p class="subtle">2つの公式サイトについて手入力された記録が一致した場合だけ掲載します。サイトの自動検証ではありません。</p>
+          <p class="subtle">みずほ銀行と楽天宝くじの公開結果が同じ回号・日付・4桁番号で一致した場合に記録します。片側が取得できない回は「未確認」のまま残します。</p>
           <div id="draw-number" class="big-digits" aria-live="polite">— — — —</div>
           <div id="draw-details" class="panel-foot">結果がまだ登録されていません。</div>
         </section>
@@ -56,16 +56,17 @@
           <div class="data-row"><span>評価に使用できる回数</span><strong id="backtest-count">—</strong></div>
           <div class="data-row"><span>5口ストレートの過去的中回数</span><strong id="backtest-hits">—</strong></div>
           <div class="data-row"><span>一様無作為の理論基準（5口）</span><strong>0.05%</strong></div>
-          <p class="subtle">上記はストレート5口がすべて異なる場合の単回基準です。過去データの最適化は将来の的中を証明しません。</p>
+          <p id="backtest-scope" class="subtle">過去データの予測力検証を実行していません。</p>
+          <p class="subtle">上記はストレート5口がすべて異なる場合の単回基準です。後付けの過去データ分析は真の将来予測力を証明しません。</p>
         </section>
         <section class="panel">
           <div class="panel-head"><span>05 / AUDIT TRAIL</span><h2>運用上の注意</h2></div>
           <div id="warning-list" class="warnings" role="status"><p>データを確認しています。</p></div>
-          <p class="subtle">外部サイトの自動取得・予測の自動購入・モデルの自動昇格は無効です。</p>
+          <p class="subtle">公式銀行と第二公開元の読取り専用自動取得は有効です。一致しない結果の本番採用・予測の自動購入・モデルの自動昇格は禁止です。</p>
         </section>
       </div>
     </main>
-    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.1.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
+    <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.2.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
 </body>
 </html>
