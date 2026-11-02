@@ -1,0 +1,49 @@
+{
+  "research_unverified_history": {
+    "version": "numbers4-exploratory-prequential-v1",
+    "status": "historical_exploratory_only",
+    "scope": "single_publisher_not_officially_verified",
+    "observed_rounds": 237,
+    "evaluated_draws": 177,
+    "warmup_draws": 60,
+    "train_window_max_draws": 250,
+    "first_evaluated_round": 6928,
+    "last_evaluated_round": 7104,
+    "last_evaluated_date": "2026-10-30",
+    "model_version": "positional-dirichlet-research-v1",
+    "baseline": "exact_10k_uniform_straight_distribution",
+    "top5_model_hits": 0,
+    "top5_reference_hits": 0,
+    "uniform_expected_top5_hit_draws": 0.0885,
+    "mean_log_likelihood_edge_vs_uniform": -0.058883807,
+    "mean_brier_improvement_vs_uniform": -8.988143e-06,
+    "descriptive_moving_block_bootstrap_95pct": [
+      -0.098665746,
+      -0.02106461
+    ],
+    "bootstrap_block_draws": 10,
+    "bootstrap_replicates": 900,
+    "bootstrap_seed": 20261102,
+    "protocol_version_frozen_before_this_execution": false,
+    "truly_prospective_verified_draws": 0,
+    "prediction_skill_confirmed": false,
+    "production_promotion_allowed": false,
+    "actual_purchase_profit_yen": null,
+    "interpretation": "Retrospective analysis only; historic feed provenance and model selection do not establish prospective predictive advantage",
+    "source_sha256": "6236a5cc2fd6c2781f1957d1e0f9d39f5f5b059c6109940bf4cf570900dfe5bf",
+    "source_publisher": "rakuten_lottery_publication_only"
+  },
+  "verified_history_exploratory": {
+    "version": "numbers4-exploratory-prequential-v1",
+    "status": "insufficient_history",
+    "scope": "historically_matched_two_publishers_not_preregistered",
+    "observed_rounds": 0,
+    "evaluated_draws": 0,
+    "prediction_skill_confirmed": false,
+    "production_promotion_allowed": false,
+    "data_scope": "already_observed_only_no_prospective_claim"
+  },
+  "prospective_skill_confirmed": false,
+  "production_changed": false,
+  "existing_issued_predictions_changed": false
+}
