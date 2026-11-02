@@ -53,6 +53,11 @@ function render(data){
   set("online-replay-edge",live?.status==='historical_walk_forward_reconstruction_only'?
       '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
       ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
+  const chance=live?.research_statistical_audit;
+  set("online-replay-chance",chance?.scope==='descriptive_historical_reconstruction_not_preregistered'?
+      '公平・独立な抽せんで同数以上当たる確率 '+(chance.selected_hit_tail_probability_given_uniform_null*100).toFixed(2)+
+      '% / 統計モデル採用 '+chance.nonuniform_model_selected_rounds+'回（事前登録なし・予測力未実証）':
+      '未集計（将来予測力は未実証）');
   const next=live?.next_research_candidate;
   const safeNext=next&&live.status==='historical_walk_forward_reconstruction_only';
   set("online-next-candidate",safeNext?
