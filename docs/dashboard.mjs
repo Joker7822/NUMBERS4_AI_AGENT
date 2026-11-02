@@ -18,6 +18,14 @@ export function normalizeStatus(s){
        !Number.isInteger(d.round)||typeof d.draw_date!=="string")){
     throw new Error("照合結果の形式が不正です");
   }
+  const u=s.latest_unverified_draw;
+  if(u&&(u.status!=="publisher_only_not_officially_verified"||
+      u.source!=="rakuten_lottery_publication_only"||
+      !safeDigits(u.winning_number)||!Number.isInteger(u.round)||u.round<1||
+      typeof u.draw_date!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(u.draw_date)||
+      (d&&d.round===u.round&&d.winning_number!==u.winning_number))){
+    throw new Error("参考情報の公表元・未照合状態が不正です");
+  }
   const p=s.published_forecast;
   if(p&&(!Number.isInteger(p.target_round)||!Array.isArray(p.numbers)||
          p.numbers.length!==5||!p.numbers.every(safeDigits)||
