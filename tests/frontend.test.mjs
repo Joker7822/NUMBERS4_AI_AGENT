@@ -276,3 +276,38 @@ test('new one-ticket reports never validate as five-ticket portfolios',()=>{
   online.tickets_per_draw=2;
   assert.throws(()=>normalizeStatus(s),/一口予測/);
 });
+
+test('prospective auto-learning never promotes on zero verified bank results or forged metrics',()=>{
+  const s=source();
+  s.auto_learning={
+    version:'numbers4-prospective-auto-learning-v1',
+    feature_implemented:true,protocol_sha256:'a'.repeat(64),
+    status:'no_shadow_forecasts',active_champion:'uniform',
+    eligible_champion:'uniform',officially_verified_training_rounds:0,
+    shadow_forecasts_recorded:0,pre_draw_github_witnesses:0,
+    eligible_prospective_draws:0,required_prospective_draws:500,
+    integrity_blocker:null,model_assessments:{},
+    model_code_from_search_results_executed:false,
+    unverified_secondary_training_authorized:false,actual_purchase:false,
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.automatic_model_promotion=true;
+  assert.throws(()=>normalizeStatus(s),/自動学習/);
+  s.automatic_model_promotion=false;
+  s.auto_learning.eligible_prospective_draws=500;
+  assert.throws(()=>normalizeStatus(s),/自動学習/);
+  s.auto_learning.eligible_prospective_draws=0;
+  s.auto_learning.model_code_from_search_results_executed=true;
+  assert.throws(()=>normalizeStatus(s),/自動学習/);
+});
+
+test('predictive automatic-learning panel is connected to validated status fields',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const js=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of ['auto-learning-status','auto-learning-champion',
+                   'auto-learning-bank-count','auto-learning-witnesses',
+                   'auto-learning-prospective','auto-learning-promotion']){
+    assert.ok(html.includes('id="'+id+'"'),id+' missing from markup');
+    assert.ok(js.includes('"'+id+'"'),id+' missing from renderer');
+  }
+});
