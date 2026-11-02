@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import json
+import os
 import sys
 
 from .dashboard import snapshot, write_dashboard
@@ -16,6 +17,9 @@ from .historical_archive import archive_summary
 from .online_learning import write_replay
 from .straight_challenger import write_report as write_straight_benchmark
 from .open_web import inspect_urls as inspect_public_web
+from .research_discovery import (
+    DEFAULT_TOPICS, write_research_cycle as write_predictive_research_cycle,
+)
 from .secondary_feed import refresh as refresh_secondary, audit_related
 
 
@@ -59,6 +63,13 @@ def parser() -> argparse.ArgumentParser:
                             help="exploratory report only; never overwrite issuance ledgers")
     sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
     sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
+    scientific = sub.add_parser("research-cycle",
+        help="search for predictive-method research and benchmark frozen STRAIGHT challengers")
+    scientific.add_argument("--query", action="append", default=[],
+                            help="research question; repeat for multiple searches (max 8)")
+    scientific.add_argument("--output", type=Path,
+                            default=Path("research/predictive_research_cycle.json"),
+                            help="research-only evidence report")
     research_web = sub.add_parser("research-web",
                                   help="inspect opt-in public HTTPS pages beyond the official source allowlist")
     research_web.add_argument("--url", action="append", default=[],
@@ -109,6 +120,12 @@ def main(argv: list[str] | None = None) -> int:
             report=root/"research/online_reference_audit.json"
             report.parent.mkdir(parents=True,exist_ok=True)
             report.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+        elif args.command == "research-cycle":
+            result = write_predictive_research_cycle(
+                root, args.output,
+                queries=args.query or list(DEFAULT_TOPICS),
+                brave_api_key=os.environ.get("BRAVE_SEARCH_API_KEY") or None,
+            )
         elif args.command == "research-web":
             urls = list(args.url)
             if args.url_file is not None:
