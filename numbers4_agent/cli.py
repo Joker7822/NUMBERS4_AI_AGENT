@@ -77,9 +77,11 @@ def parser() -> argparse.ArgumentParser:
     evolution = sub.add_parser("evolve-research",
         help="search method hypotheses, evolve safe learners and FULL-replay draw 2 onward")
     evolution.add_argument("--query", action="append", default=[],
-                           help="optional research query (repeat up to eight)")
+                           help="optional research query (repeat without a fixed query-count cap)")
     evolution.add_argument("--split-round", type=int, default=5000,
                            help="reused historical development split, never prospective proof")
+    evolution.add_argument("--search-requests", type=int, default=8,
+                           help="bounded API request budget per generation (1-100); no lifetime source cap")
     evolution.add_argument("--offline", action="store_true",
                            help="explicit offline fallback (no online retrieval) for testing")
     scientific = sub.add_parser("research-cycle",
@@ -94,7 +96,11 @@ def parser() -> argparse.ArgumentParser:
     research_web.add_argument("--url", action="append", default=[],
                               help="one public HTTPS page, repeat for additional pages")
     research_web.add_argument("--url-file", type=Path,
-                              help="optional UTF-8 file of one HTTPS URL per line")
+                              help="optional UTF-8 file of one HTTPS URL per line; no fixed total")
+    research_web.add_argument("--start-index", type=int, default=0,
+                              help="resume URL list from zero-based index")
+    research_web.add_argument("--batch-size", type=int, default=25,
+                              help="pages to process this run; next_start_index continues the remaining list")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
@@ -157,6 +163,7 @@ def main(argv: list[str] | None = None) -> int:
             result = evolve_research_cycle(
                 root, queries=args.query or None,
                 offline=args.offline, split_round=args.split_round,
+                search_request_budget=args.search_requests,
                 brave_api_key=os.environ.get("BRAVE_SEARCH_API_KEY") or None,
             )
         elif args.command == "research-cycle":
@@ -171,7 +178,8 @@ def main(argv: list[str] | None = None) -> int:
                 urls.extend(line.strip() for line in
                             args.url_file.read_text(encoding="utf-8-sig").splitlines()
                             if line.strip() and not line.lstrip().startswith("#"))
-            result = inspect_public_web(urls)
+            result = inspect_public_web(urls, start_index=args.start_index,
+                                        batch_size=args.batch_size)
         elif args.command == "fetch-official":
             result = sync(root, months_back=args.months_back)
         elif args.command == "prove":

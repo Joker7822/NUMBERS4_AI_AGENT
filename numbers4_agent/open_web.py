@@ -24,7 +24,7 @@ JST = timezone(timedelta(hours=9))
 VERSION = "numbers4-open-web-research-v1"
 USER_AGENT = "NUMBERS4_AI_AGENT/0.7 (opt-in, read-only research)"
 MAX_BODY_BYTES = 4_000_000
-MAX_PAGES_PER_INVOCATION = 50
+DEFAULT_BATCH_SIZE = 25  # finite per-run work, not a total URL quota
 EXCERPT_CHARS = 5000
 TIMEOUT_SECONDS = 10
 _ALLOWED_APPLICATION_TYPES = {
@@ -186,15 +186,21 @@ def text_excerpt(raw: bytes, media_type: str) -> str:
     return re.sub(r"\s+", " ", decoded).strip()[:EXCERPT_CHARS]
 
 
-def inspect_urls(urls: list[str], *, fetch=None, now: datetime | None = None) -> dict:
+def inspect_urls(urls: list[str], *, fetch=None, now: datetime | None = None,
+                 start_index: int = 0, batch_size: int | None = None) -> dict:
     """Collect public research evidence; never auto-verify numbers or learn."""
-    if not isinstance(urls, list) or not urls or len(urls) > MAX_PAGES_PER_INVOCATION:
-        raise ValueError("provide 1 to 50 opt-in public page URLs per invocation")
+    if not isinstance(urls, list) or not urls:
+        raise ValueError("at least one opt-in public URL is required")
+    if (type(start_index) is not int or start_index < 0 or start_index >= len(urls)
+            or (batch_size is not None and
+                (type(batch_size) is not int or batch_size < 1))):
+        raise ValueError("invalid public research resume index or batch size")
+    end = min(len(urls), start_index + batch_size) if batch_size else len(urls)
     fetch = fetch or fetch_public_page
     now = (now or datetime.now(JST)).astimezone(JST)
     entries = []
     visited = set()
-    for candidate in urls:
+    for candidate in urls[start_index:end]:
         fingerprint = sha256(str(candidate).encode("utf-8")).hexdigest()
         row: dict = {"request_sha256": fingerprint, "status": "unverified"}
         try:
@@ -226,6 +232,11 @@ def inspect_urls(urls: list[str], *, fetch=None, now: datetime | None = None) ->
         "retrieved_at_jst": now.isoformat(timespec="seconds"),
         "status": "untrusted_research_sources_only",
         "submitted_urls": len(urls),
+        "processed_urls": end - start_index,
+        "batch_start_index": start_index,
+        "next_start_index": end if end < len(urls) else None,
+        "has_more_input_urls": end < len(urls),
+        "application_total_url_quota": None,
         "retrieved_pages": sum(x["status"] == "retrieved_untrusted_research_only" for x in entries),
         "pages": entries,
         "source_host_allowlist_required": False,

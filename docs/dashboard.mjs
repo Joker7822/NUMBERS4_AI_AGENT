@@ -20,10 +20,17 @@ export function normalizeStatus(s){
     const positiveInt=n=>Number.isInteger(n)&&n>=0;
     if(e.version!=='numbers4-recursive-research-evolution-v1'||
        !states.includes(e.status)||
-       !positiveInt(e.generation)||e.generation>1000||
+       !positiveInt(e.generation)||
        !positiveInt(e.evaluated_draws)||
        !positiveInt(e.candidate_models)||e.candidate_models>8||
-       !positiveInt(e.research_sources_found)||e.research_sources_found>40||
+       !positiveInt(e.research_sources_found)||
+       (e.lifetime_unique_sources!==null && e.lifetime_unique_sources!==undefined &&
+        (!positiveInt(e.lifetime_unique_sources) ||
+         e.lifetime_unique_sources<e.new_unique_sources))||
+       (e.new_unique_sources!==undefined &&
+        (!positiveInt(e.new_unique_sources) ||
+         e.new_unique_sources>e.research_sources_found))||
+       (e.requests_attempted!==undefined && !positiveInt(e.requests_attempted))||
        typeof e.web_search_enabled!=='boolean'||
        e.performance_advantage_confirmed!==false||
        e.model_auto_promotion_authorized!==false||

@@ -103,8 +103,7 @@ class PredictiveResearchTests(unittest.TestCase):
         for query in ([""], ["a\nb"], ["x"*251], []):
             with self.assertRaises(ValueError):
                 _queries(query)
-        with self.assertRaises(ValueError):
-            _queries(["lottery"]*9)
+        self.assertEqual(len(_queries(["lottery"]*30)),30)
 
 
 if __name__=="__main__":

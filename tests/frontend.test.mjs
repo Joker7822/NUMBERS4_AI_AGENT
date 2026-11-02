@@ -337,6 +337,30 @@ test('recursive evolution cannot masquerade as independent proof or production p
   assert.throws(()=>normalizeStatus(s),/自己進化/);
 });
 
+test('cumulative online sources can exceed earlier forty-result UI ceiling',()=>{
+  const s=source();
+  s.research_evolution={
+    version:'numbers4-recursive-research-evolution-v1',
+    status:'recursive_research_exploration_not_prospective_evidence',
+    generation:1200,evaluated_draws:7103,candidate_models:6,
+    research_sources_found:143,web_search_enabled:false,
+    lifetime_unique_sources:20000,new_unique_sources:120,
+    requests_attempted:8,research_search_errors:0,
+    metadata_based_method_leads:98,
+    next_model:'uniform',next_number:'6993',
+    generated_at_jst:'2026-11-02T19:20:00+09:00',
+    repeated_historical_cohorts_not_independent:true,
+    performance_advantage_confirmed:false,
+    model_auto_promotion_authorized:false,actual_purchase:false,
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.research_evolution.new_unique_sources=144;
+  assert.throws(()=>normalizeStatus(s),/自己進化/);
+  s.research_evolution.new_unique_sources=120;
+  s.research_evolution.lifetime_unique_sources=10;
+  assert.throws(()=>normalizeStatus(s),/自己進化/);
+});
+
 test('self-evolution research controls are visible but clearly exploratory',()=>{
   const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
   const js=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');

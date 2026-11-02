@@ -4,9 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       urls:
-        description: 'Public HTTPS URLs, one per line (maximum 50)'
+        description: 'Public HTTPS URLs, one per line. Use start_index to resume long lists.'
         type: string
         required: true
+      start_index:
+        description: 'Zero-based resume index in supplied URL list (default 0)'
+        required: false
+        type: number
+        default: 0
+      batch_size:
+        description: 'Finite URLs to fetch this job (default 25, no fixed total across reruns)'
+        required: false
+        type: number
+        default: 25
 
 permissions:
   contents: read
@@ -30,6 +40,8 @@ jobs:
       - name: Fetch only explicitly supplied public HTTPS URLs
         env:
           RESEARCH_URLS: ${{ inputs.urls }}
+          URL_START_INDEX: ${{ inputs.start_index }}
+          URL_BATCH_SIZE: ${{ inputs.batch_size }}
         run: |
           python - <<'PY'
           import json
@@ -39,10 +51,14 @@ jobs:
 
           urls = [line.strip() for line in os.environ.get('RESEARCH_URLS', '').splitlines()
                   if line.strip() and not line.lstrip().startswith('#')]
-          report = inspect_urls(urls)
+          report = inspect_urls(
+              urls, start_index=int(os.environ.get('URL_START_INDEX') or '0'),
+              batch_size=int(os.environ.get('URL_BATCH_SIZE') or '25'))
           path = Path('/tmp/numbers4-public-web-research.json')
           path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + '\n', encoding='utf-8')
           print('Opt-in research: received', report['submitted_urls'],
+                'processed', report['processed_urls'],
+                'next_start_index', report['next_start_index'],
                 'retrieved', report['retrieved_pages'],
                 'untrusted public pages; official verification remains false.')
           assert report['official_results_verified'] is False

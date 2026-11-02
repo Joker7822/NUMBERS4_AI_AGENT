@@ -21,7 +21,8 @@ from pathlib import Path
 
 from .historical_archive import load_archive
 from .online_learning import (JST, grade_prob, uniform_numbers, write_replay)
-from .research_discovery import DEFAULT_TOPICS, discover
+from .research_discovery import DEFAULT_TOPICS
+from .research_acquisition import collect as collect_progressively, persist as persist_progressive_sources
 from .rules import four_digits
 from .store import append as append_chain, canonical, load as read_chain
 from .straight_challenger import RollingDigits
@@ -32,7 +33,6 @@ ROUND_CSV = Path("research/evolution_round_predictions.csv")
 JOURNAL = Path("research/evolution_journal.jsonl")
 SPLIT_ROUND = 5000
 MAX_MODELS = 8
-MAX_GENERATIONS = 1000
 GUARD_LOOKBACK = 250
 GUARD_Z = 2.5
 ROUND_FIELDS = (
@@ -156,7 +156,7 @@ def _metadata_leads(discovery: dict) -> tuple[set[str], list[dict]]:
     """Map *metadata* to safe hypotheses; do not treat it as verified science."""
     hints: set[str] = set()
     links = []
-    for record in discovery.get("candidates", [])[:40]:
+    for record in discovery.get("candidates", []):
         if not isinstance(record, dict) or not isinstance(record.get("title"), str):
             continue
         text = " ".join([record["title"], record.get("description", "")]).lower()
@@ -208,8 +208,8 @@ def _mutate(parent: dict, generation: int) -> dict:
 
 def propose(discovery: dict, *, previous: dict | None = None,
             generation: int = 1) -> tuple[list[dict], list[dict]]:
-    if type(generation) is not int or not 1 <= generation <= MAX_GENERATIONS:
-        raise ValueError("invalid bounded evolution generation")
+    if type(generation) is not int or generation < 1:
+        raise ValueError("invalid evolution generation")
     hints, links = _metadata_leads(discovery)
     seed = [dict(x) for x in FALLBACK_SPECS]
     if "markov" in hints:
@@ -409,8 +409,6 @@ def next_queries(previous: dict | None) -> list[str]:
 
 def _read_previous(root: Path) -> tuple[list[dict], dict | None]:
     chain = read_chain(root / JOURNAL)
-    if len(chain) >= MAX_GENERATIONS:
-        raise ValueError("bounded research generation limit reached")
     file = root / REPORT
     if chain and not file.is_file():
         raise ValueError("missing evolution report for existing journal")
@@ -436,6 +434,8 @@ def public_status(root: Path, archive: dict) -> dict:
             "version": VERSION, "status": "not_yet_run", "generation": 0,
             "evaluated_draws": 0, "candidate_models": 0,
             "research_sources_found": 0, "web_search_enabled": False,
+            "lifetime_unique_sources": None, "new_unique_sources": 0,
+            "requests_attempted": 0,
             "next_model": None, "next_number": None, "generated_at_jst": None,
             "performance_advantage_confirmed": False,
             "model_auto_promotion_authorized": False,
@@ -462,6 +462,9 @@ def public_status(root: Path, archive: dict) -> dict:
         "evaluated_draws": previous["evaluated_draws"] if archive_fresh else 0,
         "candidate_models": len(previous["model_specs"]),
         "research_sources_found": previous["research_discovery"]["candidate_count"],
+        "lifetime_unique_sources": previous["research_discovery"].get("lifetime_unique_sources_after_commit"),
+        "new_unique_sources": previous["research_discovery"].get("new_unique_sources", 0),
+        "requests_attempted": previous["research_discovery"].get("requests_attempted_this_run", 0),
         "web_search_enabled": previous["research_discovery"].get(
             "web_search_enabled", False),
         "research_search_errors": len(previous["research_discovery"]["errors"]),
@@ -482,6 +485,7 @@ def public_status(root: Path, archive: dict) -> dict:
 def cycle(root: Path, *, queries: list[str] | None = None,
           offline: bool = False, crossref_fetch=None, brave_fetch=None,
           brave_api_key: str | None = None, split_round: int = SPLIT_ROUND,
+          search_request_budget: int = 8,
           now: datetime | None = None) -> dict:
     """Run one *entire* research generation, including original full replay.
 
@@ -497,16 +501,20 @@ def cycle(root: Path, *, queries: list[str] | None = None,
     if not rows or provenance.get("officially_verified") is not False:
         raise ValueError("strict full secondary archive and provenance required")
     active_queries = queries or next_queries(previous)
+    staged_sources = None
     if offline:
         discovered = {
             "queries": active_queries, "candidates": [], "candidate_count": 0,
             "providers_attempted": [], "web_search_enabled": False,
             "errors": [], "status": "explicitly_offline_no_sources_retrieved",
+            "new_unique_sources": 0, "lifetime_unique_sources_after_commit": None,
+            "requests_attempted_this_run": 0,
         }
     else:
-        discovered = discover(
-            active_queries, crossref_fetch=crossref_fetch,
-            brave_fetch=brave_fetch, brave_api_key=brave_api_key, now=now)
+        discovered, staged_sources = collect_progressively(
+            root, active_queries, crossref_fetch=crossref_fetch,
+            brave_fetch=brave_fetch, brave_api_key=brave_api_key,
+            request_budget=search_request_budget, now=now)
         discovered["status"] = "online_discovery_attempted"
     specs, mapped = propose(discovered, previous=previous, generation=generation)
     assessed, grades = evaluate(rows, specs, split_round=split_round)
@@ -556,6 +564,8 @@ def cycle(root: Path, *, queries: list[str] | None = None,
     path = root / REPORT
     raw = json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     path.write_text(raw, encoding="utf-8")
+    if staged_sources is not None:
+        persist_progressive_sources(root, staged_sources, discovered)
     append_chain(root / JOURNAL, {
         "version": VERSION, "generation": generation,
         "at_jst": report["generated_at_jst"],
@@ -565,6 +575,8 @@ def cycle(root: Path, *, queries: list[str] | None = None,
         "round_csv_sha256": report["research_round_csv_sha256"],
         "development_winner": assessed["development_winner"]["model"],
         "source_candidates": discovered["candidate_count"],
+        "new_unique_sources": discovered["new_unique_sources"],
+        "lifetime_unique_sources_after_commit": discovered["lifetime_unique_sources_after_commit"],
         "searched_online": not offline,
         "not_prospective_evidence": True,
         "production_model_untouched": True,
