@@ -22,7 +22,7 @@ from urllib.parse import urlsplit, urlunsplit
 
 JST = timezone(timedelta(hours=9))
 VERSION = "numbers4-open-web-research-v1"
-USER_AGENT = "NUMBERS4_AI_AGENT/0.6 (opt-in, read-only research)"
+USER_AGENT = "NUMBERS4_AI_AGENT/0.7 (opt-in, read-only research)"
 MAX_BODY_BYTES = 4_000_000
 MAX_PAGES_PER_INVOCATION = 50
 EXCERPT_CHARS = 5000
