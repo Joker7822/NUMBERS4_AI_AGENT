@@ -1,9 +1,8 @@
 """Research-only Numbers4 BOX regrading of prequential straight candidate sets.
 
-Reinterprets the same five past-only forecast strings as BOX applications.
+Reinterprets the same one past-only forecast string as a BOX application.
 A 4-equal-digit choice is ineligible and not purchased; no replacement or
-post-outcome choice is made. Permutation-equivalent applications are separate
-paid tickets and, if matched, each earns the disclosed per-ticket payout.
+post-outcome choice is made. Exactly one eligible ticket may be simulated for each draw.
 Neither issued tickets nor actual purchases.
 """
 from __future__ import annotations
@@ -21,9 +20,9 @@ PAYOUT_CSV=Path("data/secondary_box_payouts.csv")
 PAYOUT_META=Path("data/secondary_box_payouts_provenance.json")
 VERSION="numbers4-secondary-box-payouts-v1"
 STATUS="single_secondary_publisher_not_bank_verified"
-REPLAY_VERSION="numbers4-retrospective-box-five-finance-v1"
+REPLAY_VERSION="numbers4-retrospective-box-one-finance-v2"
 COST_PER_TICKET=200
-ORIGINAL_CANDIDATES_PER_ROUND=5
+ORIGINAL_CANDIDATES_PER_ROUND=1
 
 
 def _git_sha(raw: bytes) -> str:
@@ -126,7 +125,7 @@ def simulate_box(grades: list[dict], history: list[dict], payouts: list[int | No
         main=entry.get("selected_numbers")
         baseline=entry.get("uniform_numbers")
         if not isinstance(main,str) or not isinstance(baseline,str):
-            raise ValueError("replayed five numbers absent")
+            raise ValueError("replayed one number absent")
         nums,refs=main.split(),baseline.split()
         if any(len(x)!=ORIGINAL_CANDIDATES_PER_ROUND or len(set(x))!=len(x) for x in (nums,refs)):
             raise ValueError("replayed ticket vector invalid")
@@ -202,5 +201,5 @@ def simulate_box(grades: list[dict], history: list[dict], payouts: list[int | No
         "actual_profit_yen":None,
         "production_promotion_authorized":False,
         "original_predictions_unchanged":True,
-        "interpretation":"Post-hoc BOX interpretation of prequential 5-ticket STRAIGHT predictions. All-equal-digit BOX choices are not bought and cost zero; no replacement tickets. Permutations purchased separately receive per-ticket prizes. Secondary publisher prizes are unverified by bank. No actual purchase."
+        "interpretation":"Post-hoc BOX interpretation of prequential 1-ticket STRAIGHT predictions. All-equal-digit BOX choices are not bought and cost zero; no replacement tickets. An eligible matched entry receives one prize. Secondary publisher prizes are unverified by bank. No actual purchase."
     }
