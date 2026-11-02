@@ -52,6 +52,70 @@ export function normalizeStatus(s){
       throw new Error('研究自己進化の履歴・範囲・予測力の表示は不正です');
     }
   }
+  const v=e?.latest_verification;
+  if(v!==undefined&&v!==null){
+    const safeInteger=n=>Number.isInteger(n)&&n>=0;
+    const finiteScore=n=>typeof n==='number'&&Number.isFinite(n)&&Math.abs(n)<=100;
+    const auditModelName=n=>typeof n==='string'&&
+       /^(uniform|adaptive|(rolling|markov)_[0-9]+_alpha[0-9]+|ema_0p[0-9]+_alpha[0-9]+)$/.test(n);
+    const cohort=v.late_cohort;
+    const entries=cohort?.model_metrics;
+    const recent=v.recent_rounds;
+    const names=Array.isArray(entries)?entries.map(m=>m.model):[];
+    if(e.status!=='recursive_research_exploration_not_prospective_evidence'||
+       v.scope!=='secondary_history_exploratory_reconstruction_only'||
+       v.source_status!=='secondary_public_mirrors_agree_not_officially_verified'||
+       v.generation!==e.generation||v.generated_at_jst!==e.generated_at_jst||
+       v.tickets_per_draw!==1||v.first_round!==2||
+       !safeInteger(v.last_round)||v.last_round!==v.evaluated_draws+1||
+       v.evaluated_draws!==e.evaluated_draws||
+       (s.historical_archive?.last_round!==undefined&&
+          v.last_round!==s.historical_archive.last_round)||
+       !/^[a-f0-9]{40}$/.test(v.archive_git_blob_sha1)||
+       !/^[a-f0-9]{64}$/.test(v.round_predictions_sha256)||
+       v.all_rounds_checked_against_archive!==true||
+       v.independently_verified_prepublished_forecasts!==false||
+       v.bank_primary_all_rounds_verified!==false||
+       v.prediction_skill_confirmed!==false||
+       v.automatic_model_promotion_authorized!==false||
+       v.actual_purchase!==false||
+       !safeInteger(v.selected_straight_hits)||
+       !safeInteger(v.uniform_reference_straight_hits)||
+       v.selected_straight_hits>v.evaluated_draws||
+       v.uniform_reference_straight_hits>v.evaluated_draws||
+       !finiteScore(v.selected_mean_log_score_edge_vs_uniform)||
+       typeof v.full_expected_uniform_hits!=='number'||
+       Math.abs(v.full_expected_uniform_hits-v.evaluated_draws/10000)>0.000001||
+       !cohort||!safeInteger(cohort.first_round)||
+       !safeInteger(cohort.last_round)||
+       !safeInteger(cohort.evaluated_draws)||
+       cohort.first_round<=2||cohort.last_round!==v.last_round||
+       cohort.last_round-cohort.first_round+1!==cohort.evaluated_draws||
+       cohort.repeatedly_inspected_not_independent_holdout!==true||
+       !Array.isArray(entries)||entries.length!==e.candidate_models+2||
+       !names.includes('uniform')||!names.includes('adaptive')||
+       new Set(names).size!==names.length||
+       entries.some(m=>!auditModelName(m.model)||
+          !safeInteger(m.straight_hits)||m.straight_hits>cohort.evaluated_draws||
+          !finiteScore(m.mean_log_score_edge_vs_uniform)||
+          !finiteScore(m.mean_brier_edge_vs_uniform))||
+       entries.find(m=>m.model==='uniform').mean_log_score_edge_vs_uniform!==0||
+       !Array.isArray(recent)||recent.length!==Math.min(12,v.evaluated_draws)||
+       recent.some((r,i)=>
+          r.round!==v.last_round-i||
+          !/^\d{4}-\d{2}-\d{2}$/.test(r.draw_date)||
+          r.data_cutoff_round!==r.round-1||
+          !safeDigits(r.actual)||!safeDigits(r.selected_number)||
+          !safeDigits(r.uniform_number)||!names.includes(r.selected_model)||
+          r.selected_model==='adaptive'||
+          r.selected_hit!==(r.selected_number===r.actual)||
+          r.uniform_hit!==(r.uniform_number===r.actual)||
+          (r.selected_model==='uniform'&&r.selected_number!==r.uniform_number))){
+      throw new Error('最新の過去予測結果の検証データが不正です');
+    }
+  }else if(e&&e.status==='stale_history_reanalysis'&&v!==null&&v!==undefined){
+    throw new Error('履歴不一致の過去検証を表示できません');
+  }
   const a=s.auto_learning;
   if(a){
     const acceptedModels=['uniform','positional_60_alpha10','positional_250_alpha5','positional_1000_alpha20'];
