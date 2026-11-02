@@ -30,7 +30,7 @@ def graded_predictions(root: Path) -> list[dict]:
             "issued_at_jst": issue["issued_at_jst"],
             "verification": ("bank_primary_rakuten_publication_match" if draw["status"] == "auto_verified_two_publishers" else "two_source_manual_attestations_consistent"),
             "actual_purchase": False, "actual_profit_yen": None,
-            "reference_cost_yen": 5 * PRICE_PER_TICKET_YEN,
+            "reference_cost_yen": len(issue["numbers"]) * PRICE_PER_TICKET_YEN,
         })
     return sorted(result, key=lambda row: row["round"])
 
@@ -43,15 +43,15 @@ def walk_forward(root: Path, *, min_history: int = 30) -> dict:
     outcomes = []
     for i in range(min_history, len(draws)):
         target = draws[i]
-        guess = ranked_candidates(draws[:i], target["round"], method="positional")
+        guess = ranked_candidates(draws[:i], target["round"], method="positional", count=1)
         hits = sum(grade_number(n, target["winning_number"], "straight") == "straight"
                    for n in guess["numbers"])
         outcomes.append(hits)
     return {
         "status": "historical_exploratory_only", "trusted_draws": len(draws),
-        "evaluated_draws": len(outcomes), "top5_straight_hit_draws": sum(outcomes),
-        "top5_hit_rate": sum(outcomes) / len(outcomes),
-        "uniform_top5_hit_probability": 5 / 10_000,
+        "evaluated_draws": len(outcomes), "straight_hit_draws": sum(outcomes),
+        "straight_hit_rate": sum(outcomes) / len(outcomes),
+        "uniform_hit_probability": 1 / 10_000,
         "forecast_skill_confirmed": False,
         "selection_bias_note": "No prospective registered test; retrospective fit does not establish predictive skill",
         "realized_purchase_profit": None,
