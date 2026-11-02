@@ -24,6 +24,26 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: python -m numbers4_agent.cli --root . audit > /tmp/numbers4-audit.json
       - run: python -m numbers4_agent.cli --root . build-dashboard --output /tmp/numbers4-status.json > /dev/null
+      - name: Evaluate STRAIGHT challengers (historical, not prospective proof)
+        run: |
+          python -m numbers4_agent.cli --root . benchmark-straight --split-round 5000 --output /tmp/numbers4-straight-benchmark.json > /tmp/numbers4-straight-summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-straight-benchmark.json').read_text())
+          print('Exploratory STRAIGHT retrospective cohort:',r['retrospective_holdout']['first_round'],'-',r['retrospective_holdout']['last_round'])
+          for name,s in r['retrospective_holdout']['models'].items():
+              print(name,'draws:',s['evaluated_draws'],'hits:',s['top5_straight_hits'],
+                    'log-edge:',s['mean_log_score_edge_vs_uniform'],
+                    'paired-p-exploratory:',s['paired_exact_discordance_p_exploratory'])
+          assert r['forecast_skill_confirmed'] is False
+          assert r['automatic_production_promotion'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: straight-research-python-${{ matrix.python-version }}
+          path: /tmp/numbers4-straight-benchmark.json
+          retention-days: 30
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
