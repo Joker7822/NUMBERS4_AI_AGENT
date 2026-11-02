@@ -14,6 +14,7 @@ from .official_fetch import sync
 from .proof import run as research_proof, save_report
 from .historical_archive import archive_summary
 from .online_learning import write_replay
+from .straight_challenger import write_report as write_straight_benchmark
 from .secondary_feed import refresh as refresh_secondary, audit_related
 
 
@@ -49,6 +50,12 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
     sub.add_parser("audit-history", help="validate full secondary archive from round 1 (not officially verified)")
     sub.add_parser("replay-history", help="research-only predict each draw starting from round 2")
+    challenger = sub.add_parser("benchmark-straight",
+                               help="research-only rolling STRAIGHT models against a uniform reference")
+    challenger.add_argument("--split-round", type=int, default=5000,
+                            help="last historical development round (default 5000)")
+    challenger.add_argument("--output", type=Path, default=Path("research/straight_challenger_report.json"),
+                            help="exploratory report only; never overwrite issuance ledgers")
     sub.add_parser("refresh-secondary", help="append only corroborated two-mirror secondary history")
     sub.add_parser("audit-references", help="read-only check allowlisted online official rules and statistical methods")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
@@ -82,6 +89,9 @@ def main(argv: list[str] | None = None) -> int:
             result = archive_summary(root)
         elif args.command == "replay-history":
             result = write_replay(root)
+        elif args.command == "benchmark-straight":
+            result = write_straight_benchmark(root, output=args.output,
+                                              split_round=args.split_round)
         elif args.command == "refresh-secondary":
             result = refresh_secondary(root)
             report=root/"research/online_source_audit.json"
