@@ -56,3 +56,19 @@ python -m numbers4_agent.cli --root . audit-references
 
 **本番の収支ではありません**。宝くじを購入・換金した記録がないため `actual_spend_yen`、`actual_income_yen`、`actual_profit_yen` はすべて `null`。銀行一次ソースでの全回配当検証も未実施です。仮想の的中・金額がプラスであってもモデルの予測精度向上を示しません。GitHub Actionsはベストエフォートで更新し、即時性を保証しません。
 
+
+## ダッシュボードのボックス換算（2026-11-02 14時台 JSTから）
+
+従来のストレート5口の予測番号を**変更せず**、ボックスで購入できる番号だけを仮想購入したものとして第2回から全回を再評価します。並び順は無視し、4桁同一は申込不可として除外します（事後の代替番号は禁止）。並び方だけ違う同じ組合せを複数の候補に含む場合は、各候補が異なる仮想購入口なので重複分も口数・賞金に計上します。
+
+`numbers4_agent/box_finance.py` は以下の照合を強制します。
+
+- `research/online_round_predictions.csv` の事前履歴だけを使った全5口候補・当該回の当せん番号・元のストレート一致判定を再確認
+- `data/secondary_box_payouts.csv` の番号・日付・回号・配当、固定Git blob SHAを検証。4桁同一の当せん回は配当が空欄であることを強制
+- 的中**回数**と**口数**を別々に計上。ボックス配当は「その回の1口あたり配当×的中口数」
+- 費用は「申込可能な候補総数×200円」。申込不可は費用に含めず、欠損や改変があれば全計算を停止
+- 実購入費・実当せん金・実収支は `null`、本番昇格は `false`
+
+`research/online_replay.json` の `retrospective_box_finance` と `docs/data/status.json` を公開画面に用います。従来の `retrospective_finance`（ストレート）は研究監査用に残りますが、**公開画面ではボックス換算の金額を表示**します。
+
+出典：[みずほ銀行のナンバーズ購入ルール](https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html)、[二次公開の回別ボックス配当CSV](https://github.com/hazimekom/numbers4-api/blob/bc99c64c6ddd8e3183a257dfd36ab3fefe62212e/data/numbers4_results_v2.csv)。銀行一次の全回配当照合は未完了です。

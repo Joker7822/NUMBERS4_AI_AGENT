@@ -10,6 +10,8 @@ on:
       - 'data/historical_archive_provenance.json'
       - 'data/secondary_straight_payouts.csv'
       - 'data/secondary_straight_payouts_provenance.json'
+      - 'data/secondary_box_payouts.csv'
+      - 'data/secondary_box_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
       - 'docs/**'
   push:
@@ -18,16 +20,20 @@ on:
       - 'numbers4_agent/online_learning.py'
       - 'numbers4_agent/secondary_feed.py'
       - 'numbers4_agent/finance.py'
+      - 'numbers4_agent/box_finance.py'
       - 'numbers4_agent/historical_archive.py'
       - 'numbers4_agent/dashboard.py'
       - 'numbers4_agent/cli.py'
       - 'tests/test_online_learning.py'
       - 'tests/test_secondary_feed.py'
       - 'tests/test_finance.py'
+      - 'tests/test_box_finance.py'
       - 'data/historical_results.csv'
       - 'data/historical_archive_provenance.json'
       - 'data/secondary_straight_payouts.csv'
       - 'data/secondary_straight_payouts_provenance.json'
+      - 'data/secondary_box_payouts.csv'
+      - 'data/secondary_box_payouts_provenance.json'
       - '.github/workflows/online-learning.yml'
   schedule:
     # GitHub cron is best-effort, NOT a real-time SLA. 23:25 JST weekdays,
@@ -84,6 +90,11 @@ jobs:
           assert r['retrospective_finance']['bank_primary_payouts_verified'] is False
           assert r['retrospective_finance']['actual_profit_yen'] is None
           assert r['retrospective_finance']['historical_winning_draws']==r['selected_top5_straight_hits']
+          box=r['retrospective_box_finance']
+          assert box['ticket_type']=='box' and box['original_predictions_unchanged'] is True
+          assert box['simulated_ticket_cost_yen']==box['simulated_purchased_tickets']*200
+          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==r['evaluated_draws']*5
+          assert box['bank_primary_payouts_verified'] is False and box['actual_profit_yen'] is None
           print('Reconstructed forecasts and matches:',r['evaluated_draws'])
           print('Research-only straight hits:',r['selected_top5_straight_hits'])
           PY
@@ -122,6 +133,13 @@ jobs:
           assert finance['historical_winning_draws']==replay['selected_top5_straight_hits']
           assert finance['simulated_net_yen']==finance['simulated_payout_yen']-finance['simulated_ticket_cost_yen']
           assert dashboard['online_prequential_replay']['retrospective_finance']['simulated_net_yen']==finance['simulated_net_yen']
+          box=replay['retrospective_box_finance']
+          assert box['ticket_type']=='box' and box['original_predictions_unchanged'] is True
+          assert box['simulated_ticket_cost_yen']==box['simulated_purchased_tickets']*200
+          assert box['simulated_purchased_tickets']+box['excluded_ineligible_tickets']==replay['evaluated_draws']*5
+          assert box['simulated_payout_yen']-box['simulated_ticket_cost_yen']==box['simulated_net_yen']
+          assert box['bank_primary_payouts_verified'] is False and box['actual_profit_yen'] is None
+          assert dashboard['online_prequential_replay']['retrospective_box_finance']['simulated_net_yen']==box['simulated_net_yen']
           assert dashboard['prediction_skill_confirmed'] is False
           assert dashboard['automatic_model_promotion'] is False
           assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
@@ -136,10 +154,11 @@ jobs:
               numbers4_agent/models.py numbers4_agent/ledger.py
             git add -- data/historical_results.csv data/historical_archive_provenance.json \
               data/secondary_straight_payouts.csv data/secondary_straight_payouts_provenance.json \
+              data/secondary_box_payouts.csv data/secondary_box_payouts_provenance.json \
               research/online_source_audit.json research/online_reference_audit.json \
               research/online_replay.json research/online_round_predictions.csv \
               docs/data/status.json
-            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|data/secondary_straight_payouts.csv|data/secondary_straight_payouts_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/historical_results.csv|data/historical_archive_provenance.json|data/secondary_straight_payouts.csv|data/secondary_straight_payouts_provenance.json|data/secondary_box_payouts.csv|data/secondary_box_payouts_provenance.json|research/online_(source_audit|reference_audit|replay).json|research/online_round_predictions.csv|docs/data/status.json)$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unsafe staged paths: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No research-only changes'; exit 0; fi
             git commit -m 'research: refresh secondary Numbers4 history and past-only online evaluation'
@@ -155,6 +174,7 @@ jobs:
             echo 'Two GitHub mirrors may share a publisher. Bank official confirmation is separate.'
             echo 'No purchases, official grading rights, code execution from source pages, or Production promotions.'
             echo 'Any revenue, expense, or net shown by finance is explicitly hypothetical, never actual ticket returns.'
+            echo 'BOX uses any-order matches, excludes all-equal choices, and uses separately published BOX payouts.'
             if [ -f /tmp/numbers4-replay.json ]; then
               python - <<'PY'
           import json

@@ -20,6 +20,7 @@ from urllib.parse import urlparse
 
 from .historical_archive import load_archive, _git_blob_sha1, VERSION as ARCHIVE_VERSION, STATUS
 from .finance import PAYOUT_CSV, PAYOUT_META, VERSION as PAYOUT_VERSION, STATUS as PAYOUT_STATUS, _payout_int, load_payouts
+from .box_finance import PAYOUT_CSV as BOX_CSV, PAYOUT_META as BOX_META, VERSION as BOX_VERSION, STATUS as BOX_STATUS, load_box_payouts, parse_box_prize
 from .rules import four_digits
 
 JST=timezone(timedelta(hours=9))
@@ -145,6 +146,21 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
                 fresh_payouts.append(_payout_int(src.get("straight_payout")))
             if fresh_payouts[:len(previous_payouts)]!=previous_payouts:
                 raise ValueError("historical secondary payout was rewritten; refuse update")
+        box_enabled=(root/BOX_CSV).exists() or (root/BOX_META).exists()
+        if box_enabled:
+            old_box,_=load_box_payouts(root,old)
+            publisher_box_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))
+            if len(publisher_box_rows)!=len(rows):
+                raise ValueError("secondary BOX payout rows do not match draw coverage")
+            new_box=[]
+            for idx,(r,src) in enumerate(zip(rows,publisher_box_rows),1):
+                if (src.get("draw_no")!=str(idx) or
+                    src.get("draw_date")!=r["draw_date"] or
+                    src.get("winning_number")!=r["winning_number"]):
+                    raise ValueError("BOX payout differs from secondary draw outcome")
+                new_box.append(parse_box_prize(src.get("box_payout"),r["winning_number"]))
+            if new_box[:len(old_box)]!=old_box:
+                raise ValueError("secondary BOX payout history was retroactively revised")
         if len(rows)<len(old) or rows[:len(old)]!=old:
             raise ValueError("source history was rewritten, shortened, or now inconsistent with stored archive")
         result["sources"]=sources
@@ -206,6 +222,38 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
                 validated,_=load_payouts(root,rows)
                 if validated!=fresh_payouts:
                     raise ValueError("new historical payout ledger postwrite verification failed")
+            if box_enabled:
+                box_text="round,draw_date,winning_number,box_payout_yen\n"+"".join(
+                    f"{r['round']},{r['draw_date']},{r['winning_number']},{'' if p is None else p}\n"
+                    for r,p in zip(rows,new_box))
+                box_raw=box_text.encode("utf-8")
+                excluded=sum(p is None for p in new_box)
+                box_provenance={
+                    "version":BOX_VERSION,"status":BOX_STATUS,
+                    "git_blob_sha1":_git_blob_sha1(box_raw),
+                    "record_count":len(rows),"first_round":1,"last_round":len(rows),
+                    "first_draw_date":rows[0]["draw_date"],
+                    "last_draw_date":rows[-1]["draw_date"],
+                    "first_number":rows[0]["winning_number"],
+                    "latest_number":rows[-1]["winning_number"],
+                    "eligible_box_draws":len(rows)-excluded,
+                    "ineligible_box_draws":excluded,
+                    "ticket_price_yen":200,
+                    "bank_primary_payouts_verified":False,
+                    "secondary_payout_independence_proven":False,
+                    "forecast_grading_authorized":False,
+                    "actual_purchase_records_present":False,
+                    "source":{"url":sources[0]["url"],"commit_sha":sources[0]["commit_sha"],
+                              "blob_sha":sources[0]["blob_sha"]},
+                    "other_source_number_crosscheck":sources[1]["url"],
+                    "official_rule_url":"https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html",
+                    "interpretation":"Historical secondhand BOX payouts; blank means all four digits same and BOX application ineligible. No purchases."
+                }
+                (root/BOX_CSV).write_bytes(box_raw)
+                (root/BOX_META).write_text(json.dumps(box_provenance,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                valid_box,_=load_box_payouts(root,rows)
+                if valid_box!=new_box:
+                    raise ValueError("post-write secondary BOX payout validation failed")
             if len(load_archive(root)[0])!=len(rows):
                 raise ValueError("historical archive failed post-commit integrity check")
             result["status"]="appended_secondary_history_not_officially_verified"

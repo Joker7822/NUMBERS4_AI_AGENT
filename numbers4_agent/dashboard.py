@@ -14,6 +14,7 @@ from .sources import JST, reconcile, corroborated_draws
 from .store import file_hash
 from .historical_archive import archive_summary, load_archive
 from .finance import load_payouts, summarize_reconstruction
+from .box_finance import load_box_payouts, simulate_box
 from .online_learning import VERSION as ONLINE_VERSION
 from hashlib import sha256
 
@@ -125,6 +126,16 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
                     finance["baseline_winning_draws"]!=online["uniform_reference_top5_straight_hits"]):
                     raise ValueError("simulation win counts differ from replay")
                 online["retrospective_finance"]=verified_sim
+                box_finance=replay.get("retrospective_box_finance")
+                if box_finance is not None:
+                    box_payouts,box_meta=load_box_payouts(root,archive_rows)
+                    box_verified=simulate_box(history,archive_rows,box_payouts)
+                    box_verified["payout_git_blob_sha1"]=box_meta["git_blob_sha1"]
+                    if box_verified!=box_finance:
+                        raise ValueError("simulated BOX wins or finances differ from source evidence")
+                    online["retrospective_box_finance"]=box_verified
+                else:
+                    warnings.append("ボックスの仮想収支はまだ再計算されていません。")
             else:
                 warnings.append("過去の模擬収支は計算待ちです。実購入の収支は未確認です。")
         else:

@@ -18,6 +18,7 @@ from typing import Iterable
 
 from .historical_archive import archive_summary, load_archive
 from .finance import load_payouts, summarize_reconstruction
+from .box_finance import load_box_payouts, simulate_box
 from .rules import four_digits
 
 VERSION = "numbers4-prequential-online-replay-v1"
@@ -213,6 +214,12 @@ def write_replay(root: Path, *, report_path: Path=Path("research/online_replay.j
         finance["baseline_winning_draws"]!=summary["uniform_reference_top5_straight_hits"]):
         raise ValueError("financial simulation differs from validated replay")
     summary["retrospective_finance"]=finance
+    box_payouts,box_meta=load_box_payouts(root,rows)
+    box_report=simulate_box(grades,rows,box_payouts)
+    box_report["payout_git_blob_sha1"]=box_meta["git_blob_sha1"]
+    if box_report["evaluated_rounds"]!=summary["evaluated_draws"]:
+        raise ValueError("BOX simulation round count differs from replay")
+    summary["retrospective_box_finance"]=box_report
     summary["archive_git_blob_sha1"]=meta["git_blob_sha1"]
     summary["archive_latest_round"]=meta["last_round"]
     summary["generated_at_jst"]=datetime.now(JST).isoformat(timespec="seconds")

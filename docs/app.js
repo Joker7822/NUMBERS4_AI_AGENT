@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261102-finance-winners";
+import {normalizeStatus} from "./dashboard.mjs?v=20261102-box-results";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -40,8 +40,11 @@ function render(data){
   const live=data.online_prequential_replay;
   set("online-replay-count",live?.status==='historical_walk_forward_reconstruction_only'?
       live.evaluated_draws.toLocaleString('ja-JP')+'回':'未検証');
-  set("online-replay-hits",live?.status==='historical_walk_forward_reconstruction_only'?
-      live.selected_top5_straight_hits+'回 / 一様比較 '+live.uniform_reference_top5_straight_hits+'回':'未検証');
+  const box=live?.retrospective_box_finance;
+  const financeReady=live?.status==='historical_walk_forward_reconstruction_only'&&
+    box?.status==='historical_simulation_only_not_actual_purchase';
+  set("online-replay-hits",financeReady?
+      box.historical_winning_draws+'回（'+box.historical_winning_tickets+'口、ボックス）':'未検証');
   set("online-replay-edge",live?.status==='historical_walk_forward_reconstruction_only'?
       '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
       ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
@@ -58,35 +61,45 @@ function render(data){
   const forecastGrid=byId("latest-candidate-numbers");forecastGrid.replaceChildren();
   if(safeNext)next.numbers.forEach((num,i)=>{
     const card=create("div","ticket");
-    card.append(create("small","", "研究候補 "+(i+1)),create("strong","",num));
+    const eligible=new Set(num).size>1;
+    card.append(create("small","", "ボックス候補 "+(i+1)),
+                create("strong","",num),
+                create("small","",eligible?"ボックス申込可能":"4桁同一・申込不可"));
     forecastGrid.append(card);
   });
-  const f=live?.retrospective_finance;
-  const financeReady=live?.status==='historical_walk_forward_reconstruction_only'&&
-    f?.status==='historical_simulation_only_not_actual_purchase';
+  const f=box;
   set("simulation-scope",financeReady?
-    "第"+f.first_evaluated_round+"〜"+f.last_evaluated_round+"回 / "+f.evaluated_rounds.toLocaleString("ja-JP")+
-    "回 × ストレート5口 × 1口200円。抽せん後の履歴を使った再現であり、実購入していません。":
-    "配当データと予測履歴が照合できないため仮想収支を表示できません。");
+    "第"+f.first_evaluated_round+"〜"+f.last_evaluated_round+"回 / "+
+    f.evaluated_rounds.toLocaleString("ja-JP")+
+    "回。過去の予測5口をボックス申込と仮定（購入不可の4桁同一は除外・代替候補なし）。1口200円、実購入なし。":
+    "ボックス配当と過去予測の照合が未完了のため、仮想収支を表示できません。");
+  set("simulation-box-tickets",financeReady?
+    f.simulated_purchased_tickets.toLocaleString("ja-JP")+"口":"未算定");
+  set("simulation-ineligible",financeReady?
+    f.excluded_ineligible_tickets.toLocaleString("ja-JP")+"口":"未算定");
+  set("simulation-box-wins",financeReady?
+    f.historical_winning_draws+"回 / "+f.historical_winning_tickets+"口":"未算定");
   set("simulation-spend",financeReady?yen(f.simulated_ticket_cost_yen):"未算定");
   set("simulation-income",financeReady?yen(f.simulated_payout_yen):"未算定");
   set("simulation-net",financeReady?(f.simulated_net_yen>0?"+":"")+yen(f.simulated_net_yen):"未算定");
-  set("simulation-roi",financeReady?f.simulated_roi_percent.toLocaleString("ja-JP")+"%":"未算定");
+  set("simulation-roi",financeReady&&f.simulated_roi_percent!=null?
+    f.simulated_roi_percent.toLocaleString("ja-JP")+"%":"未算定");
   set("simulation-baseline",financeReady?yen(f.baseline_simulated_net_yen):"未算定");
   set("actual-profit","購入記録なし・実収支は確認できません");
   const hitList=byId("historical-wins");hitList.replaceChildren();
   set("historical-wins-meta",financeReady?
-      "第2回からの再現予測でストレート一致 "+f.historical_winning_draws+
-      "回。すべて抽せん後に再現した研究上の一致で、購入・当せん実績ではありません。":
-      "当せん金データと再現予測の照合待ちです。");
+    "第2回からの後付けボックス再現：一致"+f.historical_winning_draws+
+    "回 / "+f.historical_winning_tickets+"口。複数口が同じ組合せで当たった場合は各口を計上。実購入・当せん実績ではありません。":
+    "ボックス配当と予測履歴を照合中です。");
   if(financeReady){
-    if(!f.winning_rounds.length)hitList.append(create("p","subtle","一致した予測はありません。"));
+    if(!f.winning_rounds.length)hitList.append(create("p","subtle","ボックス一致した予測はありません。"));
     for(const entry of f.winning_rounds.slice().reverse()){
       const row=create("div","historical-hit");
       row.append(
-        create("span","hit-round","第"+entry.round+"回 ・ "+entry.draw_date),
-        create("b","hit-number",entry.matched_prediction),
-        create("span","hit-payout",yen(entry.straight_payout_yen))
+        create("span","hit-round","第"+entry.round+"回 ・ "+entry.draw_date+" ・ 当せん番号 "+entry.winning_number),
+        create("b","hit-number",entry.matched_tickets.map(t=>t.predicted_number).join(" / ")),
+        create("span","hit-payout",entry.winning_ticket_count+"口 × "+yen(entry.box_payout_yen_per_ticket)+
+          " = "+yen(entry.hypothetical_box_payout_yen))
       );
       hitList.append(row);
     }
