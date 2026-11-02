@@ -27,3 +27,15 @@ test('a forged graded result cannot be shown as a win',()=>{
     winning_tickets:1,tickets:['1111','1112','1113','1114','1115'].map(number=>({number,result:'miss'}))};
   assert.throws(()=>normalizeStatus(s),/採点済み/);
 });
+
+test('single-publisher reference result is visible only with strict unverified status',()=>{
+  const s=source();
+  s.latest_unverified_draw={round:7104,draw_date:'2026-10-30',winning_number:'5805',
+    status:'publisher_only_not_officially_verified',source:'rakuten_lottery_publication_only'};
+  const v=normalizeStatus(s);
+  assert.equal(v.latest_unverified_draw.winning_number,'5805');
+  assert.equal(v.consistent_rounds,0);
+  assert.equal(v.prediction_skill_confirmed,false);
+  s.latest_unverified_draw.status='auto_verified_two_publishers';
+  assert.throws(()=>normalizeStatus(s),/参考情報/);
+});

@@ -125,3 +125,52 @@ jobs:
             echo '- No post-draw issued tickets, lottery purchases, or automatic model promotions.'
             echo '- Retrospective performance never establishes genuine prospective skill.'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-current-dashboard:
+    needs: fetch-and-verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: numbers4-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Use exact newest main including the evidence-only bot commit
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject empty/unsafe reported performance as a success claim
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          status=json.loads(Path('docs/data/status.json').read_text())
+          assert status['version']=='numbers4-dashboard-v1'
+          assert status['official_auto_fetch_enabled'] is True
+          assert status['prediction_skill_confirmed'] is False
+          assert status['automatic_model_promotion'] is False
+          assert status['actual_purchase_profit_yen'] is None
+          assert status['historical_accuracy_proof']['prediction_skill_confirmed'] is False
+          assert status['auto_verified_rounds'] <= status['consistent_rounds']
+          print('Publishing evidence-only dashboard with',status['historical_accuracy_proof']['evaluated_draws'],'historical draws')
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4
