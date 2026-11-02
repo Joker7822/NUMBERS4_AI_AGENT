@@ -5,13 +5,47 @@ const safeTime=t=>typeof t==="string"&&!Number.isNaN(Date.parse(t))&&/[+-]\d\d:\
 export function normalizeStatus(s){
   if(!s||s.version!==VERSION||s.product!=="Numbers4"||
       s.official_auto_fetch_enabled!==true||s.prediction_skill_confirmed!==false||
-      s.automatic_model_promotion!==false||s.actual_purchase_profit_yen!==null||
+      typeof s.automatic_model_promotion!=='boolean'||s.actual_purchase_profit_yen!==null||
       !safeTime(s.generated_at_jst)||!Number.isInteger(s.consistent_rounds)||
       !Number.isInteger(s.observed_rounds)||!Number.isInteger(s.issued_draws)||!Number.isInteger(s.auto_verified_rounds)||s.auto_verified_rounds<0||s.auto_verified_rounds>s.consistent_rounds||
       s.graded_issued_draws>s.issued_draws||!Number.isInteger(s.graded_issued_draws)||
       !Array.isArray(s.warnings)||s.warnings.some(x=>typeof x!=="string")||
       !["conflict","two_source_entered_consistent","auto_verified_two_publishers","no_corroborated_draws"].includes(s.source_status)){
     throw new Error("監査JSONの安全性・形式を確認できません");
+  }
+  const a=s.auto_learning;
+  if(a){
+    const acceptedModels=['uniform','positional_60_alpha10','positional_250_alpha5','positional_1000_alpha20'];
+    const statuses=['no_shadow_forecasts','evidence_integrity_blocked',
+      'insufficient_true_prospective_draws','eligible_under_preregistered_uniform_null',
+      'no_confirmed_advantage'];
+    if(a.version!=='numbers4-prospective-auto-learning-v1'||
+       typeof a.protocol_sha256!=='string'||!/^[0-9a-f]{64}$/.test(a.protocol_sha256)||
+       a.feature_implemented!==true||!statuses.includes(a.status)||
+       !acceptedModels.includes(a.active_champion)||
+       !acceptedModels.includes(a.eligible_champion)||
+       s.automatic_model_promotion!==(a.active_champion!=='uniform')||
+       a.required_prospective_draws!==500||
+       !Number.isInteger(a.officially_verified_training_rounds)||
+       a.officially_verified_training_rounds<0||
+       a.officially_verified_training_rounds>s.auto_verified_rounds||
+       !Number.isInteger(a.shadow_forecasts_recorded)||a.shadow_forecasts_recorded<0||
+       !Number.isInteger(a.pre_draw_github_witnesses)||a.pre_draw_github_witnesses<0||
+       a.pre_draw_github_witnesses>a.shadow_forecasts_recorded||
+       !Number.isInteger(a.eligible_prospective_draws)||a.eligible_prospective_draws<0||
+       a.eligible_prospective_draws>a.pre_draw_github_witnesses||
+       (a.integrity_blocker!==null&&typeof a.integrity_blocker!=='string')||
+       a.model_code_from_search_results_executed!==false||
+       a.unverified_secondary_training_authorized!==false||
+       a.actual_purchase!==false){
+      throw new Error('自動学習・本番昇格の出典と保護条件を確認できません');
+    }
+    if(a.status==='eligible_under_preregistered_uniform_null'&&
+       (a.eligible_prospective_draws<500||a.eligible_champion==='uniform')){
+      throw new Error('将来検証を満たさない自動昇格の主張です');
+    }
+  }else if(s.automatic_model_promotion!==false){
+    throw new Error('本番モデル昇格の根拠がありません');
   }
   const d=s.latest_consistent_draw;
   if(d&&(!["two_source_entered_consistent","auto_verified_two_publishers"].includes(d.status)||!safeDigits(d.winning_number)||
@@ -29,7 +63,7 @@ export function normalizeStatus(s){
   const p=s.published_forecast;
   if(p&&(!Number.isInteger(p.target_round)||!Array.isArray(p.numbers)||
          ![1,5].includes(p.numbers.length)||!p.numbers.every(safeDigits)||
-         new Set(p.numbers).size!==5||p.actual_purchase!==false||!safeTime(p.issued_at_jst)||
+         new Set(p.numbers).size!==p.numbers.length||p.actual_purchase!==false||!safeTime(p.issued_at_jst)||
          !["straight","box","set"].includes(p.mode))){
     throw new Error("事前発行の証拠を確認できません");
   }
