@@ -75,7 +75,7 @@ def _fixed_api_get(host: str, target: str, *, token: str | None = None,
     headers = {
         "Accept": "application/json",
         "Accept-Encoding": "identity",
-        "User-Agent": "NUMBERS4_AI_AGENT/0.6 predictive-method-research",
+        "User-Agent": "NUMBERS4_AI_AGENT/0.7 predictive-method-research",
         "Connection": "close",
     }
     if token:
