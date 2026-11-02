@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T19:52:03+09:00",
+  "generated_at_jst": "2026-11-03T07:12:28+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -78,7 +78,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
-    "generated_at_jst": "2026-11-02T19:52:03+09:00",
+    "generated_at_jst": "2026-11-03T07:12:28+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -387,28 +387,28 @@
   "research_evolution": {
     "version": "numbers4-recursive-research-evolution-v1",
     "status": "recursive_research_exploration_not_prospective_evidence",
-    "generation": 6,
+    "generation": 7,
     "evaluated_draws": 7103,
-    "candidate_models": 7,
-    "research_sources_found": 79,
-    "lifetime_unique_sources": 275,
-    "new_unique_sources": 76,
+    "candidate_models": 6,
+    "research_sources_found": 64,
+    "lifetime_unique_sources": 336,
+    "new_unique_sources": 61,
     "requests_attempted": 8,
     "web_search_enabled": false,
     "research_search_errors": 0,
     "new_draws_since_previous_generation": 0,
-    "metadata_based_method_leads": 24,
+    "metadata_based_method_leads": 5,
     "next_model": "uniform",
     "next_number": "6993",
-    "generated_at_jst": "2026-11-02T19:51:34+09:00",
+    "generated_at_jst": "2026-11-03T07:11:51+09:00",
     "performance_advantage_confirmed": false,
     "model_auto_promotion_authorized": false,
     "actual_purchase": false,
     "repeated_historical_cohorts_not_independent": true,
     "latest_verification": {
       "scope": "secondary_history_exploratory_reconstruction_only",
-      "generation": 6,
-      "generated_at_jst": "2026-11-02T19:51:34+09:00",
+      "generation": 7,
+      "generated_at_jst": "2026-11-03T07:11:51+09:00",
       "source_status": "secondary_public_mirrors_agree_not_officially_verified",
       "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
       "round_predictions_sha256": "e1287eca4b7eeebd2f68c721088bdd10b3e824d38bf62c1914dda642640e4c7a",
@@ -468,16 +468,10 @@
             "mean_brier_edge_vs_uniform": -8.980921e-06
           },
           {
-            "model": "rolling_250_alpha10",
+            "model": "ema_0p995_alpha10",
             "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.039909816,
-            "mean_brier_edge_vs_uniform": -7.997225e-06
-          },
-          {
-            "model": "markov_120_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.003680217,
-            "mean_brier_edge_vs_uniform": -7.65948e-07
+            "mean_log_score_edge_vs_uniform": -0.018872861,
+            "mean_brier_edge_vs_uniform": -3.856633e-06
           }
         ],
         "repeatedly_inspected_not_independent_holdout": true
@@ -632,10 +626,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-02T19:36:23+09:00",
-    "rule_audit_age_hours": 0.261,
+    "rule_audit_age_hours": 11.602,
     "secondary_feed_status": "validated_no_new_draws",
     "secondary_checked_at_jst": "2026-11-02T19:36:22+09:00",
-    "secondary_audit_age_hours": 0.262,
+    "secondary_audit_age_hours": 11.602,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
