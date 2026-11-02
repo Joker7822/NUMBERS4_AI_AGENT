@@ -416,6 +416,58 @@ def _read_previous(root: Path) -> tuple[list[dict], dict | None]:
     return chain, previous
 
 
+
+def public_status(root: Path, archive: dict) -> dict:
+    """Read and verify research evolution artifacts for the public dashboard."""
+    chain, previous = _read_previous(root)
+    if not chain:
+        return {
+            "version": VERSION, "status": "not_yet_run", "generation": 0,
+            "evaluated_draws": 0, "candidate_models": 0,
+            "research_sources_found": 0, "web_search_enabled": False,
+            "next_model": None, "next_number": None, "generated_at_jst": None,
+            "performance_advantage_confirmed": False,
+            "model_auto_promotion_authorized": False,
+            "actual_purchase": False,
+        }
+    if previous is None:
+        raise ValueError("missing last evolution report")
+    csv_file = root / ROUND_CSV
+    if (not csv_file.is_file() or
+            sha256(csv_file.read_bytes()).hexdigest() !=
+            previous["research_round_csv_sha256"] or
+            chain[-1]["round_csv_sha256"] != previous["research_round_csv_sha256"]):
+        raise ValueError("evolution round-by-round replay checksum mismatch")
+    latest = previous["next_research_candidate"]
+    archive_fresh = (
+        previous["archive_git_blob_sha1"] == archive.get("git_blob_sha1")
+        and previous["archive_latest_round"] == archive.get("last_round")
+    )
+    return {
+        "version": VERSION,
+        "status": ("recursive_research_exploration_not_prospective_evidence"
+                   if archive_fresh else "stale_history_reanalysis"),
+        "generation": previous["generation"],
+        "evaluated_draws": previous["evaluated_draws"] if archive_fresh else 0,
+        "candidate_models": len(previous["model_specs"]),
+        "research_sources_found": previous["research_discovery"]["candidate_count"],
+        "web_search_enabled": previous["research_discovery"].get(
+            "web_search_enabled", False),
+        "research_search_errors": len(previous["research_discovery"]["errors"]),
+        "new_draws_since_previous_generation":
+            previous["current_archive_new_rounds_since_previous_generation"],
+        "metadata_based_method_leads": len(previous["retrieved_method_metadata_leads"]),
+        "next_model": latest["model"] if archive_fresh else None,
+        "next_number": latest["numbers"][0] if archive_fresh else None,
+        "generated_at_jst": previous["generated_at_jst"],
+        "performance_advantage_confirmed": False,
+        "model_auto_promotion_authorized": False,
+        "actual_purchase": False,
+        "repeated_historical_cohorts_not_independent": True,
+        "description": "All draws from round 2 are retrospectively reconstructed each generation; no actual pre-issued prediction or independent confirmation.",
+    }
+
+
 def cycle(root: Path, *, queries: list[str] | None = None,
           offline: bool = False, crossref_fetch=None, brave_fetch=None,
           brave_api_key: str | None = None, split_round: int = SPLIT_ROUND,
@@ -429,6 +481,8 @@ def cycle(root: Path, *, queries: list[str] | None = None,
     chain, previous = _read_previous(root)
     generation = len(chain) + 1
     rows, provenance = load_archive(root)
+    if previous is not None and provenance.get("last_round", 0) < previous["archive_latest_round"]:
+        raise ValueError("historical archive cannot be rewound across research generations")
     if not rows or provenance.get("officially_verified") is not False:
         raise ValueError("strict full secondary archive and provenance required")
     active_queries = queries or next_queries(previous)
