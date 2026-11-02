@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T16:48:22+09:00",
+  "generated_at_jst": "2026-11-02T17:15:07+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -44,9 +44,10 @@
     "evaluated_draws": 7103,
     "first_evaluated_round": 2,
     "last_evaluated_round": 7104,
-    "selected_top5_straight_hits": 5,
-    "uniform_reference_top5_straight_hits": 5,
-    "uniform_theoretical_top5_expected_hits": 3.5515,
+    "tickets_per_draw": 1,
+    "selected_straight_hits": 1,
+    "uniform_reference_straight_hits": 1,
+    "uniform_theoretical_expected_hits": 0.7103,
     "selected_mean_log_score_edge_vs_uniform": -1.5275e-05,
     "selected_mean_brier_improvement_vs_uniform": 3.268e-09,
     "research_model_selection_rounds": {
@@ -57,8 +58,8 @@
     "research_statistical_audit": {
       "scope": "descriptive_historical_reconstruction_not_preregistered",
       "null_hypothesis": "independent_uniform_10000_possible_outcomes",
-      "five_distinct_straight_prob_per_draw": 0.0005,
-      "selected_hit_tail_probability_given_uniform_null": 0.284292006,
+      "single_straight_prob_per_draw": 0.0001,
+      "selected_hit_tail_probability_given_uniform_null": 0.50852073,
       "nonuniform_model_selected_rounds": 41,
       "selected_only_hits_vs_uniform_reference": 0,
       "uniform_reference_only_hits_vs_selected": 0,
@@ -70,93 +71,45 @@
       "data_cutoff_round": 7104,
       "model": "uniform",
       "numbers": [
-        "8534",
-        "7043",
-        "8403",
-        "8263",
-        "1641"
+        "6993"
       ],
       "draw_date": null,
       "status": "research_only_not_issued_not_purchased",
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
-    "generated_at_jst": "2026-11-02T16:47:33+09:00",
+    "generated_at_jst": "2026-11-02T17:15:07+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
     "production_model_changed": false,
     "retrospective_finance": {
-      "version": "numbers4-retrospective-straight-five-finance-v1",
+      "version": "numbers4-retrospective-straight-one-finance-v2",
       "status": "historical_simulation_only_not_actual_purchase",
       "ticket_type": "straight",
-      "tickets_per_draw": 5,
+      "tickets_per_draw": 1,
       "ticket_unit_cost_yen": 200,
       "evaluated_rounds": 7103,
       "first_evaluated_round": 2,
       "last_evaluated_round": 7104,
-      "historical_winning_draws": 5,
-      "simulated_ticket_cost_yen": 7103000,
-      "simulated_payout_yen": 4702600,
-      "simulated_net_yen": -2400400,
-      "simulated_roi_percent": -33.7942,
-      "baseline_winning_draws": 5,
-      "baseline_simulated_payout_yen": 4702600,
-      "baseline_simulated_net_yen": -2400400,
+      "historical_winning_draws": 1,
+      "simulated_ticket_cost_yen": 1420600,
+      "simulated_payout_yen": 1365900,
+      "simulated_net_yen": -54700,
+      "simulated_roi_percent": -3.8505,
+      "baseline_winning_draws": 1,
+      "baseline_simulated_payout_yen": 1365900,
+      "baseline_simulated_net_yen": -54700,
       "winning_rounds": [
         {
-          "round": 212,
-          "draw_date": "1996-12-03",
-          "winning_number": "9475",
-          "matched_prediction": "9475",
-          "ticket_position": 4,
-          "selected_model": "uniform",
-          "straight_payout_yen": 1058000,
-          "hypothetical_ticket_cost_yen": 1000,
-          "status": "retrospective_simulated_hit_not_actual_purchase"
-        },
-        {
-          "round": 941,
-          "draw_date": "2001-11-30",
-          "winning_number": "8321",
-          "matched_prediction": "8321",
-          "ticket_position": 3,
-          "selected_model": "uniform",
-          "straight_payout_yen": 1039000,
-          "hypothetical_ticket_cost_yen": 1000,
-          "status": "retrospective_simulated_hit_not_actual_purchase"
-        },
-        {
-          "round": 1063,
-          "draw_date": "2002-09-16",
-          "winning_number": "6591",
-          "matched_prediction": "6591",
-          "ticket_position": 4,
-          "selected_model": "uniform",
-          "straight_payout_yen": 1013200,
-          "hypothetical_ticket_cost_yen": 1000,
-          "status": "retrospective_simulated_hit_not_actual_purchase"
-        },
-        {
-          "round": 2517,
-          "draw_date": "2009-01-23",
-          "winning_number": "2326",
-          "matched_prediction": "2326",
-          "ticket_position": 2,
-          "selected_model": "uniform",
-          "straight_payout_yen": 732400,
-          "hypothetical_ticket_cost_yen": 1000,
-          "status": "retrospective_simulated_hit_not_actual_purchase"
-        },
-        {
-          "round": 3989,
-          "draw_date": "2014-10-06",
-          "winning_number": "1482",
-          "matched_prediction": "1482",
+          "round": 82,
+          "draw_date": "1995-09-01",
+          "winning_number": "1770",
+          "matched_prediction": "1770",
           "ticket_position": 1,
           "selected_model": "uniform",
-          "straight_payout_yen": 860000,
-          "hypothetical_ticket_cost_yen": 1000,
+          "straight_payout_yen": 1365900,
+          "hypothetical_ticket_cost_yen": 200,
           "status": "retrospective_simulated_hit_not_actual_purchase"
         }
       ],
@@ -168,681 +121,89 @@
       "actual_income_yen": null,
       "actual_profit_yen": null,
       "production_promotion_authorized": false,
-      "interpretation": "Counterfactual research: 5 distinct straight entries at 200 yen each, every draw from 2 onward. Only historical payouts from a single secondary publisher; no actual ticket purchases or verified income."
+      "interpretation": "Counterfactual research: 1 straight entry at 200 yen each, every draw from 2 onward. Only historical payouts from a single secondary publisher; no actual ticket purchases or verified income."
     },
     "retrospective_box_finance": {
-      "version": "numbers4-retrospective-box-five-finance-v1",
+      "version": "numbers4-retrospective-box-one-finance-v2",
       "status": "historical_simulation_only_not_actual_purchase",
       "ticket_type": "box",
-      "requested_tickets_per_round": 5,
+      "requested_tickets_per_round": 1,
       "ticket_unit_cost_yen": 200,
       "evaluated_rounds": 7103,
       "first_evaluated_round": 2,
       "last_evaluated_round": 7104,
-      "simulated_purchased_tickets": 35475,
-      "excluded_ineligible_tickets": 40,
-      "historical_winning_draws": 67,
-      "historical_winning_tickets": 67,
-      "simulated_ticket_cost_yen": 7095000,
-      "simulated_payout_yen": 3653700,
-      "simulated_net_yen": -3441300,
-      "simulated_roi_percent": -48.5032,
-      "baseline_purchased_tickets": 35475,
-      "baseline_excluded_ineligible_tickets": 40,
-      "baseline_winning_tickets": 68,
-      "baseline_ticket_cost_yen": 7095000,
-      "baseline_simulated_payout_yen": 3739000,
-      "baseline_simulated_net_yen": -3356000,
+      "simulated_purchased_tickets": 7094,
+      "excluded_ineligible_tickets": 9,
+      "historical_winning_draws": 14,
+      "historical_winning_tickets": 14,
+      "simulated_ticket_cost_yen": 1418800,
+      "simulated_payout_yen": 945100,
+      "simulated_net_yen": -473700,
+      "simulated_roi_percent": -33.3874,
+      "baseline_purchased_tickets": 7094,
+      "baseline_excluded_ineligible_tickets": 9,
+      "baseline_winning_tickets": 15,
+      "baseline_ticket_cost_yen": 1418800,
+      "baseline_simulated_payout_yen": 1023700,
+      "baseline_simulated_net_yen": -395100,
       "winning_rounds": [
         {
-          "round": 171,
-          "draw_date": "1996-07-12",
-          "winning_number": "4820",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "8024"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 46200,
-          "hypothetical_box_payout_yen": 46200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 212,
-          "draw_date": "1996-12-03",
-          "winning_number": "9475",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "9475"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 44000,
-          "hypothetical_box_payout_yen": 44000,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 246,
-          "draw_date": "1997-04-08",
-          "winning_number": "0747",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "7074"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 103300,
-          "hypothetical_box_payout_yen": 103300,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 268,
-          "draw_date": "1997-06-24",
-          "winning_number": "8375",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "3587"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 46600,
-          "hypothetical_box_payout_yen": 46600,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 289,
-          "draw_date": "1997-09-05",
-          "winning_number": "6254",
+          "round": 82,
+          "draw_date": "1995-09-01",
+          "winning_number": "1770",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "4625"
+              "predicted_number": "1770"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 46100,
-          "hypothetical_box_payout_yen": 46100,
+          "box_payout_yen_per_ticket": 113800,
+          "hypothetical_box_payout_yen": 113800,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 474,
-          "draw_date": "1998-11-25",
-          "winning_number": "0941",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "4910"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 33900,
-          "hypothetical_box_payout_yen": 33900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 494,
-          "draw_date": "1999-01-13",
-          "winning_number": "1564",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "1465"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 36200,
-          "hypothetical_box_payout_yen": 36200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 645,
-          "draw_date": "2000-01-05",
-          "winning_number": "3967",
+          "round": 658,
+          "draw_date": "2000-02-04",
+          "winning_number": "5605",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "3976"
+              "predicted_number": "5560"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 39800,
-          "hypothetical_box_payout_yen": 39800,
+          "box_payout_yen_per_ticket": 92200,
+          "hypothetical_box_payout_yen": 92200,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 665,
-          "draw_date": "2000-02-21",
-          "winning_number": "4653",
+          "round": 895,
+          "draw_date": "2001-08-15",
+          "winning_number": "7329",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "6435"
+              "predicted_number": "7932"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 35000,
-          "hypothetical_box_payout_yen": 35000,
+          "box_payout_yen_per_ticket": 36000,
+          "hypothetical_box_payout_yen": 36000,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 933,
-          "draw_date": "2001-11-12",
-          "winning_number": "5552",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "5525"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 320900,
-          "hypothetical_box_payout_yen": 320900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 941,
-          "draw_date": "2001-11-30",
-          "winning_number": "8321",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "8321"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 43200,
-          "hypothetical_box_payout_yen": 43200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1063,
-          "draw_date": "2002-09-16",
-          "winning_number": "6591",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "6591"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 42200,
-          "hypothetical_box_payout_yen": 42200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1221,
-          "draw_date": "2003-09-24",
-          "winning_number": "8030",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "0083"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 87400,
-          "hypothetical_box_payout_yen": 87400,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1370,
-          "draw_date": "2004-08-12",
-          "winning_number": "7018",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "7108"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 36600,
-          "hypothetical_box_payout_yen": 36600,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1419,
-          "draw_date": "2004-10-20",
-          "winning_number": "1510",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "1015"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 66900,
-          "hypothetical_box_payout_yen": 66900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1473,
-          "draw_date": "2005-01-06",
-          "winning_number": "0351",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "5130"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 44500,
-          "hypothetical_box_payout_yen": 44500,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1519,
-          "draw_date": "2005-03-11",
-          "winning_number": "0351",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "1305"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 41400,
-          "hypothetical_box_payout_yen": 41400,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 1880,
-          "draw_date": "2006-08-02",
-          "winning_number": "3562",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "3265"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 38200,
-          "hypothetical_box_payout_yen": 38200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2031,
-          "draw_date": "2007-03-06",
-          "winning_number": "0625",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "6502"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 23700,
-          "hypothetical_box_payout_yen": 23700,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2105,
-          "draw_date": "2007-06-18",
-          "winning_number": "5059",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "5095"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 65800,
-          "hypothetical_box_payout_yen": 65800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2211,
-          "draw_date": "2007-11-13",
-          "winning_number": "7143",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "4731"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 37100,
-          "hypothetical_box_payout_yen": 37100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2228,
-          "draw_date": "2007-12-06",
-          "winning_number": "4047",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "7404"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 94600,
-          "hypothetical_box_payout_yen": 94600,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2298,
-          "draw_date": "2008-03-19",
-          "winning_number": "2620",
+          "round": 1189,
+          "draw_date": "2003-07-11",
+          "winning_number": "7781",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "2206"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 86500,
-          "hypothetical_box_payout_yen": 86500,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2517,
-          "draw_date": "2009-01-23",
-          "winning_number": "2326",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "2326"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 61000,
-          "hypothetical_box_payout_yen": 61000,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2577,
-          "draw_date": "2009-04-17",
-          "winning_number": "9325",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 1,
-              "predicted_number": "5932"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 56900,
-          "hypothetical_box_payout_yen": 56900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2580,
-          "draw_date": "2009-04-22",
-          "winning_number": "3835",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "3853"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 74300,
-          "hypothetical_box_payout_yen": 74300,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2864,
-          "draw_date": "2010-05-27",
-          "winning_number": "6405",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 1,
-              "predicted_number": "4650"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 50000,
-          "hypothetical_box_payout_yen": 50000,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 2890,
-          "draw_date": "2010-07-02",
-          "winning_number": "1963",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "3961"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 22000,
-          "hypothetical_box_payout_yen": 22000,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3237,
-          "draw_date": "2011-11-03",
-          "winning_number": "1873",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "8713"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 32400,
-          "hypothetical_box_payout_yen": 32400,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3427,
-          "draw_date": "2012-07-30",
-          "winning_number": "7921",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 1,
-              "predicted_number": "1729"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 40600,
-          "hypothetical_box_payout_yen": 40600,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3494,
-          "draw_date": "2012-10-31",
-          "winning_number": "9002",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "0029"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 96600,
-          "hypothetical_box_payout_yen": 96600,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3589,
-          "draw_date": "2013-03-19",
-          "winning_number": "4327",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 1,
-              "predicted_number": "7234"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 27200,
-          "hypothetical_box_payout_yen": 27200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3642,
-          "draw_date": "2013-05-31",
-          "winning_number": "6418",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "6841"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 34700,
-          "hypothetical_box_payout_yen": 34700,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3728,
-          "draw_date": "2013-09-30",
-          "winning_number": "0028",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "2800"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 108300,
-          "hypothetical_box_payout_yen": 108300,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3817,
-          "draw_date": "2014-02-06",
-          "winning_number": "1895",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "8915"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 52900,
-          "hypothetical_box_payout_yen": 52900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 3989,
-          "draw_date": "2014-10-06",
-          "winning_number": "1482",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 1,
-              "predicted_number": "1482"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 35800,
-          "hypothetical_box_payout_yen": 35800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4052,
-          "draw_date": "2015-01-06",
-          "winning_number": "4931",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "3941"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 35700,
-          "hypothetical_box_payout_yen": 35700,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4376,
-          "draw_date": "2016-04-06",
-          "winning_number": "4735",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "5347"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 35800,
-          "hypothetical_box_payout_yen": 35800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4385,
-          "draw_date": "2016-04-19",
-          "winning_number": "1084",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "0841"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 40400,
-          "hypothetical_box_payout_yen": 40400,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4399,
-          "draw_date": "2016-05-09",
-          "winning_number": "1308",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "8031"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 31700,
-          "hypothetical_box_payout_yen": 31700,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4623,
-          "draw_date": "2017-03-21",
-          "winning_number": "7959",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "9975"
+              "predicted_number": "1877"
             }
           ],
           "winning_ticket_count": 1,
@@ -851,419 +212,163 @@
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 4667,
-          "draw_date": "2017-05-22",
-          "winning_number": "7568",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "5786"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 28200,
-          "hypothetical_box_payout_yen": 28200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4703,
-          "draw_date": "2017-07-11",
-          "winning_number": "5169",
+          "round": 2287,
+          "draw_date": "2008-03-04",
+          "winning_number": "0613",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "6159"
+              "predicted_number": "6130"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 38500,
-          "hypothetical_box_payout_yen": 38500,
+          "box_payout_yen_per_ticket": 25300,
+          "hypothetical_box_payout_yen": 25300,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 4746,
-          "draw_date": "2017-09-08",
-          "winning_number": "4538",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "3458"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 38100,
-          "hypothetical_box_payout_yen": 38100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 4998,
-          "draw_date": "2018-08-31",
-          "winning_number": "7319",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "3197"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 33400,
-          "hypothetical_box_payout_yen": 33400,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5052,
-          "draw_date": "2018-11-15",
-          "winning_number": "6456",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "6654"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 84100,
-          "hypothetical_box_payout_yen": 84100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5157,
-          "draw_date": "2019-04-17",
-          "winning_number": "7206",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "7026"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 51200,
-          "hypothetical_box_payout_yen": 51200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5159,
-          "draw_date": "2019-04-19",
-          "winning_number": "1392",
+          "round": 2397,
+          "draw_date": "2008-08-05",
+          "winning_number": "3241",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "1932"
+              "predicted_number": "3412"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 41900,
-          "hypothetical_box_payout_yen": 41900,
+          "box_payout_yen_per_ticket": 42100,
+          "hypothetical_box_payout_yen": 42100,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 5191,
-          "draw_date": "2019-06-04",
-          "winning_number": "3481",
+          "round": 2737,
+          "draw_date": "2009-11-27",
+          "winning_number": "8732",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "3418"
+              "predicted_number": "7283"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 32700,
-          "hypothetical_box_payout_yen": 32700,
+          "box_payout_yen_per_ticket": 32500,
+          "hypothetical_box_payout_yen": 32500,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 5273,
-          "draw_date": "2019-09-26",
-          "winning_number": "1067",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "0671"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 47300,
-          "hypothetical_box_payout_yen": 47300,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5387,
-          "draw_date": "2020-03-10",
-          "winning_number": "0425",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "5402"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 20800,
-          "hypothetical_box_payout_yen": 20800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5397,
-          "draw_date": "2020-03-24",
-          "winning_number": "6240",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "2406"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 40200,
-          "hypothetical_box_payout_yen": 40200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5402,
-          "draw_date": "2020-03-31",
-          "winning_number": "9561",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "6915"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 48200,
-          "hypothetical_box_payout_yen": 48200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5544,
-          "draw_date": "2020-10-15",
-          "winning_number": "4114",
+          "round": 3216,
+          "draw_date": "2011-10-05",
+          "winning_number": "0793",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "1144"
+              "predicted_number": "9730"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 165700,
-          "hypothetical_box_payout_yen": 165700,
+          "box_payout_yen_per_ticket": 56700,
+          "hypothetical_box_payout_yen": 56700,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 5559,
-          "draw_date": "2020-11-05",
-          "winning_number": "1769",
+          "round": 3322,
+          "draw_date": "2012-03-05",
+          "winning_number": "8964",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "6197"
+              "predicted_number": "8694"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 48600,
-          "hypothetical_box_payout_yen": 48600,
+          "box_payout_yen_per_ticket": 46700,
+          "hypothetical_box_payout_yen": 46700,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 5600,
-          "draw_date": "2021-01-05",
-          "winning_number": "1530",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "5130"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 28800,
-          "hypothetical_box_payout_yen": 28800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5687,
-          "draw_date": "2021-05-06",
-          "winning_number": "3598",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "9835"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 32100,
-          "hypothetical_box_payout_yen": 32100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5769,
-          "draw_date": "2021-08-30",
-          "winning_number": "0715",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "5071"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 11900,
-          "hypothetical_box_payout_yen": 11900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5899,
-          "draw_date": "2022-03-02",
-          "winning_number": "3365",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "3356"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 75100,
-          "hypothetical_box_payout_yen": 75100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 5952,
-          "draw_date": "2022-05-16",
-          "winning_number": "2304",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "0342"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 45100,
-          "hypothetical_box_payout_yen": 45100,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 6004,
-          "draw_date": "2022-07-27",
-          "winning_number": "8645",
+          "round": 3373,
+          "draw_date": "2012-05-15",
+          "winning_number": "1564",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "6854"
+              "predicted_number": "6541"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 39200,
-          "hypothetical_box_payout_yen": 39200,
+          "box_payout_yen_per_ticket": 32300,
+          "hypothetical_box_payout_yen": 32300,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         },
         {
-          "round": 6127,
-          "draw_date": "2023-01-18",
-          "winning_number": "4462",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 5,
-              "predicted_number": "4264"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 105200,
-          "hypothetical_box_payout_yen": 105200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 6511,
-          "draw_date": "2024-07-12",
-          "winning_number": "9345",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "4539"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 39700,
-          "hypothetical_box_payout_yen": 39700,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 6543,
-          "draw_date": "2024-08-27",
-          "winning_number": "2390",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 4,
-              "predicted_number": "9230"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 58200,
-          "hypothetical_box_payout_yen": 58200,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 6685,
-          "draw_date": "2025-03-19",
-          "winning_number": "1087",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 3,
-              "predicted_number": "8107"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 34900,
-          "hypothetical_box_payout_yen": 34900,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 6873,
-          "draw_date": "2025-12-08",
-          "winning_number": "3493",
-          "selected_model": "uniform",
-          "matched_tickets": [
-            {
-              "ticket_position": 2,
-              "predicted_number": "3934"
-            }
-          ],
-          "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 24800,
-          "hypothetical_box_payout_yen": 24800,
-          "status": "retrospective_simulated_box_win_not_actual_purchase"
-        },
-        {
-          "round": 7006,
-          "draw_date": "2026-06-16",
-          "winning_number": "0642",
+          "round": 3769,
+          "draw_date": "2013-11-26",
+          "winning_number": "1166",
           "selected_model": "uniform",
           "matched_tickets": [
             {
               "ticket_position": 1,
-              "predicted_number": "2640"
+              "predicted_number": "1661"
             }
           ],
           "winning_ticket_count": 1,
-          "box_payout_yen_per_ticket": 50500,
-          "hypothetical_box_payout_yen": 50500,
+          "box_payout_yen_per_ticket": 257800,
+          "hypothetical_box_payout_yen": 257800,
+          "status": "retrospective_simulated_box_win_not_actual_purchase"
+        },
+        {
+          "round": 4954,
+          "draw_date": "2018-07-02",
+          "winning_number": "6807",
+          "selected_model": "uniform",
+          "matched_tickets": [
+            {
+              "ticket_position": 1,
+              "predicted_number": "6078"
+            }
+          ],
+          "winning_ticket_count": 1,
+          "box_payout_yen_per_ticket": 53200,
+          "hypothetical_box_payout_yen": 53200,
+          "status": "retrospective_simulated_box_win_not_actual_purchase"
+        },
+        {
+          "round": 5725,
+          "draw_date": "2021-06-29",
+          "winning_number": "3268",
+          "selected_model": "uniform",
+          "matched_tickets": [
+            {
+              "ticket_position": 1,
+              "predicted_number": "3826"
+            }
+          ],
+          "winning_ticket_count": 1,
+          "box_payout_yen_per_ticket": 23700,
+          "hypothetical_box_payout_yen": 23700,
+          "status": "retrospective_simulated_box_win_not_actual_purchase"
+        },
+        {
+          "round": 6322,
+          "draw_date": "2023-10-18",
+          "winning_number": "1598",
+          "selected_model": "uniform",
+          "matched_tickets": [
+            {
+              "ticket_position": 1,
+              "predicted_number": "1895"
+            }
+          ],
+          "winning_ticket_count": 1,
+          "box_payout_yen_per_ticket": 39900,
+          "hypothetical_box_payout_yen": 39900,
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         }
       ],
@@ -1276,7 +381,7 @@
       "actual_profit_yen": null,
       "production_promotion_authorized": false,
       "original_predictions_unchanged": true,
-      "interpretation": "Post-hoc BOX interpretation of prequential 5-ticket STRAIGHT predictions. All-equal-digit BOX choices are not bought and cost zero; no replacement tickets. Permutations purchased separately receive per-ticket prizes. Secondary publisher prizes are unverified by bank. No actual purchase."
+      "interpretation": "Post-hoc BOX interpretation of prequential 1-ticket STRAIGHT predictions. All-equal-digit BOX choices are not bought and cost zero; no replacement tickets. An eligible matched entry receives one prize. Secondary publisher prizes are unverified by bank. No actual purchase."
     }
   },
   "online_operations": {
@@ -1285,11 +390,11 @@
     "official_rule_status": "official_rule_anchors_consistent",
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
-    "rule_checked_at_jst": "2026-11-02T16:47:25+09:00",
-    "rule_audit_age_hours": 0.016,
+    "rule_checked_at_jst": "2026-11-02T17:14:59+09:00",
+    "rule_audit_age_hours": 0.002,
     "secondary_feed_status": "validated_no_new_draws",
-    "secondary_checked_at_jst": "2026-11-02T16:47:25+09:00",
-    "secondary_audit_age_hours": 0.016,
+    "secondary_checked_at_jst": "2026-11-02T17:14:58+09:00",
+    "secondary_audit_age_hours": 0.003,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
