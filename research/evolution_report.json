@@ -1,13 +1,13 @@
 {
   "version": "numbers4-recursive-research-evolution-v1",
-  "generation": 2,
-  "generated_at_jst": "2026-11-02T19:02:05+09:00",
+  "generation": 3,
+  "generated_at_jst": "2026-11-02T19:08:53+09:00",
   "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
   "archive_latest_round": 7104,
   "current_archive_new_rounds_since_previous_generation": 0,
   "research_discovery": {
     "version": "numbers4-predictive-research-discovery-v1",
-    "searched_at_jst": "2026-11-02T19:02:05+09:00",
+    "searched_at_jst": "2026-11-02T19:08:53+09:00",
     "queries": [
       "lottery draw statistical randomness tests prediction",
       "lottery forecast model comparison data snooping prevention",
@@ -45,11 +45,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.1002/0471667196.ess2409",
-        "title": "Serial Tests of Randomness",
-        "source_url": "https://doi.org/10.1002/0471667196.ess2409",
-        "publication_year": 2004,
-        "venue": "Encyclopedia of Statistical Sciences",
+        "id": "10.1201/9781315110479-3",
+        "title": "Tests of Randomness",
+        "source_url": "https://doi.org/10.1201/9781315110479-3",
+        "publication_year": 2020,
+        "venue": "Nonparametric Statistical Inference",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [],
@@ -66,11 +66,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.1201/9781315110479-3",
-        "title": "Tests of Randomness",
-        "source_url": "https://doi.org/10.1201/9781315110479-3",
-        "publication_year": 2020,
-        "venue": "Nonparametric Statistical Inference",
+        "id": "10.1002/0471667196.ess2409",
+        "title": "Serial Tests of Randomness",
+        "source_url": "https://doi.org/10.1002/0471667196.ess2409",
+        "publication_year": 2004,
+        "venue": "Encyclopedia of Statistical Sciences",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [],
@@ -217,11 +217,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.24818/ida-ql/2025.210",
-        "title": "Proper Scoring Rules - Multivariate Probabilistic Forecasting",
-        "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
-        "publication_year": 2025,
-        "venue": "IDA Quantlets Repository",
+        "id": "10.32614/cran.package.scoring",
+        "title": "scoring: Proper Scoring Rules",
+        "source_url": "https://doi.org/10.32614/cran.package.scoring",
+        "publication_year": 2013,
+        "venue": "CRAN: Contributed Packages",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [
@@ -240,11 +240,11 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.32614/cran.package.scoring",
-        "title": "scoring: Proper Scoring Rules",
-        "source_url": "https://doi.org/10.32614/cran.package.scoring",
-        "publication_year": 2013,
-        "venue": "CRAN: Contributed Packages",
+        "id": "10.24818/ida-ql/2025.210",
+        "title": "Proper Scoring Rules - Multivariate Probabilistic Forecasting",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
         "method_signals": [
@@ -358,8 +358,8 @@
       "claimed_predictive_ability_verified": false
     },
     {
-      "source_id": "10.24818/ida-ql/2025.210",
-      "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
+      "source_id": "10.32614/cran.package.scoring",
+      "source_url": "https://doi.org/10.32614/cran.package.scoring",
       "mapped_to_approved_implementations": [
         "rolling"
       ],
@@ -368,8 +368,8 @@
       "claimed_predictive_ability_verified": false
     },
     {
-      "source_id": "10.32614/cran.package.scoring",
-      "source_url": "https://doi.org/10.32614/cran.package.scoring",
+      "source_id": "10.24818/ida-ql/2025.210",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
       "mapped_to_approved_implementations": [
         "rolling"
       ],
@@ -392,12 +392,13 @@
   "external_paper_code_executed": false,
   "research_proposed_specs_derived_from_safe_registry": true,
   "previous_generation_feedback_used_for_hypothesis_mutation": true,
+  "previous_generation_search_queries_adapted": true,
   "past_only_research_replay_recomputed": true,
   "parallel_original_one_ticket_replay_recomputed": true,
   "original_replay_version": "numbers4-prequential-online-replay-one-ticket-v2",
   "original_replay_straight_hits": 1,
   "original_replay_uniform_hits": 1,
-  "original_replay_sha256": "1f2874e722a8d560b64009d149eaedb005f15480e17a6d77d8a96713d204858d",
+  "original_replay_sha256": "1c0959c8ab564c87dfc662d9bb81b6edb77efc304703059db495088d51da7eba",
   "research_round_csv_sha256": "e1287eca4b7eeebd2f68c721088bdd10b3e824d38bf62c1914dda642640e4c7a",
   "next_generation_queries": [
     "lottery draw statistical randomness tests prediction",
@@ -431,13 +432,25 @@
       "family": "rolling",
       "window": 120,
       "alpha": 10
+    },
+    {
+      "family": "rolling",
+      "window": 500,
+      "alpha": 5
+    },
+    {
+      "family": "markov",
+      "window": 120,
+      "alpha": 20
     }
   ],
   "model_ids": [
     "rolling_60_alpha10",
     "rolling_250_alpha5",
     "ema_0p99_alpha10",
-    "rolling_120_alpha10"
+    "rolling_120_alpha10",
+    "rolling_500_alpha5",
+    "markov_120_alpha20"
   ],
   "development": {
     "first_round": 2,
@@ -480,6 +493,22 @@
         "straight_hits": 1,
         "mean_log_score_edge_vs_uniform": -0.045368735,
         "mean_brier_edge_vs_uniform": -9.254728e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_500_alpha5": {
+        "draws": 4999,
+        "straight_hits": 2,
+        "mean_log_score_edge_vs_uniform": -0.030483344,
+        "mean_brier_edge_vs_uniform": -6.060807e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "markov_120_alpha20": {
+        "draws": 4999,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.00500821,
+        "mean_brier_edge_vs_uniform": -1.01835e-06,
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
@@ -534,6 +563,22 @@
         "straight_hits": 0,
         "mean_log_score_edge_vs_uniform": -0.043713941,
         "mean_brier_edge_vs_uniform": -8.980921e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_500_alpha5": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.027957581,
+        "mean_brier_edge_vs_uniform": -5.812497e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "markov_120_alpha20": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.003680217,
+        "mean_brier_edge_vs_uniform": -7.65948e-07,
         "expected_uniform_hits_per_one_ticket": 0.2104,
         "confirmed_prospective_skill": false
       },
