@@ -22,7 +22,7 @@ from .box_finance import load_box_payouts, simulate_box
 from .rules import four_digits
 from .statistics import binomial_right_tail
 
-VERSION = "numbers4-prequential-online-replay-v1"
+VERSION = "numbers4-prequential-online-replay-one-ticket-v2"
 JST = timezone(timedelta(hours=9))
 MODELS = (("positional_60_alpha10", 60, 10),
           ("positional_250_alpha5", 250, 5),
@@ -34,9 +34,9 @@ FIELDS = ("round", "draw_date", "actual", "data_cutoff_round", "selected_model",
 
 
 def uniform_numbers(round_number: int) -> list[str]:
-    """Independent reproducible reference; NEVER chosen using future outcomes."""
+    """Exactly one deterministic uniform ticket, NEVER chosen using future outcomes."""
     seed = int.from_bytes(sha256(f"{VERSION}:uniform:{round_number}".encode()).digest()[:8], "big")
-    return [f"{n:04d}" for n in random.Random(seed).sample(range(10000), 5)]
+    return [f"{random.Random(seed).randrange(10000):04d}"]
 
 
 def positional_probs(history: Iterable[str], alpha: int) -> list[list[float]]:
@@ -131,7 +131,7 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
             current_grades={}
             for name,_,alpha in MODELS:
                 q=positional_probs(windows[name], alpha)
-                model_preds[name]=best_five(q)
+                model_preds[name]=best_five(q)[:1]
                 current_grades[name]=grade_prob(q,actual)
             if selection!="uniform":
                 prediction=model_preds[selection]
@@ -162,11 +162,14 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
         for name,_,_ in MODELS:
             windows[name].append(row["winning_number"])
     n=len(grades)
+    if any(len(row["selected_numbers"].split())!=1 or len(row["uniform_numbers"].split())!=1 for row in grades):
+        raise ValueError("one-ticket replay output invariant violated")
     # Comparisons are observational: the model family and threshold were
     # designed after access to historical outcomes, not preregistered.
     selected_only_hits=sum(g["selected_hit"] and not g["uniform_hit"] for g in grades)
     reference_only_hits=sum(g["uniform_hit"] and not g["selected_hit"] for g in grades)
     nonuniform_rounds=sum(count for name,count in selected_models.items() if name!="uniform")
+    # Exactly one predicted four-digit number is selected per draw.
     # Latest model candidate is recomputed only from results already in the
     # archive. Its target date is UNKNOWN until the official schedule is
     # checked. It is NEVER an issued, purchased or verified forecast.
@@ -179,26 +182,27 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
     next_n=rows[-1]["round"]+1
     next_numbers=(uniform_numbers(next_n) if next_model=="uniform"
                   else best_five(positional_probs(windows[next_model],
-                                     next(v[2] for v in MODELS if v[0]==next_model))))
+                                     next(v[2] for v in MODELS if v[0]==next_model)))[:1])
     result={
         "next_research_candidate":{"target_round":next_n,"data_cutoff_round":rows[-1]["round"],
           "model":next_model,"numbers":next_numbers,"draw_date":None,
           "status":"research_only_not_issued_not_purchased", "accuracy_claim":False},
         "version":VERSION,"status":"historical_walk_forward_reconstruction_only",
+        "tickets_per_draw":1,"ticket_type":"straight",
         "rounds":len(rows),"first_training_round":1,
         "first_evaluated_round":2,"last_evaluated_round":rows[-1]["round"],
         "last_evaluated_date":rows[-1]["draw_date"],"evaluated_draws":n,
         "training_from_prior_draws_only":True,"historical_frozen_forecasts":False,
         "forecast_grading_authorized":False,"officially_verified":False,
-        "selected_top5_straight_hits":selected_hits,
-        "uniform_reference_top5_straight_hits":reference_hits,
-        "uniform_theoretical_top5_expected_hits":round(n*5/10000,6),
+        "selected_straight_hits":selected_hits,
+        "uniform_reference_straight_hits":reference_hits,
+        "uniform_theoretical_expected_hits":round(n/10000,6),
         "research_statistical_audit":{
             "scope":"descriptive_historical_reconstruction_not_preregistered",
             "null_hypothesis":"independent_uniform_10000_possible_outcomes",
-            "five_distinct_straight_prob_per_draw":5/10000,
+            "single_straight_prob_per_draw":1/10000,
             "selected_hit_tail_probability_given_uniform_null":
-                round(binomial_right_tail(n,selected_hits,5/10000),9),
+                round(binomial_right_tail(n,selected_hits,1/10000),9),
             "nonuniform_model_selected_rounds":nonuniform_rounds,
             "selected_only_hits_vs_uniform_reference":selected_only_hits,
             "uniform_reference_only_hits_vs_selected":reference_only_hits,
@@ -228,8 +232,8 @@ def write_replay(root: Path, *, report_path: Path=Path("research/online_replay.j
     payouts,payout_meta=load_payouts(root,rows)
     finance=summarize_reconstruction(grades,rows,payouts)
     finance["payout_git_blob_sha1"]=payout_meta["git_blob_sha1"]
-    if (finance["historical_winning_draws"]!=summary["selected_top5_straight_hits"] or
-        finance["baseline_winning_draws"]!=summary["uniform_reference_top5_straight_hits"]):
+    if (finance["historical_winning_draws"]!=summary["selected_straight_hits"] or
+        finance["baseline_winning_draws"]!=summary["uniform_reference_straight_hits"]):
         raise ValueError("financial simulation differs from validated replay")
     summary["retrospective_finance"]=finance
     box_payouts,box_meta=load_box_payouts(root,rows)
