@@ -23,7 +23,7 @@ function render(data){
     const card=create("div","ticket");card.append(create("small","",`予測 ${i+1}`),create("strong","",num));holder.append(card);
   }
   const graded=data.latest_graded_issued_forecast,grades=byId("grades");grades.replaceChildren();
-  set("grade-meta",graded?`第${graded.round}回 ・ 当せん番号 ${graded.winning_number} ・ 5口中 ${graded.winning_tickets}口一致 ・ ${graded.verification==="bank_primary_rakuten_publication_match"?"銀行と楽天の自動照合":"手動2ソース記録の一致"}`:"2ソース入力一致と抽せん前発行の両方を確認できる成績はまだありません。");
+  set("grade-meta",graded?`第${graded.round}回 ・ 当せん番号 ${graded.winning_number} ・ ${graded.tickets.length}口中 ${graded.winning_tickets}口一致 ・ ${graded.verification==="bank_primary_rakuten_publication_match"?"銀行と楽天の自動照合":"手動2ソース記録の一致"}`:"2ソース入力一致と抽せん前発行の両方を確認できる成績はまだありません。");
   if(graded)for(const t of graded.tickets){const c=create("div","grade");
     c.append(create("b","",t.number),create("small","","照合結果"),create("strong","",({straight:"ストレート",box:"ボックス",set_straight:"セット（ストレート）",set_box:"セット（ボックス）",miss:"不一致"})[t.result]));grades.append(c);
   }
@@ -38,28 +38,29 @@ function render(data){
     " 予測の正式採点・精度実証には使用しません。":
     "第1回からの全回履歴はまだ登録されていません。");
   const live=data.online_prequential_replay;
-  set("online-replay-count",live?.status==='historical_walk_forward_reconstruction_only'?
+  const oneReady=live?.status==='historical_walk_forward_reconstruction_only'&&live?.tickets_per_draw===1;
+  set("online-replay-count",oneReady?
       live.evaluated_draws.toLocaleString('ja-JP')+'回':'未検証');
   const box=live?.retrospective_box_finance;
   const straight=live?.retrospective_finance;
-  const financeReady=live?.status==='historical_walk_forward_reconstruction_only'&&
+  const financeReady=oneReady&&
     box?.status==='historical_simulation_only_not_actual_purchase';
-  const straightReady=live?.status==='historical_walk_forward_reconstruction_only'&&
+  const straightReady=oneReady&&
     straight?.status==='historical_simulation_only_not_actual_purchase';
   set("online-replay-hits",financeReady&&straightReady?
       'ストレート '+straight.historical_winning_draws+'回 / ボックス '+
       box.historical_winning_draws+'回（'+box.historical_winning_tickets+'口）':
       '未検証');
-  set("online-replay-edge",live?.status==='historical_walk_forward_reconstruction_only'?
+  set("online-replay-edge",oneReady?
       '平均log-score差 '+live.selected_mean_log_score_edge_vs_uniform+
       ' / Brier改善 '+live.selected_mean_brier_improvement_vs_uniform:'未検証');
   const chance=live?.research_statistical_audit;
-  set("online-replay-chance",chance?.scope==='descriptive_historical_reconstruction_not_preregistered'?
+  set("online-replay-chance",oneReady&&chance?.scope==='descriptive_historical_reconstruction_not_preregistered'?
       '公平・独立な抽せんで同数以上当たる確率 '+(chance.selected_hit_tail_probability_given_uniform_null*100).toFixed(2)+
       '% / 統計モデル採用 '+chance.nonuniform_model_selected_rounds+'回（事前登録なし・予測力未実証）':
       '未集計（将来予測力は未実証）');
   const next=live?.next_research_candidate;
-  const safeNext=next&&live.status==='historical_walk_forward_reconstruction_only';
+  const safeNext=next&&oneReady;
   set("online-next-candidate",safeNext?
       '第'+next.target_round+'回研究候補 '+next.numbers.join(' / ')+
       ' （'+next.model+'、第'+next.data_cutoff_round+'回まで使用、未発行・銀行未照合）':
@@ -81,7 +82,7 @@ function render(data){
   set("simulation-scope",financeReady?
     "第"+f.first_evaluated_round+"〜"+f.last_evaluated_round+"回 / "+
     f.evaluated_rounds.toLocaleString("ja-JP")+
-    "回。過去の予測5口をボックス申込と仮定（購入不可の4桁同一は除外・代替候補なし）。1口200円、実購入なし。":
+    "回。過去の1番号をボックス1口申込と仮定（購入不可の4桁同一は除外・代替候補なし）。1口200円、実購入なし。":
     "ボックス配当と過去予測の照合が未完了のため、仮想収支を表示できません。");
   set("simulation-box-tickets",financeReady?
     f.simulated_purchased_tickets.toLocaleString("ja-JP")+"口":"未算定");
@@ -99,7 +100,7 @@ function render(data){
   const hitList=byId("historical-wins");hitList.replaceChildren();
   set("historical-wins-meta",financeReady?
     "第2回からの後付けボックス再現：一致"+f.historical_winning_draws+
-    "回 / "+f.historical_winning_tickets+"口。複数口が同じ組合せで当たった場合は各口を計上。実購入・当せん実績ではありません。":
+    "回 / "+f.historical_winning_tickets+"口。各回最大1口だけを計上。実購入・当せん実績ではありません。":
     "ボックス配当と予測履歴を照合中です。");
   if(financeReady){
     if(!f.winning_rounds.length)hitList.append(create("p","subtle","ボックス一致した予測はありません。"));
@@ -117,7 +118,7 @@ function render(data){
   set("simulation-straight-scope",straightReady?
     "第"+straight.first_evaluated_round+"〜"+straight.last_evaluated_round+"回 / "+
     straight.evaluated_rounds.toLocaleString("ja-JP")+
-    "回。毎回ストレート5口を買ったと仮定した別シナリオ。ボックスの支出は含めません。":
+    "回。毎回ストレート1口を買ったと仮定した別シナリオ。ボックスの支出は含めません。":
     "ストレート配当と過去予測の照合が未完了です。");
   set("simulation-straight-wins",straightReady?
     straight.historical_winning_draws+"回 / "+straight.historical_winning_draws+"口":"未算定");
