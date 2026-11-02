@@ -1,0 +1,63 @@
+{
+  "version": "numbers4-prospective-auto-learning-v1",
+  "protocol_sha256": "af460376621be3baac8432825c291fb6968e2847b9a2f21338975a40f8e02eeb",
+  "status": "no_shadow_forecasts",
+  "integrity_blocker": null,
+  "verified_official_draws_available": 0,
+  "shadow_forecasts_recorded": 0,
+  "independently_witnessed_forecasts": 0,
+  "eligible_prospective_draws": 0,
+  "required_prospective_draws": 500,
+  "model_assessments": {
+    "positional_60_alpha10": {
+      "verified_prospective_draws": 0,
+      "candidate_straight_hits": 0,
+      "uniform_reference_straight_hits": 0,
+      "log_e_against_independent_uniform": 0,
+      "log_threshold": 5.703782475,
+      "anytime_valid_uniform_null_alpha_family": 0.01,
+      "screen_passed": false,
+      "production_eligible": false
+    },
+    "positional_250_alpha5": {
+      "verified_prospective_draws": 0,
+      "candidate_straight_hits": 0,
+      "uniform_reference_straight_hits": 0,
+      "log_e_against_independent_uniform": 0,
+      "log_threshold": 5.703782475,
+      "anytime_valid_uniform_null_alpha_family": 0.01,
+      "screen_passed": false,
+      "production_eligible": false
+    },
+    "positional_1000_alpha20": {
+      "verified_prospective_draws": 0,
+      "candidate_straight_hits": 0,
+      "uniform_reference_straight_hits": 0,
+      "log_e_against_independent_uniform": 0,
+      "log_threshold": 5.703782475,
+      "anytime_valid_uniform_null_alpha_family": 0.01,
+      "screen_passed": false,
+      "production_eligible": false
+    }
+  },
+  "eligible_champion": "uniform",
+  "current_champion": "uniform",
+  "selection_criterion": "bonferroni_anytime_e_process_and_higher_straight_hits",
+  "test_null": "independent_fair_uniform_10000_outcomes_conditional_on_past",
+  "source": "bank_primary_plus_rakuten_matching_provenance_only",
+  "secondary_historical_training_authorized": false,
+  "unreviewed_external_source_code_executed": false,
+  "forecasts_retroactively_modified": false,
+  "purchases_automated": false,
+  "evidence_is_absolute_prediction_proof": false,
+  "previous_champion": "uniform",
+  "production_champion": "uniform",
+  "champion_changed": false,
+  "action": "keep",
+  "evaluated_at_jst": "2026-11-03T07:29:13+09:00",
+  "automatic_promotion_feature_implemented": true,
+  "automatic_promotion_executed": false,
+  "actual_purchase": false,
+  "forecast_skill_confirmed": false,
+  "assessment_sha256": "84efbcbb1859bbbd3f4a6081f0a81022d87533050a8382c84e0dea3dbbe97bc5"
+}
