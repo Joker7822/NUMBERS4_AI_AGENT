@@ -8,7 +8,7 @@
 
 既存の固定5ページは**公式ルール監視用の承認済み参照先**として維持したまま、研究担当者が指定した任意の**公開HTTPS URL**を閲覧する独立コマンドを追加しました。新しい情報源を監視用の固定リストに登録する必要はありません。**情報源の種類・ドメイン数に固定の上限は設けません**が、各実行の通信は有限です。
 
-\`\`\`bash
+```bash
 # 任意の公開Webページを読み取り専用で取得
 python -m numbers4_agent.cli --root . research-web \
   --url https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html \
@@ -21,7 +21,7 @@ python -m numbers4_agent.cli --root . research-web --url-file /tmp/research-urls
 python -m numbers4_agent.cli --root . research-web \
   --url https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html \
   > /tmp/numbers4-public-research.json
-\`\`\`
+```
 
 - 1回のコマンドで最大**50 URL**、各URL最大**4MB**、接続タイムアウト**10秒**、リダイレクト拒否。50件超は分割実行。**無制限トラフィック／無限クロール／検索エンジンAPIの無制限利用には対応しません**。
 - HTTPS・公開DNSのみに接続し、DNSがローカル/プライベートIPを返したら拒否。名前解決済みの公開IPに接続先を固定し、元ホスト名でTLS証明書を検証します。IP直指定・認証URL・リダイレクト・スクリプト実行は禁止します。
