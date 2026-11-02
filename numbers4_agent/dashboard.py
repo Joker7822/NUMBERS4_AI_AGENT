@@ -4,6 +4,9 @@ from datetime import datetime
 from pathlib import Path
 import json
 
+from .rules import four_digits
+from .sources import iso_date
+
 from .evaluation import graded_predictions, walk_forward
 from .ledger import read_issued
 from .sources import JST, reconcile, corroborated_draws
@@ -35,11 +38,36 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         age_days=(now.date()-datetime.fromisoformat(latest["draw_date"]).date()).days
         if age_days > 7:
             warnings.append("直近の登録済み結果が7日超前です。公式銀行の自動取得が停止または未反映の可能性があります。")
+    if not trusted and (root / "research" / "historical_unverified.json").is_file():
+        warnings.append("楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。")
     if not issued:
         warnings.append("事前発行した予測はありません。研究候補を発行済みとして表示しません。")
     else:
         if recent_issued["target_round"] not in {r["round"] for r in trusted}:
             warnings.append("最新の発行済み5口はまだ2ソース入力の一致結果で採点できません。")
+    cache_path = root / "research" / "historical_unverified.json"
+    unverified = None
+    if cache_path.is_file():
+        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+        if (cache.get("version") != "numbers4-research-source-v1" or
+                cache.get("verified_official") is not False or
+                cache.get("publisher") != "rakuten_lottery_publication_only" or
+                cache.get("rows_count") != len(cache.get("rows", []))):
+            raise ValueError("unverified research source provenance is malformed")
+        rows = cache["rows"]
+        if rows:
+            latest_unverified = max(rows, key=lambda r: r["round"])
+            four_digits(latest_unverified["winning_number"])
+            iso_date(latest_unverified["draw_date"])
+            unverified = {
+                "round": latest_unverified["round"],
+                "draw_date": latest_unverified["draw_date"],
+                "winning_number": latest_unverified["winning_number"],
+                "status": "publisher_only_not_officially_verified",
+                "source": "rakuten_lottery_publication_only",
+            }
+            if latest and latest["round"] == unverified["round"] and latest["winning_number"] != unverified["winning_number"]:
+                raise ValueError("unverified publisher conflicts with official matched result")
     research_path = root / "research" / "historical_backtest.json"
     research = {}
     if research_path.is_file():
@@ -55,6 +83,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "observed_rounds": len(states), "consistent_rounds": len(trusted),
         "auto_verified_rounds": len(auto_draws),
         "latest_consistent_draw": latest,
+        "latest_unverified_draw": unverified,
         "published_forecast": ({k: recent_issued[k] for k in ("target_round", "draw_date", "mode", "numbers", "issued_at_jst", "model_version", "actual_purchase")}
                                if recent_issued else None),
         "latest_graded_issued_forecast": recent_grade,
