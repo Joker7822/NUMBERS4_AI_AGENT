@@ -25,7 +25,7 @@ class OnlineLearningTests(unittest.TestCase):
         self.assertEqual(report['version'],VERSION)
         self.assertEqual(set(grades[0]['selected_numbers'].split()),set(uniform_numbers(2)))
         self.assertEqual(len(grades),124)
-        self.assertEqual(sum(x['selected_hit'] for x in grades), report['selected_top5_straight_hits'])
+        self.assertEqual(sum(x['selected_hit'] for x in grades), report['selected_straight_hits'])
 
     def test_future_edits_cannot_change_earlier_predictions(self):
         rows=fixture(122)
@@ -64,7 +64,7 @@ class OnlineLearningTests(unittest.TestCase):
         self.assertAlmostEqual(grade_prob(q,'0000')[0],0,places=12)
         self.assertAlmostEqual(grade_prob(q,'0000')[1],0,places=12)
         self.assertEqual(uniform_numbers(100),uniform_numbers(100))
-        self.assertEqual(len(set(uniform_numbers(100))),5)
+        self.assertEqual(len(set(uniform_numbers(100))),1)
         self.assertNotEqual(uniform_numbers(100),uniform_numbers(101))
         self.assertTrue(all(len(n)==4 for n in uniform_numbers(100)))
         self.assertTrue(all(len(p)==10 and abs(sum(p)-1)<1e-9 for p in positional_probs(['0000','1299'],5)))
