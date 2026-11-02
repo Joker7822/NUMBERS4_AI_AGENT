@@ -23,9 +23,9 @@ on:
     workflows: ['Numbers4 Historical Round2 Replay and Online Research Update']
     types: [completed]
     branches: [main]
-  schedule:
-    # Every weekday 11:15 JST, in addition to completed historical refreshes.
-    - cron: '15 2 * * 1-5'
+  # Deliberately no second cron: a successful two-hourly online-learning
+  # run triggers this research cycle via workflow_run. One clock owns the
+  # pipeline, preventing duplicate generation/replay and unnecessary API use.
 
 permissions:
   contents: write
