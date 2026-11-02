@@ -4,6 +4,7 @@ import unittest
 from datetime import datetime,timezone,timedelta
 from pathlib import Path
 from numbers4_agent.secondary_feed import refresh, audit_related, REPOS, RELATED,validate_pair,parse_csv,parse_json
+from numbers4_agent.historical_archive import _git_blob_sha1
 
 NOW=datetime(2026,11,2,13,30,tzinfo=timezone(timedelta(hours=9)))
 REVS=['a'*40,'b'*40]
@@ -32,7 +33,24 @@ class SecondaryFeedTests(unittest.TestCase):
         (root/'data').mkdir()
         (root/'data/historical_results.csv').write_text('round,draw_date,winning_number\n'+
             ''.join(f'{i},{d},{v}\n' for i,(d,v) in enumerate(ROWS[:3],1)))
-        (root/'data/historical_archive_provenance.json').write_text('{}')
+        raw=(root/'data/historical_results.csv').read_bytes()
+        provenance={
+          'version':'numbers4-historical-archive-v1',
+          'status':'secondary_public_mirrors_agree_not_officially_verified',
+          'officially_verified':False,'forecast_grading_authorized':False,
+          'source_independence_not_established':True,
+          'git_blob_sha1':_git_blob_sha1(raw),
+          'record_count':3,'first_round':1,'last_round':3,
+          'first_draw_date':'1994-10-07','last_draw_date':'1994-10-21',
+          'latest_number':'0097',
+          'public_source_revisions':[
+            {'url':'https://github.com/hazimekom/numbers4-api',
+             'commit_sha':'a'*40,'blob_sha':'c'*40},
+            {'url':'https://github.com/kodai721229/kujilab',
+             'commit_sha':'b'*40,'blob_sha':'d'*40}
+          ],
+        }
+        (root/'data/historical_archive_provenance.json').write_text(json.dumps(provenance))
         return temp,root
 
     def test_append_only_public_mirror_agreement(self):
