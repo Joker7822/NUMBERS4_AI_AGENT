@@ -9,3 +9,15 @@
 /* Keep the independently calculated STRAIGHT and BOX win histories readable. */
 .historical-hits{max-height:660px;overflow-y:auto;overscroll-behavior:contain;padding-right:5px}
 #historical-straight-finance .panel,#historical-finance .panel{min-width:0}
+
+/* Latest verified-format historical research: compact, accessible, mobile-scrollable tables. */
+.research-subhead{font-size:15px;font-weight:700;margin:26px 0 8px;color:var(--text)}
+.research-table-wrap{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0 22px;overscroll-behavior-x:contain}
+.research-table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;min-width:520px}
+.research-table th,.research-table td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.7}
+.research-table thead th{background:#193043;color:#d7eaf6;font-size:11px;white-space:nowrap;font-weight:700}
+.research-table tbody th{color:var(--accent);font-weight:600;overflow-wrap:anywhere}
+.research-table tbody td{color:var(--text);overflow-wrap:anywhere}
+.research-table tbody tr:last-child th,.research-table tbody tr:last-child td{border-bottom:0}
+#replay-audit-difference,#replay-audit-logscore{font-variant-numeric:tabular-nums}
+@media(max-width:580px){#latest-historical-verification .data-row{flex-direction:column;gap:5px}#latest-historical-verification .data-row strong{text-align:left}.research-table{font-size:11px;min-width:480px}.research-table th,.research-table td{padding:9px}}
