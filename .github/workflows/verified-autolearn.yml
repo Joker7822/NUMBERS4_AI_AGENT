@@ -1,0 +1,127 @@
+name: Numbers4 Verified Auto-Learning and Gated Champion
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 16:05 JST (shadow freeze), 22:45 JST (proof/evaluation), 10:15 JST retry.
+    # GitHub schedule delays are possible. Runtime refuses after the 18:00 cutoff.
+    - cron: '5 7 * * 1-5'
+    - cron: '45 13 * * 1-5'
+    - cron: '15 1 * * 2-6'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: numbers4-verified-auto-champion-main
+  cancel-in-progress: false
+
+jobs:
+  train-witness-evaluate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test forecast prepublication and prospective promotion safeguards
+        run: |
+          python -m unittest discover -s tests -v
+      - name: Verify external publication witness, assess true future draws and safely train
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'numbers4-ai-agent[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python - <<'PY'
+          import json
+          from datetime import datetime, time
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from numbers4_agent.sources import JST
+          from numbers4_agent.automatic_learning import (
+              DEADLINE_CLOCK, freeze_shadow, _verified, apply_policy)
+          from numbers4_agent.publication_witness import verify_and_record
+
+          root=Path('.')
+          now=datetime.now(JST)
+          # Validate GitHub server push run BEFORE any candidate evaluation.
+          proof=verify_and_record(root)
+          print('Third-party push-run witnesses:',proof['total_verified_witnesses'])
+          result=apply_policy(root,now=now)
+          print('Champion:',result['production_champion'],
+                'verified prospective draws:',result['eligible_prospective_draws'],
+                'action:',result['action'],
+                'blocker:',result['integrity_blocker'])
+
+          schedule=root/'research/approved_draw_schedule.json'
+          if schedule.is_file() and now.time()<DEADLINE_CLOCK:
+              config=json.loads(schedule.read_text(encoding='utf-8'))
+              if (config.get('version')!='numbers4-approved-draw-schedule-v1'
+                      or not isinstance(config.get('rounds'),list)):
+                  raise ValueError('invalid reviewed draw schedule')
+              targets=[r for r in config['rounds']
+                       if isinstance(r,dict) and r.get('draw_date')==now.date().isoformat()]
+              if len(targets)>1:
+                  raise ValueError('duplicate approved schedule for the same draw date')
+              if targets:
+                  item=targets[0]
+                  source=urlsplit(item.get('source_url',''))
+                  if (item.get('human_reviewed') is not True or
+                      source.scheme!='https' or
+                      source.hostname not in
+                      {'www.mizuhobank.co.jp','www.takarakuji-official.jp'}):
+                      raise ValueError('calendar entry lacks reviewed official source')
+                  verified=_verified(root)
+                  if verified and verified[-1]['round']==item['round']-1:
+                      frozen=freeze_shadow(root,target_round=item['round'],
+                                          draw_date=item['draw_date'],now=now)
+                      print('Predraw research shadow:',frozen['status'],
+                            frozen['round'])
+                  else:
+                      print('Shadow blocked: immediate previous bank result unavailable')
+          else:
+              print('No reviewed draw calendar entry or outside freeze window')
+          PY
+            git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl
+            for output in data/shadow_forecasts.jsonl data/shadow_publication_witnesses.jsonl data/production_champion.json research/prospective_auto_learning_status.json; do
+              if [ -f "$output" ]; then git add -- "$output"; fi
+            done
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/(shadow_forecasts.jsonl|shadow_publication_witnesses.jsonl|production_champion.json)|research/prospective_auto_learning_status.json)$' || true)"
+            if [ -n "$unexpected" ]; then echo "::error::Unexpected staged path: $unexpected"; exit 1; fi
+            if git diff --cached --quiet; then echo 'No auto-learning changes'; exit 0; fi
+            shadow_changed="$(git diff --cached --name-only | grep -Fx 'data/shadow_forecasts.jsonl' || true)"
+            git commit -m 'research: publish verified pre-draw shadow and evidence-gated champion assessment'
+            if git push origin HEAD:main; then
+              echo 'Audited automatic learning state published'
+              if [ -n "$shadow_changed" ]; then
+                # Bot GITHUB_TOKEN pushes do not trigger CI automatically.
+                # Dispatching CI AFTER push generates a server timestamp
+                # bound to this exact now-published head SHA.
+                gh workflow run ci.yml --ref main
+                echo 'Independent GitHub CI publication witness dispatched'
+              fi
+              exit 0
+            fi
+            if [ "$attempt" -eq 3 ]; then echo '::error::Could not publish without racing main'; exit 1; fi
+          done
+      - name: Summarize training and promotion (no ticket purchases)
+        if: always()
+        run: |
+          echo '## Verified-only automated predictive research' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Training inputs: bank+publisher reconciled results only; never secondary mirrors or web snippets.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Publication proof: actual GitHub push or explicit CI-dispatch run created before the Numbers4 draw.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Champion promotion: >=500 future verified draws, anytime e-process family alpha 0.01 and more 1-ticket STRAIGHT hits than uniform.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- No code execution from research websites, issuance of tickets, or automatic purchases.' >> "$GITHUB_STEP_SUMMARY"

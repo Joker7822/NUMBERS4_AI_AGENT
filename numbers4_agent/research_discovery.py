@@ -296,6 +296,52 @@ def _model_assessment(report: dict) -> dict:
     return assessments
 
 
+def _triage_scientific_hypotheses(discovery: dict, report: dict) -> list[dict]:
+    """Link untrusted research leads to existing implemented, frozen tests.
+
+    DOI existence and search snippets NEVER verify a forecasting advantage.
+    This creates an actionable review queue without loading external code or
+    changing any trainable architecture based on untrusted web text.
+    """
+    assessments = report["retrospective_holdout"]["models"]
+    linked = []
+    for item in discovery["candidates"]:
+        categories = item.get("research_categories", [])
+        if "machine_learning" in categories or "probability" in categories:
+            applicable = [x for x in assessments if x.startswith("positional_")]
+        elif "validation" in categories or "randomness" in categories:
+            applicable = ["uniform"]
+        else:
+            applicable = []
+        if not applicable:
+            continue
+        bibliographic = (
+            item.get("provider") == "crossref" and
+            item.get("publication_year") is not None and
+            bool(item.get("venue")) and
+            item.get("retraction_or_update_metadata_present") is False
+        )
+        linked.append({
+            "source_id": item["id"],
+            "source_url": item["source_url"],
+            "metadata_screen_passed": bibliographic,
+            "peer_review_and_claims_independently_verified": False,
+            "suggested_existing_experiment_models": applicable,
+            "model_results_historical_exploratory_only": {
+                name: {
+                    "straight_hits": assessments[name]["straight_hits"],
+                    "mean_log_score_edge_vs_uniform":
+                        assessments[name]["mean_log_score_edge_vs_uniform"],
+                } for name in applicable
+            },
+            "automatic_model_code_adoption": False,
+            "next_step": ("read_original_and_validate_methods_before_new_test"
+                          if bibliographic else
+                          "establish_reliable_publication_and_original_source"),
+        })
+    return linked
+
+
 def run_research_cycle(root: Path, *, queries: list[str] | None = None,
                        brave_api_key: str | None = None,
                        crossref_fetch=None, brave_fetch=None,
@@ -314,6 +360,7 @@ def run_research_cycle(root: Path, *, queries: list[str] | None = None,
         "discovery": discovery,
         "source_archive_git_blob_sha1": provenance["git_blob_sha1"],
         "source_archive_last_round": provenance["last_round"],
+        "scientific_hypothesis_review_queue": _triage_scientific_hypotheses(discovery, report),
         "experiment": {
             "protocol": "historical_posthoc_challenger_benchmark",
             "development_first_round": report["development"]["first_round"],

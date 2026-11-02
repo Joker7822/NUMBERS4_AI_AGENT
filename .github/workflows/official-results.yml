@@ -162,7 +162,7 @@ jobs:
           assert status['version']=='numbers4-dashboard-v1'
           assert status['official_auto_fetch_enabled'] is True
           assert status['prediction_skill_confirmed'] is False
-          assert status['automatic_model_promotion'] is False
+          assert status['automatic_model_promotion'] == (status['auto_learning']['active_champion'] != 'uniform')
           assert status['actual_purchase_profit_yen'] is None
           assert status['historical_accuracy_proof']['prediction_skill_confirmed'] is False
           assert status['auto_verified_rounds'] <= status['consistent_rounds']
