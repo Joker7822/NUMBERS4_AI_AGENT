@@ -154,7 +154,7 @@ jobs:
           assert ops['model_auto_promotion'] is False
           assert ops['real_purchases_enabled'] is False
           assert dashboard['prediction_skill_confirmed'] is False
-          assert dashboard['automatic_model_promotion'] is False
+          assert dashboard['automatic_model_promotion'] == (dashboard['auto_learning']['active_champion'] != 'uniform')
           assert dashboard['online_prequential_replay']['status']=='historical_walk_forward_reconstruction_only'
           print('Current archive:',replay['archive_latest_round'])
           print('Walk-forward rounds:',replay['evaluated_draws'])
