@@ -1,0 +1,672 @@
+{
+  "version": "numbers4-recursive-research-evolution-v1",
+  "generation": 1,
+  "generated_at_jst": "2026-11-02T19:00:32+09:00",
+  "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
+  "archive_latest_round": 7104,
+  "current_archive_new_rounds_since_previous_generation": null,
+  "research_discovery": {
+    "version": "numbers4-predictive-research-discovery-v1",
+    "searched_at_jst": "2026-11-02T19:00:32+09:00",
+    "queries": [
+      "lottery draw statistical randomness tests prediction",
+      "lottery machine learning forecasting out of sample validation",
+      "proper scoring rules probabilistic forecast evaluation",
+      "sequential multiple testing overfitting forecast models"
+    ],
+    "providers_attempted": [
+      "crossref"
+    ],
+    "web_search_enabled": false,
+    "web_search_provider_requires_configured_key": true,
+    "candidate_count": 17,
+    "candidates": [
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1201/9781439896129-5",
+        "title": "Tests of Randomness",
+        "source_url": "https://doi.org/10.1201/9781439896129-5",
+        "publication_year": 2010,
+        "venue": "Nonparametric Statistical Inference",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1201/9781315110479-3",
+        "title": "Tests of Randomness",
+        "source_url": "https://doi.org/10.1201/9781315110479-3",
+        "publication_year": 2020,
+        "venue": "Nonparametric Statistical Inference",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess2409",
+        "title": "Serial Tests of Randomness",
+        "source_url": "https://doi.org/10.1002/0471667196.ess2409",
+        "publication_year": 2004,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess2175",
+        "title": "Randomness, Tests of",
+        "source_url": "https://doi.org/10.1002/0471667196.ess2175",
+        "publication_year": 2004,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/0471667196.ess2409.pub2",
+        "title": "Serial Tests of Randomness",
+        "source_url": "https://doi.org/10.1002/0471667196.ess2409.pub2",
+        "publication_year": 2005,
+        "venue": "Encyclopedia of Statistical Sciences",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1596/1813-9450-7849",
+        "title": "Retooling Poverty Targeting Using Out-of-Sample Validation and Machine Learning",
+        "source_url": "https://doi.org/10.1596/1813-9450-7849",
+        "publication_year": 2016,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery machine learning forecasting out of sample validation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1596/33525",
+        "title": "Retooling Poverty Targeting Using Out-of-Sample Validation and Machine Learning",
+        "source_url": "https://doi.org/10.1596/33525",
+        "publication_year": 2018,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery machine learning forecasting out of sample validation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21203/rs.3.rs-7837766/v2",
+        "title": "Statistical and Machine Learning Models for Stock Price and Return Forecasting: An Out-of-Sample Comparison",
+        "source_url": "https://doi.org/10.21203/rs.3.rs-7837766/v2",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "2ddd746657d6a327a2fc148ddd58c29403aef284ec1813604053548b2c8daab7",
+        "method_signals": [],
+        "research_categories": [
+          "validation",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery machine learning forecasting out of sample validation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.32614/cran.package.oos",
+        "title": "OOS: Out-of-Sample Time Series Forecasting",
+        "source_url": "https://doi.org/10.32614/cran.package.oos",
+        "publication_year": 2021,
+        "venue": "CRAN: Contributed Packages",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery machine learning forecasting out of sample validation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.7447018",
+        "title": "Ranking, Not Estimating: Out-Of-Sample Validation of Machine Learning on the UN Food Loss and Waste Database",
+        "source_url": "https://doi.org/10.2139/ssrn.7447018",
+        "publication_year": 2026,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "c1d5281588d602ca88aa8493bfd864c1d6bb157ad405894e1eb809fdd5455080",
+        "method_signals": [],
+        "research_categories": [
+          "validation",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery machine learning forecasting out of sample validation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.2236605",
+        "title": "Evaluation of Probabilistic Forecasts: Proper Scoring Rules and Moments",
+        "source_url": "https://doi.org/10.2139/ssrn.2236605",
+        "publication_year": 2013,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "03577cc10106ccb4a231994e3ac46cd7e9e68d3d0cebc8b7f2ccc29757c908b0",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.212",
+        "title": "Proper Scoring Rules - Probabilistic forecasting examples",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.212",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.32614/cran.package.scoring",
+        "title": "scoring: Proper Scoring Rules",
+        "source_url": "https://doi.org/10.32614/cran.package.scoring",
+        "publication_year": 2013,
+        "venue": "CRAN: Contributed Packages",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.24818/ida-ql/2025.210",
+        "title": "Proper Scoring Rules - Multivariate Probabilistic Forecasting",
+        "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
+        "publication_year": 2025,
+        "venue": "IDA Quantlets Repository",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1146/annurev-statistics-042424-050626",
+        "title": "Proper Scoring Rules for Estimation and Forecast Evaluation",
+        "source_url": "https://doi.org/10.1146/annurev-statistics-042424-050626",
+        "publication_year": 2026,
+        "venue": "Annual Review of Statistics and Its Application",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "96fb3bf3e0ce6255b497702ee3353e3e5b820afc6f93992ea10a1d39e013f6db",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "validation",
+          "probability",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.271933",
+        "title": "Can Out-of-Sample Forecast Comparisons Help Prevent Overfitting?",
+        "source_url": "https://doi.org/10.2139/ssrn.271933",
+        "publication_year": 2001,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "c5fd5ad6d34603bbfcd07b3d1586dc4fb565ff6608070cbf39297e9825c5d551",
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/978-3-642-52307-6_17",
+        "title": "Sequential Multiple Testing for the Elimination of Inferior Populations",
+        "source_url": "https://doi.org/10.1007/978-3-642-52307-6_17",
+        "publication_year": 1988,
+        "venue": "Medizinische Informatik und Statistik",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      }
+    ],
+    "errors": [],
+    "review_policy": "literature_and_search_results_are_hypotheses_not_proven_model_improvements",
+    "automatic_code_execution_from_sources": false,
+    "automatic_model_training_from_sources": false,
+    "official_results_verified": false,
+    "automatic_production_model_promotion": false,
+    "status": "online_discovery_attempted"
+  },
+  "retrieved_method_metadata_leads": [
+    {
+      "source_id": "10.2139/ssrn.2236605",
+      "source_url": "https://doi.org/10.2139/ssrn.2236605",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.212",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.212",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.32614/cran.package.scoring",
+      "source_url": "https://doi.org/10.32614/cran.package.scoring",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.24818/ida-ql/2025.210",
+      "source_url": "https://doi.org/10.24818/ida-ql/2025.210",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1146/annurev-statistics-042424-050626",
+      "source_url": "https://doi.org/10.1146/annurev-statistics-042424-050626",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    }
+  ],
+  "research_sources_directly_changed_training_weights": false,
+  "external_paper_code_executed": false,
+  "research_proposed_specs_derived_from_safe_registry": true,
+  "previous_generation_feedback_used_for_hypothesis_mutation": false,
+  "past_only_research_replay_recomputed": true,
+  "parallel_original_one_ticket_replay_recomputed": true,
+  "original_replay_version": "numbers4-prequential-online-replay-one-ticket-v2",
+  "original_replay_straight_hits": 1,
+  "original_replay_uniform_hits": 1,
+  "original_replay_sha256": "a431a035c577229038a2d29bff8db6c733fd013ee307161b940327786cebcb6a",
+  "research_round_csv_sha256": "e1287eca4b7eeebd2f68c721088bdd10b3e824d38bf62c1914dda642640e4c7a",
+  "next_generation_queries": [
+    "lottery draw statistical randomness tests prediction",
+    "lottery forecast model comparison data snooping prevention",
+    "proper scoring rules probabilistic forecast evaluation",
+    "sequential multiple testing overfitting forecast models"
+  ],
+  "status": "recursive_research_exploration_not_prospective_evidence",
+  "tickets_per_draw": 1,
+  "first_training_round": 1,
+  "first_evaluated_round": 2,
+  "last_evaluated_round": 7104,
+  "evaluated_draws": 7103,
+  "model_specs": [
+    {
+      "family": "rolling",
+      "window": 60,
+      "alpha": 10
+    },
+    {
+      "family": "rolling",
+      "window": 250,
+      "alpha": 5
+    },
+    {
+      "family": "ema",
+      "decay": 0.99,
+      "alpha": 10
+    },
+    {
+      "family": "rolling",
+      "window": 120,
+      "alpha": 10
+    },
+    {
+      "family": "rolling",
+      "window": 1000,
+      "alpha": 20
+    }
+  ],
+  "model_ids": [
+    "rolling_60_alpha10",
+    "rolling_250_alpha5",
+    "ema_0p99_alpha10",
+    "rolling_120_alpha10",
+    "rolling_1000_alpha20"
+  ],
+  "development": {
+    "first_round": 2,
+    "last_round": 5000,
+    "model_metrics": {
+      "uniform": {
+        "draws": 4999,
+        "straight_hits": 1,
+        "mean_log_score_edge_vs_uniform": 0.0,
+        "mean_brier_edge_vs_uniform": 0.0,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_60_alpha10": {
+        "draws": 4999,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.042934033,
+        "mean_brier_edge_vs_uniform": -8.648732e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_250_alpha5": {
+        "draws": 4999,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.052348427,
+        "mean_brier_edge_vs_uniform": -1.0739928e-05,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "ema_0p99_alpha10": {
+        "draws": 4999,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.023699449,
+        "mean_brier_edge_vs_uniform": -4.83134e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_120_alpha10": {
+        "draws": 4999,
+        "straight_hits": 1,
+        "mean_log_score_edge_vs_uniform": -0.045368735,
+        "mean_brier_edge_vs_uniform": -9.254728e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_1000_alpha20": {
+        "draws": 4999,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.012813645,
+        "mean_brier_edge_vs_uniform": -2.570247e-06,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      },
+      "adaptive": {
+        "draws": 4999,
+        "straight_hits": 1,
+        "mean_log_score_edge_vs_uniform": 0.0,
+        "mean_brier_edge_vs_uniform": 0.0,
+        "expected_uniform_hits_per_one_ticket": 0.4999,
+        "confirmed_prospective_skill": false
+      }
+    }
+  },
+  "late_historical_reanalysis": {
+    "first_round": 5001,
+    "last_round": 7104,
+    "model_metrics": {
+      "uniform": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": 0.0,
+        "mean_brier_edge_vs_uniform": 0.0,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_60_alpha10": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.034144405,
+        "mean_brier_edge_vs_uniform": -7.082702e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_250_alpha5": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.054665166,
+        "mean_brier_edge_vs_uniform": -1.0937242e-05,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "ema_0p99_alpha10": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.020149549,
+        "mean_brier_edge_vs_uniform": -4.048658e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_120_alpha10": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.043713941,
+        "mean_brier_edge_vs_uniform": -8.980921e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "rolling_1000_alpha20": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": -0.008835147,
+        "mean_brier_edge_vs_uniform": -1.913325e-06,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      },
+      "adaptive": {
+        "draws": 2104,
+        "straight_hits": 0,
+        "mean_log_score_edge_vs_uniform": 0.0,
+        "mean_brier_edge_vs_uniform": 0.0,
+        "expected_uniform_hits_per_one_ticket": 0.2104,
+        "confirmed_prospective_skill": false
+      }
+    }
+  },
+  "development_winner": {
+    "model": "uniform",
+    "mean_log_score_edge_vs_uniform": 0.0,
+    "is_independent_holdout": false
+  },
+  "next_research_candidate": {
+    "target_round": 7105,
+    "data_cutoff_round": 7104,
+    "model": "uniform",
+    "numbers": [
+      "6993"
+    ],
+    "draw_date": null,
+    "status": "research_only_not_issued_not_purchased"
+  },
+  "selection_guard": {
+    "lookback": 250,
+    "z_heuristic": 2.5,
+    "not_a_valid_statistical_significance_test": true
+  },
+  "weights_fitted_only_from_prior_rounds": true,
+  "model_family_devised_after_historical_outcomes": true,
+  "repeated_development_and_late_cohort_reuse": true,
+  "research_model_policy_auto_updated": true,
+  "genuine_prospective_independently_verified_draws": 0,
+  "performance_advantage_confirmed": false,
+  "production_model_changed": false,
+  "automatic_purchase": false,
+  "interpretation": "Each generation restarts at round 2 for comparative research only. Repeated history reuse and posthoc hypothesis choice cannot prove predictive superiority.",
+  "research_generation_is_prospective_preregistration": false,
+  "official_results_verified_by_this_cycle": false,
+  "model_auto_promotion_authorized": false,
+  "actual_purchase_profit_yen": null
+}
