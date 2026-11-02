@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T13:16:12+09:00",
+  "generated_at_jst": "2026-11-02T13:44:34+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -38,6 +38,43 @@
     "forecast_grading_authorized": false,
     "source_independence_not_established": true,
     "git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466"
+  },
+  "online_prequential_replay": {
+    "status": "historical_walk_forward_reconstruction_only",
+    "evaluated_draws": 7103,
+    "first_evaluated_round": 2,
+    "last_evaluated_round": 7104,
+    "selected_top5_straight_hits": 5,
+    "uniform_reference_top5_straight_hits": 5,
+    "uniform_theoretical_top5_expected_hits": 3.5515,
+    "selected_mean_log_score_edge_vs_uniform": -1.5275e-05,
+    "selected_mean_brier_improvement_vs_uniform": 3.268e-09,
+    "research_model_selection_rounds": {
+      "uniform": 7062,
+      "positional_250_alpha5": 1,
+      "positional_1000_alpha20": 40
+    },
+    "next_research_candidate": {
+      "target_round": 7105,
+      "data_cutoff_round": 7104,
+      "model": "uniform",
+      "numbers": [
+        "8534",
+        "7043",
+        "8403",
+        "8263",
+        "1641"
+      ],
+      "draw_date": null,
+      "status": "research_only_not_issued_not_purchased",
+      "accuracy_claim": false
+    },
+    "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
+    "generated_at_jst": "2026-11-02T13:44:34+09:00",
+    "prediction_skill_confirmed": false,
+    "officially_verified": false,
+    "forecast_grading_authorized": false,
+    "production_model_changed": false
   },
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",

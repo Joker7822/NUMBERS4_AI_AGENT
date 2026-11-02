@@ -1,0 +1,29 @@
+{
+  "version": "numbers4-related-sources-online-audit-v1",
+  "checked_at_jst": "2026-11-02T13:44:28+09:00",
+  "topics": [
+    {
+      "topic": "mizuho_rules",
+      "url": "https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html",
+      "status": "fetched_read_only_unreviewed",
+      "response_sha256": "96df23ae0556291c76eb0271e0a491b412cd795a86fee381b1538e3927df88af",
+      "size_bytes": 31069
+    },
+    {
+      "topic": "official_n4_rules",
+      "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
+      "status": "fetched_read_only_unreviewed",
+      "response_sha256": "57464da56c8d75caccaeed3558f3b13d7f3d0be5443ff7c5508dd39dfa764873",
+      "size_bytes": 39413
+    },
+    {
+      "topic": "scoring_rule_research",
+      "url": "https://stat.uw.edu/research/tech-reports/strictly-proper-scoring-rules-prediction-and-estimation",
+      "status": "unavailable_or_unverified",
+      "reason": "online source unavailable"
+    }
+  ],
+  "paper_relevance_confirmed": false,
+  "automatic_external_code_execution": false,
+  "lottery_predictive_improvement_confirmed": false
+}
