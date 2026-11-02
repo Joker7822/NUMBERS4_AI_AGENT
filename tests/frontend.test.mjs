@@ -446,3 +446,49 @@ test('latest historical verification UI has full-period, late-cohort and round-b
   assert.ok(html.includes('二次公開履歴に基づく後付け研究'));
   assert.ok(js.includes('create("tr")'));
 });
+
+
+test('current one-ticket research forecast is valid and its last-change state cannot claim issuance',()=>{
+  const s=source();
+  s.latest_research_forecast={
+    version:'numbers4-latest-research-forecast-v1',
+    source:'validated_research_evolution',
+    target_round:7106,data_cutoff_round:7105,
+    number:'2903',model:'rolling_250_alpha10',
+    research_generation:12,
+    computed_at_jst:'2026-11-03T07:30:00+09:00',
+    last_changed_at_jst:'2026-11-03T07:40:00+09:00',
+    changed_since_previous_snapshot:true,
+    archive_git_blob_sha1:'a'.repeat(40),
+    status:'research_only_not_issued_not_purchased',
+    actual_purchase:false,officially_verified:false,
+    prediction_skill_confirmed:false,
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.latest_research_forecast.number='29034';
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.number='2903';
+  s.latest_research_forecast.actual_purchase=true;
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.actual_purchase=false;
+  s.latest_research_forecast.data_cutoff_round=7106;
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+  s.latest_research_forecast.data_cutoff_round=7105;
+  s.latest_research_forecast.last_changed_at_jst='2099-01-01T00:00:00+09:00';
+  assert.throws(()=>normalizeStatus(s),/最新の研究予測/);
+});
+
+test('open dashboard auto-updates changed research candidate and shows computation and change time',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of ['latest-candidate-meta','latest-candidate-numbers',
+                   'latest-candidate-source','latest-candidate-computed',
+                   'latest-candidate-last-change','latest-candidate-change']){
+    assert.ok(html.includes('id="'+id+'"'),id);
+    assert.ok(app.includes('"'+id+'"'),id);
+  }
+  assert.ok(app.includes('data.latest_research_forecast'));
+  assert.ok(app.includes('FORECAST_REFRESH_INTERVAL_MS=120_000'));
+  assert.ok(app.includes('document.addEventListener("visibilitychange"'));
+  assert.ok(html.includes('画面を開いたままでも2分おき'));
+});
