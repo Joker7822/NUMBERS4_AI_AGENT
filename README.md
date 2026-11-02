@@ -61,7 +61,7 @@
     # 興味のある手法をオンライン検索して新研究世代を生成
     python -m numbers4_agent.cli --root . evolve-research --query "Markov transition lottery prediction"
 
-運用：[予測研究・自己進化ワークフロー](.github/workflows/predictive-research.yml)を平日11:15 JSTに実行し、[過去データ更新](.github/workflows/online-learning.yml)が成功した際にも再実行します。GitHubの定期実行は遅延する場合があります。結果は研究用の `research/evolution_report.json`、全回CSV `research/evolution_round_predictions.csv`、世代ジャーナル `research/evolution_journal.jsonl` に保存し、[ダッシュボード](https://joker7822.github.io/NUMBERS4_AI_AGENT/)にも表示します。
+運用：[過去データ更新](.github/workflows/online-learning.yml)を**毎日00:00、02:00、04:00、06:00、08:00、10:00、12:00、14:00、16:00、18:00、20:00、22:00 JST**に起動し、成功後に[予測研究・自己進化ワークフロー](.github/workflows/predictive-research.yml)を1回実行します。研究世代の再計算・検証・公開ダッシュボード更新まで同じ2時間周期で連動します。GitHubの定期実行は遅延・欠落する場合があり、厳密な時刻保証はありません。結果は研究用の `research/evolution_report.json`、全回CSV `research/evolution_round_predictions.csv`、世代ジャーナル `research/evolution_journal.jsonl` に保存し、[ダッシュボード](https://joker7822.github.io/NUMBERS4_AI_AGENT/)にも表示します。
 
 **注意：** 検索で発見した手法を再実験できるようになることと、当せん確率が本当に改善したことは別です。同じ履歴を使って自己改良を繰り返すと選択バイアスが大きくなります。論文のメタデータは研究仮説のヒントであって、科学的な再現検証や予測能力の証明ではありません。正式な本番昇格には別の事前公開・一次結果による将来検証が必要です。
 
@@ -105,7 +105,7 @@ python -m numbers4_agent.cli --root . research-cycle \
   --query "lottery machine learning out of sample validation"
 ```
 
-運用： [予測手法の研究検索ワークフロー](.github/workflows/predictive-research.yml) を平日11:15 JSTにベストエフォートで実行し、検索候補と比較結果を30日保存のJSONアーティファクトにします。予測に有利そうな論文が見つかっても外部コード・学習済みモデルを自動実行・投入せず、実装候補は必ず方法・出典をレビューします。**真正な前向きFuture-OOSの優位性が確認できるまで本番予測モデルの自動昇格を禁止**します。
+運用： [予測手法の研究検索ワークフロー](.github/workflows/predictive-research.yml) は2時間おきの履歴更新成功後に自動実行し、検索候補と比較結果を30日保存のJSONアーティファクトにします。予測に有利そうな論文が見つかっても外部コード・学習済みモデルを自動実行・投入せず、実装候補は必ず方法・出典をレビューします。**真正な前向きFuture-OOSの優位性が確認できるまで本番予測モデルの自動昇格を禁止**します。
 
 ## 任意の公開Web情報取得（2026-11-02追加、v0.11.0）
 
@@ -173,7 +173,7 @@ python -m unittest discover -s tests -v
 - 累積成績と研究モデル選択： [research/online_replay.json](research/online_replay.json)
 - 2公開リポジトリのオンライン更新検査： [research/online_source_audit.json](research/online_source_audit.json)
 - みずほ・宝くじ公式ルールおよびproper scoring rulesの定期参照： [research/online_reference_audit.json](research/online_reference_audit.json)
-- 定期運用： [online-learning.yml](.github/workflows/online-learning.yml) で平日23:25 JSTと翌朝10:10 JST、ベストエフォート実行（GitHub cronの遅延あり）。
+- 定期運用： [online-learning.yml](.github/workflows/online-learning.yml) で**毎日2時間おき（00:00〜22:00 JST、1日12回）**にベストエフォート実行し、成功後に予測手法研究とダッシュボード更新が続きます（GitHub cronの遅延・欠落あり）。
 
 ```bash
 python -m numbers4_agent.cli --root . replay-history
@@ -218,7 +218,7 @@ python -m numbers4_agent.cli --root . audit-references
 [公開ダッシュボード](https://joker7822.github.io/NUMBERS4_AI_AGENT/)の「ONLINE SOURCES / PRODUCTION MONITORING」欄に監視状態、公式ルール3公開元の条件一致数、公開データ巡回結果、最終チェック日時を表示します。
 
 - 信頼できる5つの承認済みWebページ（宝くじ公式2、みずほ銀行2、統計研究1）を対象に、公式ルールの必須文言の有無を自動チェック。銀行の当せん案内ページは**閲覧可能でも番号の取得・真正性の検証に成功したとはみなさない**。
-- 異常（ルール変更の疑い／主要取得元ダウン／監査96時間超の遅延）は状態へ反映し、GitHub Issueを重複防止付きで作成。GitHub Actionsは平日23:25 JST・翌朝10:10 JSTのベストエフォート監査を実行。
+- 異常（ルール変更の疑い／主要取得元ダウン／監査96時間超の遅延）は状態へ反映し、GitHub Issueを重複防止付きで作成。研究履歴のGitHub Actionsは毎日00:00〜22:00 JSTの2時間おきにベストエフォート監査を実行。
 - 二次公開履歴が一致した回のみ研究データに追記し、過去の予測の再現とストレート／ボックス別の仮想収支を更新。公式銀行の一元照合・事前発行の正式採点・自動購入・学習モデルの自動昇格は実施しません。
 - Web全域からの自律検索・ソースの無審査追加ではなく、[承認済みURLレジストリと運用監査](ONLINE_LEARNING.md)です。予測能力の改善が実証されたという意味ではありません。
 
