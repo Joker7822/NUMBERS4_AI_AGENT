@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-02T15:18:11+09:00",
+  "generated_at_jst": "2026-11-02T16:46:43+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -54,6 +54,17 @@
       "positional_250_alpha5": 1,
       "positional_1000_alpha20": 40
     },
+    "research_statistical_audit": {
+      "scope": "descriptive_historical_reconstruction_not_preregistered",
+      "null_hypothesis": "independent_uniform_10000_possible_outcomes",
+      "five_distinct_straight_prob_per_draw": 0.0005,
+      "selected_hit_tail_probability_given_uniform_null": 0.284292006,
+      "nonuniform_model_selected_rounds": 41,
+      "selected_only_hits_vs_uniform_reference": 0,
+      "uniform_reference_only_hits_vs_selected": 0,
+      "statistical_significance_is_prospective_proof": false,
+      "interpretation": "A chance benchmark for historical hits, not evidence of forecast skill."
+    },
     "next_research_candidate": {
       "target_round": 7105,
       "data_cutoff_round": 7104,
@@ -70,7 +81,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "b85c1d9fe3cb4899446d8ef0269d9fb3e2cd7466",
-    "generated_at_jst": "2026-11-02T15:17:39+09:00",
+    "generated_at_jst": "2026-11-02T16:46:43+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -1274,11 +1285,11 @@
     "official_rule_status": "official_rule_anchors_consistent",
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
-    "rule_checked_at_jst": "2026-11-02T15:17:32+09:00",
-    "rule_audit_age_hours": 0.011,
+    "rule_checked_at_jst": "2026-11-02T16:46:37+09:00",
+    "rule_audit_age_hours": 0.002,
     "secondary_feed_status": "validated_no_new_draws",
-    "secondary_checked_at_jst": "2026-11-02T15:17:31+09:00",
-    "secondary_audit_age_hours": 0.011,
+    "secondary_checked_at_jst": "2026-11-02T16:46:36+09:00",
+    "secondary_audit_age_hours": 0.002,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
