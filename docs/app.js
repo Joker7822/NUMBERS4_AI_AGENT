@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261103-latest-forecast-sync";
+import {normalizeStatus} from "./dashboard.mjs?v=20261104-weekly-audit";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -6,6 +6,71 @@ const japaneseTime=t=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",yea
 const yen=n=>typeof n==="number"?n.toLocaleString("ja-JP")+"円":"未算定";
 function render(data){
   set("draw-count",data.consistent_rounds);set("issue-count",data.issued_draws);set("graded-count",data.graded_issued_draws);
+  const week=data.recent_week;
+  const prospective=byId("recent-week-prospective-rows");
+  const retrospective=byId("recent-week-research-rows");
+  prospective.replaceChildren();
+  retrospective.replaceChildren();
+  const addWeekRow=(holder,values)=>{
+    const tr=create("tr");
+    values.forEach((value,i)=>tr.append(create(i===0?"th":"td","",value)));
+    holder.append(tr);
+  };
+  if(week){
+    set("recent-week-window",week.start_date+"〜"+week.end_date+"（日本時間・当日を含む7暦日）");
+    set("recent-week-issued-count",week.issued_forecasts.length+"件中 "+week.officially_graded_issued+"件が正式採点済み");
+    set("recent-week-shadow-count",week.shadow_forecasts.length+"件中 "+week.officially_matched_shadow+"件が証拠付き照合済み");
+    set("recent-week-research-count",week.research_replay.length+"件中 "+week.research_reference_matches+"件が参考一致");
+    const published=[
+      ...week.issued_forecasts.map(r=>({...r,kind:"issued"})),
+      ...week.shadow_forecasts.map(r=>({...r,kind:"shadow"}))
+    ].sort((a,b)=>b.round-a.round||a.kind.localeCompare(b.kind));
+    for(const r of published){
+      if(r.kind==="issued"){
+        const graded=r.ticket_results!==null;
+        addWeekRow(prospective,[
+          "第"+r.round+"回 / "+r.draw_date+" / 事前発行（"+r.mode+"）",
+          r.numbers.join(" / ")+" / 発行 "+japaneseTime(r.issued_at_jst),
+          graded?r.winning_number:"未照合",
+          graded?r.ticket_results.map(x=>x==="miss"?"不一致":x).join(" / "):"2系統一致待ち・正式採点不可"
+        ]);
+      }else{
+        const qualified=r.publication_witnessed&&r.official_result_verified;
+        addWeekRow(prospective,[
+          "第"+r.round+"回 / "+r.draw_date+" / シャドー（"+(r.publication_witnessed?"GitHub公開証拠あり":"公開証拠未確認")+"）",
+          r.number+"（"+r.model+"） / 記録 "+japaneseTime(r.issued_at_jst),
+          r.official_result_verified?r.winning_number:"未照合",
+          qualified?(r.straight_match?"ストレート一致":"不一致"):"証拠または2系統照合待ち・評価不可"
+        ]);
+      }
+    }
+    if(!published.length)addWeekRow(prospective,[
+      "事前公開記録なし","—","—","正式採点0件"
+    ]);
+    for(const r of week.research_replay)
+      addWeekRow(retrospective,[
+        "第"+r.round+"回 / "+r.draw_date,
+        r.number+"（"+r.model+" / 使用可能履歴：第"+r.data_cutoff_round+"回まで）",
+        r.reference_result+"（二次公開資料・銀行未照合）",
+        r.straight_match?"参考一致（正式的中ではない）":"参考不一致"
+      ]);
+    if(!week.research_replay.length)addWeekRow(retrospective,[
+      "対象期間の研究照合なし","—","—","研究の再計算待ち"
+    ]);
+    set("recent-week-evidence-note",
+      "正式採点 "+week.officially_graded_issued+"件・"+
+      "シャドーの証拠付き照合 "+week.officially_matched_shadow+"件と、"+
+      "二次資料による研究再現 "+week.research_replay.length+
+      "件は別集計です。研究再現の一致を正式な予測精度へ加算しません。");
+  }else{
+    set("recent-week-window","公開JSONの更新待ち：7日間の監査結果は未掲載です。");
+    set("recent-week-issued-count","未取得");
+    set("recent-week-shadow-count","未取得");
+    set("recent-week-research-count","未取得");
+    set("recent-week-evidence-note","データ未反映のため実績は表示できません。");
+    addWeekRow(prospective,["データ更新待ち","—","—","—"]);
+    addWeekRow(retrospective,["データ更新待ち","—","—","—"]);
+  }
   const label=data.source_status==="conflict"?"ソース不一致":data.auto_verified_rounds?"銀行＋販売元照合":data.consistent_rounds?"手入力2系統一致":"抽せん結果未登録";
   set("status-pill",label);byId("status-pill").className="pill"+(data.source_status==="conflict"?" block":data.stale||!data.consistent_rounds?" warn":"");
   set("refresh-time","生成 "+japaneseTime(data.generated_at_jst)+(data.stale?"・監視更新遅延":""));
