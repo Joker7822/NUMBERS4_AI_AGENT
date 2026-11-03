@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102-replay-verification">
-  <script type="module" src="app.js?v=20261103-latest-forecast-sync"></script>
+  <script type="module" src="app.js?v=20261104-weekly-audit"></script>
 </head>
 <body>
   <div class="page">
@@ -24,6 +24,30 @@
         <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time">公開JSONを確認中</span></div>
       </section>
       <div id="error" role="alert" class="error" hidden></div>
+      <section class="panel" id="recent-week-forecast-audit">
+        <div class="panel-head"><span>LAST 7 DAYS / JAPAN TIME / EVIDENCE SEPARATED</span><h2>直近7日間の予測番号・当せん結果照合</h2></div>
+        <p class="subtle" id="recent-week-window">日本時間で直近7日間の対象日を確認中です。</p>
+        <div class="data-row"><span>正式な事前発行予測と公式採点</span><strong id="recent-week-issued-count">—</strong></div>
+        <div class="data-row"><span>抽せん前のシャドー予測と証拠付き照合</span><strong id="recent-week-shadow-count">—</strong></div>
+        <div class="data-row"><span>研究用再現予測と参考一致</span><strong id="recent-week-research-count">—</strong></div>
+        <h3 class="research-subhead">事前発行・シャドー予測（正式採点は独立した照合結果のみ）</h3>
+        <div class="research-table-wrap">
+          <table class="research-table" aria-label="直近7日の事前発行・シャドー予測の公式照合">
+            <thead><tr><th scope="col">回号・日付／区分</th><th scope="col">予測番号</th><th scope="col">確認済み結果</th><th scope="col">照合判定</th></tr></thead>
+            <tbody id="recent-week-prospective-rows"><tr><td colspan="4">確認中</td></tr></tbody>
+          </table>
+        </div>
+        <h3 class="research-subhead">研究用・過去再現の参考照合（正式な予測実績ではありません）</h3>
+        <p class="subtle">以下は抽せん後にも再計算される履歴研究の1口です。数字の一致は二次公開資料との参考比較であり、事前公開の的中実績や銀行一次照合ではありません。</p>
+        <div class="research-table-wrap">
+          <table class="research-table" aria-label="直近7日の研究用再現予測と参考結果">
+            <thead><tr><th scope="col">回号・日付</th><th scope="col">過去再現の1口</th><th scope="col">参考当せん番号</th><th scope="col">参考照合</th></tr></thead>
+            <tbody id="recent-week-research-rows"><tr><td colspan="4">確認中</td></tr></tbody>
+          </table>
+        </div>
+        <p class="subtle" id="recent-week-evidence-note">未照合の数字は正式な的中判定に使いません。</p>
+        <p class="subtle">参照：<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/data/issued_forecasts.jsonl" rel="noopener noreferrer">事前発行記録</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/evolution_round_predictions.csv" rel="noopener noreferrer">研究の回別再計算</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/prospective_auto_learning_status.json" rel="noopener noreferrer">昇格判定</a></p>
+      </section>
       <section class="panel" id="recursive-research-evolution">
         <div class="panel-head"><span>RECURSIVE / WEB RESEARCH / ONE TICKET</span><h2>オンライン情報を活用する研究AIの自己進化</h2></div>
         <p class="subtle">論文・公開Webから新しい予測手法を探索し、対応する事前実装済みアルゴリズムを時系列に学習します。毎回、第1回を学習して第2回から全回を再予測。前回の開発区間の評価を次のモデル案・検索語にフィードバックします。</p>
