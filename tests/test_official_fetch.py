@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from urllib.error import URLError
 
 from numbers4_agent.official_fetch import (
@@ -96,6 +97,32 @@ class OfficialFetchTests(unittest.TestCase):
         self.assertFalse(cached['verified_official'])
         self.assertEqual(len(cached['rows']),2)
         self.assertFalse(run(self.root)['prospective_skill_confirmed'])
+
+    def test_bank_browser_fallback_can_recover_only_explicit_bank_draws(self):
+        empty_bank = '<h1>ナンバーズ4抽せん数字一覧表</h1><table><tr><td>回別</td><td></td></tr></table>'
+        with patch('numbers4_agent.official_fetch._render_bank_page',
+                   return_value=(BANK_OCT, 'a' * 64)) as render:
+            summary = sync(self.root, now=self.now, months_back=2,
+                           opener=open_mocks(bank=empty_bank), bank_browser_fallback=True)
+        self.assertEqual(summary['status'], 'verified')
+        self.assertEqual(summary['new_verified_rows'], 2)
+        self.assertEqual(summary['bank_rows'], 2)
+        self.assertTrue(summary['bank_browser_fallback_enabled'])
+        self.assertEqual(render.call_count, 1)
+        recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
+        self.assertEqual(recorded[0]['bank_response_sha256'], 'a' * 64)
+
+    def test_bank_browser_empty_result_stays_blocked_and_explains_error(self):
+        empty_bank = '<h1>ナンバーズ4抽せん数字一覧表</h1>'
+        with patch('numbers4_agent.official_fetch._render_bank_page',
+                   return_value=(empty_bank, 'b' * 64)):
+            summary = sync(self.root, now=self.now, months_back=2,
+                           opener=open_mocks(bank=empty_bank), bank_browser_fallback=True)
+        self.assertEqual(summary['status'], 'blocked_no_bank_verified_results')
+        self.assertEqual(summary['new_verified_rows'], 0)
+        self.assertTrue(any('browser fallback rejected' in item['reason']
+                            for item in summary['bank_errors']))
+        self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
     def test_source_conflict_refuses_batch_without_partial_commit(self):
         faulty=RAK_OCT.replace('2491','2492')
