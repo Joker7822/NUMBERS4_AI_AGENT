@@ -103,6 +103,8 @@ def parser() -> argparse.ArgumentParser:
                               help="pages to process this run; next_start_index continues the remaining list")
     fetch = sub.add_parser("fetch-official", help="retrieve bank/Rakuten and verify identical published draw rows")
     fetch.add_argument("--months-back", type=int, default=12)
+    fetch.add_argument("--bank-browser-fallback", action="store_true",
+                       help="render the approved Mizuho result page with Chromium if raw HTML is empty")
     proof = sub.add_parser("prove", help="run preregistration-limited exploratory historical test")
     proof.add_argument("--output", type=Path, default=Path("research/historical_backtest.json"))
     dash = sub.add_parser("build-dashboard", help="produce public snapshot without changing evidence")
@@ -181,7 +183,8 @@ def main(argv: list[str] | None = None) -> int:
             result = inspect_public_web(urls, start_index=args.start_index,
                                         batch_size=args.batch_size)
         elif args.command == "fetch-official":
-            result = sync(root, months_back=args.months_back)
+            result = sync(root, months_back=args.months_back,
+                          bank_browser_fallback=args.bank_browser_fallback)
         elif args.command == "prove":
             result = save_report(root, root / args.output)
         elif args.command == "build-dashboard":
