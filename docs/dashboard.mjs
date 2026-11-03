@@ -13,6 +13,64 @@ export function normalizeStatus(s){
       !["conflict","two_source_entered_consistent","auto_verified_two_publishers","no_corroborated_draws"].includes(s.source_status)){
     throw new Error("監査JSONの安全性・形式を確認できません");
   }
+  // Seven JST calendar dates: prospective issuance and retrospective research
+  // have different proof requirements and MUST NEVER share a hit counter.
+  const week=s.recent_week;
+  if(week!==undefined){
+    const end=new Date(Date.parse(s.generated_at_jst)+9*60*60*1000).toISOString().slice(0,10);
+    const start=new Date(Date.parse(end+'T00:00:00Z')-6*86400000).toISOString().slice(0,10);
+    const inWeek=d=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d>=start&&d<=end;
+    const descending=rows=>rows.every((r,i)=>i===0||rows[i-1].round>r.round);
+    const grade=(n,win,mode)=>{
+      if(n===win)return mode==='straight'?'straight':mode==='box'?'box':'set_straight';
+      if(mode!=='straight'&&n.split('').sort().join('')===win.split('').sort().join(''))
+        return mode==='box'?'box':'set_box';
+      return 'miss';
+    };
+    const issued=week?.issued_forecasts,shadows=week?.shadow_forecasts,research=week?.research_replay;
+    if(!week||week.version!=='numbers4-recent-week-v1'||week.days!==7||
+       week.start_date!==start||week.end_date!==end||
+       !Array.isArray(issued)||!Array.isArray(shadows)||!Array.isArray(research)||
+       issued.length>7||shadows.length>7||research.length>7||
+       !descending(issued)||!descending(shadows)||!descending(research)||
+       issued.some(r=>!Number.isInteger(r.round)||r.round<1||!inWeek(r.draw_date)||
+         !safeTime(r.issued_at_jst)||Date.parse(r.issued_at_jst)>Date.parse(s.generated_at_jst)||
+         !['straight','box','set'].includes(r.mode)||
+         !Array.isArray(r.numbers)||![1,5].includes(r.numbers.length)||
+         r.numbers.some(n=>!safeDigits(n))||new Set(r.numbers).size!==r.numbers.length||
+         r.actual_purchase!==false||
+         !(r.verification==='awaiting_two_source_match'||
+           r.verification==='bank_primary_rakuten_publication_match'||
+           r.verification==='two_source_manual_attestations_consistent')||
+         (r.verification==='awaiting_two_source_match'?
+           r.winning_number!==null||r.ticket_results!==null:
+           !safeDigits(r.winning_number)||!Array.isArray(r.ticket_results)||
+           r.ticket_results.length!==r.numbers.length||
+           r.ticket_results.some((v,i)=>v!==grade(r.numbers[i],r.winning_number,r.mode))))||
+       shadows.some(r=>!Number.isInteger(r.round)||r.round<1||!inWeek(r.draw_date)||
+         !safeDigits(r.number)||!safeTime(r.issued_at_jst)||
+         Date.parse(r.issued_at_jst)>Date.parse(s.generated_at_jst)||
+         typeof r.model!=='string'||!r.model||
+         typeof r.publication_witnessed!=='boolean'||
+         typeof r.official_result_verified!=='boolean'||r.actual_purchase!==false||
+         (r.official_result_verified?!safeDigits(r.winning_number):r.winning_number!==null)||
+         (r.official_result_verified&&r.publication_witnessed?
+           r.straight_match!==(r.number===r.winning_number):r.straight_match!==null))||
+       research.some(r=>!Number.isInteger(r.round)||r.round<2||!inWeek(r.draw_date)||
+         r.data_cutoff_round!==r.round-1||!safeDigits(r.number)||
+         !safeDigits(r.reference_result)||typeof r.model!=='string'||!r.model||
+         r.straight_match!==(r.number===r.reference_result)||
+         r.source_status!=='secondary_history_not_officially_verified'||
+         r.issued_before_draw!==false||r.actual_purchase!==false)||
+       !Number.isInteger(week.officially_graded_issued)||
+       week.officially_graded_issued!==issued.filter(r=>r.ticket_results!==null).length||
+       !Number.isInteger(week.officially_matched_shadow)||
+       week.officially_matched_shadow!==shadows.filter(r=>r.straight_match!==null).length||
+       !Number.isInteger(week.research_reference_matches)||
+       week.research_reference_matches!==research.filter(r=>r.straight_match).length){
+      throw new Error('直近7日間の予測・照合データの証拠区分または整合性が不正です');
+    }
+  }
   const e=s.research_evolution;
   if(e){
     const states=['not_yet_run','recursive_research_exploration_not_prospective_evidence',
