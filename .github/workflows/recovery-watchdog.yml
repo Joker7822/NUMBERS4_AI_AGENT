@@ -1,0 +1,64 @@
+name: Numbers4 Autonomous Failure Watchdog
+on:
+  workflow_run:
+    workflows:
+      - Numbers4 Official-Primary Results and Historical Evidence
+      - Numbers4 Historical Round2 Replay and Online Research Update
+      - Numbers4 Predictive Method Research Cycle
+      - Numbers4 Verified Auto-Learning and Gated Champion
+      - Numbers4 Read-only Daily Audit
+    types: [completed]
+
+permissions:
+  actions: write
+  issues: write
+  contents: read
+
+concurrency:
+  group: numbers4-recovery-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  bounded-recovery:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN_ID: ${{ github.event.workflow_run.id }}
+      RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+      FAILED_NAME: ${{ github.event.workflow_run.name }}
+      FAILED_URL: ${{ github.event.workflow_run.html_url }}
+    steps:
+      - name: Retry failed jobs once; never loop or rewrite trusted data
+        if: env.RUN_ATTEMPT == '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/rerun-failed-jobs"
+          echo "One safe retry requested for run ${RUN_ID}."
+      - name: Open deduplicated incident after repeated failure
+        if: env.RUN_ATTEMPT != '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="Numbers4 recurrent workflow failure: ${FAILED_NAME}"
+          if gh issue list --state open --limit 100 --json title --jq '.[].title' | grep -Fxq -- "$title"; then
+            echo "Existing incident remains open: ${title}"
+            exit 0
+          fi
+          cat > /tmp/numbers4-recovery-incident.md <<EOF
+          The unattended workflow failed after an automatic retry.
+
+          - Workflow: ${FAILED_NAME}
+          - Run: ${FAILED_URL}
+          - Run ID: ${RUN_ID}; attempt: ${RUN_ATTEMPT}
+
+          Automatic retries stop here. Inspect source-fetch diagnostics or the failed test
+          logs and create a reviewed repair PR. No winning number, forecast, champion
+          model, historical result, or ticket has been modified by the watchdog.
+          EOF
+          gh issue create --title "$title" --body-file /tmp/numbers4-recovery-incident.md

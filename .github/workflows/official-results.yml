@@ -25,6 +25,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: numbers4-official-feed-main
@@ -42,6 +43,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Chromium for official-bank JavaScript fallback
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m pip install 'playwright>=1.50,<2'
+          python -m playwright install --with-deps chromium
       - name: Validate immutable historical ledger, source parsers and forecast controls
         run: |
           python -m compileall -q numbers4_agent tests
@@ -74,7 +80,7 @@ jobs:
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            python -m numbers4_agent.cli --root . fetch-official --months-back 12 > /tmp/numbers4-fetch.json
+            python -m numbers4_agent.cli --root . fetch-official --months-back 12 --bank-browser-fallback > /tmp/numbers4-fetch.json
             python -m numbers4_agent.cli --root . prove --output research/historical_backtest.json > /tmp/numbers4-research.json
             python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-dashboard.json
             python - <<'PY'
@@ -89,6 +95,10 @@ jobs:
           assert proof['existing_issued_predictions_changed'] is False
           print('verified bank-plus-secondary rows:', report['publisher_matched_rows'])
           print('new verified rows:', report['new_verified_rows'])
+          print('bank rows:', report['bank_rows'], 'Rakuten rows:', report['rakuten_rows'])
+          print('bank browser fallback:', report['bank_browser_fallback_enabled'])
+          for err in report['errors'][:12]:
+              print('source error:', err['publisher'], err['month'], err['reason'])
           print('historical only:', proof['research_unverified_history'])
           PY
             git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl
@@ -102,6 +112,49 @@ jobs:
             if git push origin HEAD:main; then echo 'Publisher evidence and research report committed'; exit 0; fi
             if [ "$attempt" -eq 3 ]; then echo '::error::Could not commit data safely'; exit 1; fi
           done
+      - name: Upload source diagnostics (even when no verified records are found)
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: numbers4-official-source-diagnostics
+          path: /tmp/numbers4-fetch.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Report persistent zero-source ingestion as an incident
+        if: github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -s /tmp/numbers4-fetch.json ]; then exit 0; fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-fetch.json').read_text())
+          Path('/tmp/numbers4-source-blocked').write_text(
+              '1' if r['publisher_matched_rows']==0 else '0')
+          reasons='\n'.join(f"- {x['publisher']} {x['month']}: {x['reason']}"
+                            for x in r['errors'][:15])
+          Path('/tmp/numbers4-source-incident.md').write_text(
+              'Automated source ingestion has **zero** independently corroborated draws.\n'
+              'The scheduled job ran, but this is NOT a successful training-data update.\n\n'
+              f"- Bank rows: {r['bank_rows']}\n"
+              f"- Rakuten rows: {r['rakuten_rows']}\n"
+              f"- Source errors: {len(r['errors'])}\n\n"
+              'First diagnostic errors:\n'+reasons+'\n\n'
+              'Inspect the workflow artifact numbers4-official-source-diagnostics. '
+              'Do not substitute an unverified third-party result or lower the promotion gate.\n',
+              encoding='utf-8')
+          PY
+          if [ "$(cat /tmp/numbers4-source-blocked)" = "1" ]; then
+            title="Numbers4 ingestion blocked: zero bank/Rakuten corroborated draws"
+            if ! gh issue list --state open --limit 100 --json title --jq '.[].title' | grep -Fxq -- "$title"; then
+              gh issue create --title "$title" --body-file /tmp/numbers4-source-incident.md
+            else
+              echo "Existing source-ingestion issue remains open"
+            fi
+          fi
       - name: Publisher evidence and statistical limitations
         if: always()
         shell: bash
