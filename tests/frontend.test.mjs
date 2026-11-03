@@ -493,3 +493,63 @@ test('open dashboard auto-updates changed research candidate and shows computati
   assert.ok(app.includes('document.addEventListener("visibilitychange"'));
   assert.ok(html.includes('画面を開いたままでも2分おき'));
 });
+
+
+test('seven-day official versus retrospective table has bounded evidence and correct date window',()=>{
+  const s=source();
+  const end=new Date(Date.parse(s.generated_at_jst)+9*3600000).toISOString().slice(0,10);
+  const start=new Date(Date.parse(end+'T00:00:00Z')-6*86400000).toISOString().slice(0,10);
+  s.recent_week={
+    version:'numbers4-recent-week-v1',days:7,start_date:start,end_date:end,
+    issued_forecasts:[],shadow_forecasts:[],
+    research_replay:[{
+      round:7106,draw_date:'2026-11-03',data_cutoff_round:7105,
+      number:'2903',model:'uniform',reference_result:'5870',
+      straight_match:false,source_status:'secondary_history_not_officially_verified',
+      issued_before_draw:false,actual_purchase:false
+    }],
+    officially_graded_issued:0,officially_matched_shadow:0,research_reference_matches:0
+  };
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.recent_week.research_replay[0].straight_match=true;
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+  s.recent_week.research_replay[0].straight_match=false;
+  s.recent_week.research_replay[0].issued_before_draw=true;
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+  s.recent_week.research_replay[0].issued_before_draw=false;
+  s.recent_week.research_replay[0].source_status='bank_primary_rakuten_publication_match';
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+  s.recent_week.research_replay[0].source_status='secondary_history_not_officially_verified';
+  s.recent_week.research_reference_matches=1;
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+  s.recent_week.research_reference_matches=0;
+  s.recent_week.issued_forecasts=[{
+    round:7106,draw_date:'2026-11-03',numbers:['2903'],mode:'straight',
+    issued_at_jst:'2026-11-03T16:00:00+09:00',
+    winning_number:null,verification:'awaiting_two_source_match',
+    ticket_results:null,actual_purchase:false
+  }];
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.recent_week.issued_forecasts[0].verification='bank_primary_rakuten_publication_match';
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+  s.recent_week.issued_forecasts[0].verification='awaiting_two_source_match';
+  s.recent_week.start_date='2026-10-01';
+  assert.throws(()=>normalizeStatus(s),/直近7日間/);
+});
+
+test('weekly forecast comparison is prominent and both evidence classes have separate tables',()=>{
+  const html=readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');
+  for(const id of [
+    'recent-week-forecast-audit','recent-week-window','recent-week-issued-count',
+    'recent-week-shadow-count','recent-week-research-count',
+    'recent-week-prospective-rows','recent-week-research-rows',
+    'recent-week-evidence-note'
+  ]){
+    assert.ok(html.includes('id="'+id+'"'),id);
+  }
+  assert.ok(html.indexOf('id="recent-week-forecast-audit"')<
+            html.indexOf('id="recursive-research-evolution"'));
+  assert.ok(app.includes('data.recent_week'));
+  assert.ok(app.includes('研究再現の一致を正式な予測精度へ加算しません'));
+});
