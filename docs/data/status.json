@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-04T05:01:58+09:00",
+  "generated_at_jst": "2026-11-04T05:08:59+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -10,9 +10,9 @@
   "auto_verified_rounds": 0,
   "latest_consistent_draw": null,
   "latest_unverified_draw": {
-    "round": 7105,
-    "draw_date": "2026-11-02",
-    "winning_number": "0149",
+    "round": 7106,
+    "draw_date": "2026-11-03",
+    "winning_number": "5870",
     "status": "publisher_only_not_officially_verified",
     "source": "rakuten_lottery_publication_only"
   },
@@ -634,7 +634,7 @@
     "officially_verified": false,
     "prediction_skill_confirmed": false,
     "last_changed_at_jst": "2026-11-04T05:01:58+09:00",
-    "changed_since_previous_snapshot": true
+    "changed_since_previous_snapshot": false
   },
   "online_operations": {
     "version": "numbers4-online-production-monitor-status-v1",
@@ -643,10 +643,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-04T04:59:40+09:00",
-    "rule_audit_age_hours": 0.038,
+    "rule_audit_age_hours": 0.155,
     "secondary_feed_status": "appended_secondary_history_not_officially_verified",
     "secondary_checked_at_jst": "2026-11-04T04:59:39+09:00",
-    "secondary_audit_age_hours": 0.039,
+    "secondary_audit_age_hours": 0.156,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -708,14 +708,14 @@
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",
     "scope": "single_publisher_not_officially_verified",
-    "evaluated_draws": 178,
+    "evaluated_draws": 179,
     "top5_model_hits": 0,
     "top5_reference_hits": 0,
-    "uniform_expected_top5_hit_draws": 0.089,
-    "mean_log_likelihood_edge_vs_uniform": -0.059115059,
+    "uniform_expected_top5_hit_draws": 0.0895,
+    "mean_log_likelihood_edge_vs_uniform": -0.059681998,
     "descriptive_moving_block_bootstrap_95pct": [
-      -0.096252625,
-      -0.022361222
+      -0.099562238,
+      -0.022865686
     ],
     "prediction_skill_confirmed": false
   },
