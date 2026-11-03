@@ -1,6 +1,6 @@
 """Safe, bounded public projection; no unregistered or unissued vectors."""
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import csv
 import json
@@ -11,7 +11,7 @@ from .sources import iso_date
 from .evaluation import graded_predictions, walk_forward
 from .ledger import read_issued
 from .sources import JST, reconcile, corroborated_draws
-from .store import file_hash
+from .store import file_hash, load
 from .historical_archive import archive_summary, load_archive
 from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
@@ -19,7 +19,9 @@ from .online_learning import VERSION as ONLINE_VERSION
 from .online_ops import snapshot as operational_snapshot
 from .evolution import public_status as evolution_status
 from .automatic_learning import (assess as assess_auto_learning,
-                                  VERSION as AUTO_VERSION)
+                                  VERSION as AUTO_VERSION,
+                                  FORECAST_PATH as SHADOW_FORECAST_PATH,
+                                  _validated_witnesses)
 from hashlib import sha256
 
 VERSION = "numbers4-dashboard-v1"
@@ -153,6 +155,99 @@ def _valid_snapshot_time(value: str, now: datetime) -> bool:
         return False
 
 
+
+
+def recent_week_projection(root: Path, *, now: datetime,
+                           issued: list[dict], graded: list[dict],
+                           trusted: list[dict], evolution: dict) -> dict:
+    """Seven JST calendar dates, with separate evidentiary categories.
+
+    A retrospective reconstruction is never published as an issued forecast,
+    and a single-publisher result is never promoted to an official grade.
+    """
+    end = now.astimezone(JST).date()
+    start = end - timedelta(days=6)
+    in_window = lambda d: start.isoformat() <= d <= end.isoformat()
+    by_grade = {row["round"]: row for row in graded}
+    verified = {row["round"]: row for row in trusted}
+
+    issued_rows = []
+    for item in issued:
+        if not in_window(item["draw_date"]):
+            continue
+        grade = by_grade.get(item["target_round"])
+        if grade and grade["date"] != item["draw_date"]:
+            raise ValueError("recent official grading date disagrees with issuance")
+        issued_rows.append({
+            "round": item["target_round"], "draw_date": item["draw_date"],
+            "numbers": item["numbers"], "mode": item["mode"],
+            "issued_at_jst": item["issued_at_jst"],
+            "winning_number": grade["winning_number"] if grade else None,
+            "verification": grade["verification"] if grade else "awaiting_two_source_match",
+            "ticket_results": [t["result"] for t in grade["tickets"]] if grade else None,
+            "actual_purchase": False,
+        })
+    issued_rows.sort(key=lambda row: row["round"], reverse=True)
+
+    frozen = load(root / SHADOW_FORECAST_PATH)
+    witnessed = _validated_witnesses(root, frozen)
+    shadow_rows = []
+    for row in frozen:
+        if not in_window(row["draw_date"]):
+            continue
+        rnd = row["round"]
+        draw = verified.get(rnd)
+        if draw and draw["draw_date"] != row["draw_date"]:
+            raise ValueError("shadow draw date conflicts with trusted result")
+        proof_ok = rnd in witnessed
+        shadow_rows.append({
+            "round": rnd, "draw_date": row["draw_date"],
+            "number": four_digits(row["champion_number"]),
+            "model": row["champion_at_issue"],
+            "issued_at_jst": row["issued_at_jst"],
+            "publication_witnessed": proof_ok,
+            "winning_number": draw["winning_number"] if draw else None,
+            "straight_match": (row["champion_number"] == draw["winning_number"])
+                              if draw and proof_ok else None,
+            "official_result_verified": draw is not None,
+            "actual_purchase": False,
+        })
+    shadow_rows.sort(key=lambda row: row["round"], reverse=True)
+
+    research_rows = []
+    verification = evolution.get("latest_verification")
+    if (evolution.get("status") ==
+            "recursive_research_exploration_not_prospective_evidence"
+            and isinstance(verification, dict)
+            and verification.get("all_rounds_checked_against_archive") is True
+            and verification.get("source_status") ==
+            "secondary_public_mirrors_agree_not_officially_verified"
+            and verification.get("independently_verified_prepublished_forecasts") is False):
+        for row in verification["recent_rounds"]:
+            if in_window(row["draw_date"]):
+                research_rows.append({
+                    "round": row["round"], "draw_date": row["draw_date"],
+                    "data_cutoff_round": row["data_cutoff_round"],
+                    "number": row["selected_number"],
+                    "model": row["selected_model"],
+                    "reference_result": row["actual"],
+                    "straight_match": row["selected_hit"],
+                    "source_status": "secondary_history_not_officially_verified",
+                    "issued_before_draw": False,
+                    "actual_purchase": False,
+                })
+    return {
+        "version": "numbers4-recent-week-v1", "days": 7,
+        "start_date": start.isoformat(), "end_date": end.isoformat(),
+        "issued_forecasts": issued_rows, "shadow_forecasts": shadow_rows,
+        "research_replay": research_rows,
+        "officially_graded_issued": sum(r["ticket_results"] is not None
+                                        for r in issued_rows),
+        "officially_matched_shadow": sum(r["straight_match"] is not None
+                                         for r in shadow_rows),
+        "research_reference_matches": sum(r["straight_match"]
+                                           for r in research_rows),
+    }
 
 
 def snapshot(root: Path, now: datetime | None = None) -> dict:
@@ -332,6 +427,9 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "published_forecast": ({k: recent_issued[k] for k in ("target_round", "draw_date", "mode", "numbers", "issued_at_jst", "model_version", "actual_purchase")}
                                if recent_issued else None),
         "latest_graded_issued_forecast": recent_grade,
+        "recent_week": recent_week_projection(root, now=now, issued=issued,
+                                               graded=graded, trusted=trusted,
+                                               evolution=evolution),
         "issued_draws": len(issued), "graded_issued_draws": len(graded),
         "historical_research": walk_forward(root),
         "historical_archive": archive,
