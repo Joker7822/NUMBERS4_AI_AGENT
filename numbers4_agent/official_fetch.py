@@ -177,13 +177,73 @@ def month_pairs(now: datetime, months_back: int) -> list[tuple[int, int]]:
     return pairs
 
 
-def publisher_month(url: str, host: str, parser, *, opener=None) -> tuple[list[dict], str]:
+def _render_bank_page(url: str) -> tuple[str, str]:
+    """Read JS-rendered bank results from the SAME approved bank host.
+
+    This is a fallback for pages whose raw HTML only contains an empty result
+    template. A browser success by itself is never an official verification:
+    the parser must recover explicit rows and Rakuten must agree independently.
+    """
+    host = "www.mizuhobank.co.jp"
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or parsed.hostname != host or parsed.username or parsed.password or parsed.port not in (None, 443):
+        raise ResultFetchError("unapproved bank browser URL")
+    try:
+        from playwright.sync_api import (
+            sync_playwright, Error as PlaywrightError,
+            TimeoutError as PlaywrightTimeoutError,
+        )
+    except ImportError as exc:
+        raise ResultFetchError("bank browser unavailable: install playwright and chromium") from exc
+
+    try:
+        with sync_playwright() as driver:
+            browser = driver.chromium.launch(headless=True)
+            try:
+                page = browser.new_page(locale="ja-JP")
+                page.goto(url, wait_until="domcontentloaded", timeout=20_000)
+                try:
+                    # Do not treat a merely loaded empty template as evidence.
+                    page.wait_for_function(
+                        r"() => /第\s*\d+\s*回/.test(document.body?.innerText || '')",
+                        timeout=12_000,
+                    )
+                except PlaywrightTimeoutError:
+                    pass  # The ordinary parser will reject a still-empty page.
+                actual = urlparse(page.url)
+                if actual.scheme != "https" or actual.hostname != host:
+                    raise ResultFetchError("bank browser navigated outside approved host")
+                rendered = page.content()
+            finally:
+                browser.close()
+    except PlaywrightError as exc:
+        raise ResultFetchError(f"bank browser render failed: {type(exc).__name__}") from exc
+    payload = rendered.encode("utf-8")
+    if len(payload) > MAX_BYTES:
+        raise ResultFetchError("bank browser DOM exceeded size limit")
+    return rendered, hashlib.sha256(payload).hexdigest()
+
+
+def publisher_month(url: str, host: str, parser, *, opener=None,
+                    bank_browser_fallback: bool = False) -> tuple[list[dict], str]:
     text, sha = _download(url, host, opener=opener)
-    return parser(text), sha
+    try:
+        return parser(text), sha
+    except ResultFetchError as raw_error:
+        if not bank_browser_fallback or host != "www.mizuhobank.co.jp":
+            raise
+        try:
+            rendered, rendered_sha = _render_bank_page(url)
+            return parser(rendered), rendered_sha
+        except ResultFetchError as render_error:
+            raise ResultFetchError(
+                f"bank raw HTML rejected ({raw_error}); browser fallback rejected ({render_error})"
+            ) from render_error
 
 
 def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
-         opener=None, record_unverified: bool = True) -> dict:
+         opener=None, record_unverified: bool = True,
+         bank_browser_fallback: bool = False) -> dict:
     """Fetch every month independently; commit only dual-publisher matching rows.
 
     Neither a single source nor two copies from the same publisher counts as
@@ -201,7 +261,10 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
             ("rakuten", link_r, "takarakuji.rakuten.co.jp", parse_rakuten, rakuten),
         ):
             try:
-                observations, content_sha = publisher_month(url, host, parse, opener=opener)
+                observations, content_sha = publisher_month(
+                    url, host, parse, opener=opener,
+                    bank_browser_fallback=bank_browser_fallback and name == "mizuhobank",
+                )
                 for row in observations:
                     if row["draw_date"][:7] != f"{year:04d}-{month:02d}":
                         raise ResultFetchError("publisher month disagrees with request")
@@ -279,6 +342,9 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
         "new_verified_rows": new, "conflicted_rounds": conflicts,
         "bank_missing_coverage": sorted(set(rakuten) - set(bank)),
         "errors": errors,
+        "bank_browser_fallback_enabled": bank_browser_fallback,
+        "bank_errors": [error for error in errors if error["publisher"] == "mizuhobank"],
+        "rakuten_errors": [error for error in errors if error["publisher"] == "rakuten"],
         "ledger_sha256": file_hash(path), "automatic_model_promotion": False,
         "verified_claim_only_on_matching_records": True,
     }
