@@ -29,7 +29,7 @@ class RecoveryWatchdogTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             gh = root / "gh"
-            gh.write_text(textwrap.dedent("""\\
+            gh.write_text(textwrap.dedent("""
                 #!/usr/bin/env bash
                 printf '%s\\n' "$*" >> "$GH_ARGS_LOG"
                 if [[ "$1" == issue && "$2" == list ]]; then
@@ -41,7 +41,7 @@ class RecoveryWatchdogTests(unittest.TestCase):
                   exit 0
                 fi
                 exit 99
-                """), encoding="utf-8")
+                """).lstrip(), encoding="utf-8")
             gh.chmod(0o755)
             log = root / "calls.txt"
             env = os.environ.copy()
