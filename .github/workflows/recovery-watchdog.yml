@@ -46,7 +46,10 @@ jobs:
         run: |
           set -euo pipefail
           title="Numbers4 recurrent workflow failure: ${FAILED_NAME}"
-          if gh issue list --state open --limit 100 --json title --jq '.[].title' | grep -Fxq -- "$title"; then
+          # workflow_run jobs intentionally skip checkout. gh cannot infer a repo
+          # outside a Git worktree: pass --repo and surface API failures.
+          open_titles="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title')"
+          if grep -Fxq -- "$title" <<< "$open_titles"; then
             echo "Existing incident remains open: ${title}"
             exit 0
           fi
@@ -61,4 +64,4 @@ jobs:
           logs and create a reviewed repair PR. No winning number, forecast, champion
           model, historical result, or ticket has been modified by the watchdog.
           EOF
-          gh issue create --title "$title" --body-file /tmp/numbers4-recovery-incident.md
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body-file /tmp/numbers4-recovery-incident.md
