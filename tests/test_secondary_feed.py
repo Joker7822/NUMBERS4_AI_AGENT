@@ -138,7 +138,7 @@ class SecondaryFeedTests(unittest.TestCase):
                 refresh(root,now=NOW,fetch=fake_fetch(
                     [*ROWS,('1994-11-04','2418')],
                     [*ROWS[:3],('1994-10-28','9999')]))
-            self.assertNotIn('4,',(root/'data/historical_results.csv').read_text())
+            self.assertNotIn('\n4,',(root/'data/historical_results.csv').read_text())
 
     def test_large_coverage_gap_and_past_archived_coverage_rejected(self):
         tmp,root=self.fixture()
