@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-05T09:57:32+09:00",
+  "generated_at_jst": "2026-11-05T09:58:53+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -139,7 +139,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "da903cad961a62705185b7adb9f1bc0bff12f07d",
-    "generated_at_jst": "2026-11-05T09:57:32+09:00",
+    "generated_at_jst": "2026-11-05T09:58:52+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -448,28 +448,28 @@
   "research_evolution": {
     "version": "numbers4-recursive-research-evolution-v1",
     "status": "recursive_research_exploration_not_prospective_evidence",
-    "generation": 15,
+    "generation": 16,
     "evaluated_draws": 7106,
-    "candidate_models": 7,
-    "research_sources_found": 50,
-    "lifetime_unique_sources": 740,
-    "new_unique_sources": 43,
+    "candidate_models": 5,
+    "research_sources_found": 47,
+    "lifetime_unique_sources": 782,
+    "new_unique_sources": 42,
     "requests_attempted": 8,
     "web_search_enabled": false,
     "research_search_errors": 0,
-    "new_draws_since_previous_generation": 1,
-    "metadata_based_method_leads": 9,
+    "new_draws_since_previous_generation": 0,
+    "metadata_based_method_leads": 4,
     "next_model": "uniform",
     "next_number": "9725",
-    "generated_at_jst": "2026-11-05T09:14:48+09:00",
+    "generated_at_jst": "2026-11-05T09:58:36+09:00",
     "performance_advantage_confirmed": false,
     "model_auto_promotion_authorized": false,
     "actual_purchase": false,
     "repeated_historical_cohorts_not_independent": true,
     "latest_verification": {
       "scope": "secondary_history_exploratory_reconstruction_only",
-      "generation": 15,
-      "generated_at_jst": "2026-11-05T09:14:48+09:00",
+      "generation": 16,
+      "generated_at_jst": "2026-11-05T09:58:36+09:00",
       "source_status": "secondary_public_mirrors_agree_not_officially_verified",
       "archive_git_blob_sha1": "da903cad961a62705185b7adb9f1bc0bff12f07d",
       "round_predictions_sha256": "aa71e3a48f08b788d0b677c0c771ef139a203d1dad3ce8c19687a1851e661eda",
@@ -517,28 +517,16 @@
             "mean_brier_edge_vs_uniform": -4.029571e-06
           },
           {
-            "model": "markov_250_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.011512994,
-            "mean_brier_edge_vs_uniform": -2.355922e-06
-          },
-          {
             "model": "rolling_120_alpha10",
             "straight_hits": 0,
             "mean_log_score_edge_vs_uniform": -0.043506942,
             "mean_brier_edge_vs_uniform": -8.947847e-06
           },
           {
-            "model": "rolling_500_alpha5",
+            "model": "ema_0p995_alpha10",
             "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.027762864,
-            "mean_brier_edge_vs_uniform": -5.779871e-06
-          },
-          {
-            "model": "markov_120_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.003792371,
-            "mean_brier_edge_vs_uniform": -7.87585e-07
+            "mean_log_score_edge_vs_uniform": -0.018731565,
+            "mean_brier_edge_vs_uniform": -3.83222e-06
           }
         ],
         "repeatedly_inspected_not_independent_holdout": true
@@ -693,8 +681,8 @@
     "data_cutoff_round": 7107,
     "number": "9725",
     "model": "uniform",
-    "research_generation": 15,
-    "computed_at_jst": "2026-11-05T09:14:48+09:00",
+    "research_generation": 16,
+    "computed_at_jst": "2026-11-05T09:58:36+09:00",
     "archive_git_blob_sha1": "da903cad961a62705185b7adb9f1bc0bff12f07d",
     "status": "research_only_not_issued_not_purchased",
     "actual_purchase": false,
@@ -710,10 +698,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-05T09:57:25+09:00",
-    "rule_audit_age_hours": 0.002,
+    "rule_audit_age_hours": 0.024,
     "secondary_feed_status": "validated_no_new_draws",
     "secondary_checked_at_jst": "2026-11-05T09:57:24+09:00",
-    "secondary_audit_age_hours": 0.002,
+    "secondary_audit_age_hours": 0.025,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
