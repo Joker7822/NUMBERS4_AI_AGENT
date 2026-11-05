@@ -82,6 +82,19 @@ def snapshot(root: Path, now: datetime) -> dict:
             "secondary_mirror_lag_old_archive_preserved"
         }:
             raise ValueError("unknown historical feed status: manual review required")
+        pending=feed.get("deferred_unmatched_rows",0)
+        if type(pending) is not int or pending not in (0,1):
+            raise ValueError("invalid secondary source publication lag count")
+        if pending:
+            coverage=feed.get("publisher_rows_seen")
+            if (not isinstance(coverage,dict) or
+                any(type(coverage.get(k)) is not int or coverage[k]<1
+                    for k in ("primary_csv","secondary_json")) or
+                abs(coverage["primary_csv"]-coverage["secondary_json"])!=1):
+                raise ValueError("secondary publisher lag lacks consistent counts")
+        if (feed_status=="secondary_mirror_lag_old_archive_preserved" and
+                (pending!=1 or feed.get("new_rows")!=0)):
+            raise ValueError("secondary publisher waiting status lacks proof")
         feed_check=feed.get("checked_at_jst")
     hours_ref=_age(now,latest_check)
     hours_feed=_age(now,feed_check)
