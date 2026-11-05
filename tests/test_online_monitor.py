@@ -115,6 +115,45 @@ class OnlineMonitorTests(unittest.TestCase):
             self.assertEqual(s['state'],'manual_review_required')
             self.assertTrue(s['warnings'])
 
+    def test_two_hourly_source_lag_is_visible_not_counted_as_official_proof(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            source=self._feed()
+            source.update({
+                'status':'secondary_mirror_lag_old_archive_preserved',
+                'deferred_unmatched_rows':1,'new_rows':0,
+                'publisher_rows_seen':{'primary_csv':4,'secondary_json':3},
+            })
+            self._write(root,audit(now=NOW,fetch=content),source)
+            state=operation_status(root,NOW)
+            self.assertEqual(state['state'],'secondary_publication_lag')
+            self.assertEqual(state['secondary_feed_status'],
+                             'secondary_mirror_lag_old_archive_preserved')
+            self.assertTrue(state['warnings'])
+            self.assertFalse(state['bank_first_party_draws_verified_by_this_monitor'])
+            source['deferred_unmatched_rows']=0
+            self._write(root,audit(now=NOW,fetch=content),source)
+            with self.assertRaisesRegex(ValueError,'lacks proof'):
+                operation_status(root,NOW)
+
+    def test_one_mirror_ahead_and_common_rows_appended_still_warns(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            feed=self._feed()
+            feed.update({
+                'status':'appended_secondary_history_not_officially_verified',
+                'deferred_unmatched_rows':1,'new_rows':1,
+                'publisher_rows_seen':{'primary_csv':4,'secondary_json':5},
+            })
+            self._write(root,audit(now=NOW,fetch=content),feed)
+            current=operation_status(root,NOW)
+            self.assertEqual(current['state'],'secondary_publication_lag')
+            self.assertFalse(current['model_auto_promotion'])
+            feed['publisher_rows_seen']['secondary_json']=6
+            self._write(root,audit(now=NOW,fetch=content),feed)
+            with self.assertRaisesRegex(ValueError,'counts'):
+                operation_status(root,NOW)
+
     def test_unsafe_claim_in_report_is_never_displayed(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
