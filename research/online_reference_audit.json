@@ -1,10 +1,10 @@
 {
   "version": "numbers4-operational-official-rule-monitor-v2",
-  "checked_at_jst": "2026-11-05T09:57:25+09:00",
-  "status": "official_rule_anchors_consistent",
+  "checked_at_jst": "2026-11-05T16:46:38+09:00",
+  "status": "degraded_official_rules_unverified",
   "required_rule_sources": 3,
-  "rule_sources_consistent": 3,
-  "rule_sources_unavailable": 0,
+  "rule_sources_consistent": 1,
+  "rule_sources_unavailable": 2,
   "rule_sources_changed": 0,
   "result_page_status": "result_page_reachable_draws_not_verified",
   "topics": [
@@ -12,34 +12,15 @@
       "topic": "official_purchase_rules",
       "url": "https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html",
       "category": "rule",
-      "status": "rule_anchors_consistent",
-      "response_sha256": "095b27345fa471e2a11e68914496360c654bb30dc577917991b6076106e1d69c",
-      "size_bytes": 56622,
-      "required_markers": [
-        "product",
-        "ticket_200",
-        "straight",
-        "box",
-        "box_order"
-      ],
-      "missing_markers": []
+      "status": "unavailable_or_unverified",
+      "reason": "ValueError"
     },
     {
       "topic": "official_game_rules",
       "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
       "category": "rule",
-      "status": "rule_anchors_consistent",
-      "response_sha256": "d26d0d52d2f34a7bf88a3988a0f4c3b5f32d233b516e21fe52c0f5230b9b094c",
-      "size_bytes": 39413,
-      "required_markers": [
-        "product",
-        "straight",
-        "box",
-        "box_order",
-        "all_same_box_invalid",
-        "straight_probability"
-      ],
-      "missing_markers": []
+      "status": "unavailable_or_unverified",
+      "reason": "ValueError"
     },
     {
       "topic": "mizuho_rules",
