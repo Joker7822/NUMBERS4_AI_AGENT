@@ -1,23 +1,23 @@
 {
   "version": "numbers4-secondary-straight-payouts-v1",
   "status": "single_secondary_publisher_not_bank_verified",
-  "git_blob_sha1": "6f1f0f34450e69ca2c2f834ac9b2e09dbd547414",
-  "record_count": 7106,
+  "git_blob_sha1": "1ec1aa39d4d31e3d67656824891b34b8755553de",
+  "record_count": 7107,
   "first_round": 1,
-  "last_round": 7106,
+  "last_round": 7107,
   "first_draw_date": "1994-10-07",
-  "last_draw_date": "2026-11-03",
+  "last_draw_date": "2026-11-04",
   "first_number": "1149",
-  "latest_number": "5870",
+  "latest_number": "7541",
   "ticket_price_yen": 200,
   "bank_primary_payouts_verified": false,
   "secondary_payout_independence_proven": false,
   "forecast_grading_authorized": false,
   "actual_purchase_records_present": false,
   "source": {
-    "url": "https://github.com/hazimekom/numbers4-api/blob/33ae8bc8202af4eef7ec5d76c8d7b140a1a55f44/data/numbers4_results_v2.csv",
-    "commit_sha": "33ae8bc8202af4eef7ec5d76c8d7b140a1a55f44",
-    "blob_sha": "362b7d7e988a9e7774a12a8d7bcc215f70fbe320"
+    "url": "https://github.com/hazimekom/numbers4-api/blob/2bb233654fe9c0a523faa01960f2dd16db88b4d7/data/numbers4_results_v2.csv",
+    "commit_sha": "2bb233654fe9c0a523faa01960f2dd16db88b4d7",
+    "blob_sha": "91cc766f41cc93f2a4cbde0d5aaa5a68d0b21273"
   },
   "bank_primary_url": "https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html",
   "interpretation": "Historical single-publisher straight payouts, hypothetical research P/L only."
