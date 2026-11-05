@@ -125,14 +125,39 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
                             "commit_sha":rev,"blob_sha":_git_blob_sha1(raw),
                             "sha256":sha256(raw).hexdigest()})
             data.append(raw)
-        rows=validate_pair(parse_csv(data[0]),parse_json(data[1]),now.date())
+        primary_rows=parse_csv(data[0])
+        secondary_rows=parse_json(data[1])
+        unmatched=0
+        if len(primary_rows)!=len(secondary_rows):
+            # A single trailing draw can appear on one mirror before the other.
+            # Never infer its result from the earlier publisher; only the shared
+            # prefix is eligible for retrospective research.
+            common=min(len(primary_rows),len(secondary_rows))
+            if (abs(len(primary_rows)-len(secondary_rows))!=1 or
+                    common<len(old) or common<1):
+                raise ValueError("secondary mirrors missing or disagree on coverage")
+            # Date/round chronology for the CSV publisher is checked even when
+            # its last row has not yet been corroborated. This self-check is
+            # syntactic only and DOES NOT establish source independence.
+            validate_pair(primary_rows,
+                          [(r["round"],r["winning_number"]) for r in primary_rows],
+                          now.date())
+            if any(round_n!=i for i,(round_n,_) in enumerate(secondary_rows,1)):
+                raise ValueError("secondary JSON has missing or reordered draw rounds")
+            rows=validate_pair(primary_rows[:common],secondary_rows[:common],now.date())
+            unmatched=1
+        else:
+            rows=validate_pair(primary_rows,secondary_rows,now.date())
+        result["deferred_unmatched_rows"]=unmatched
+        result["publisher_rows_seen"]={
+            "primary_csv":len(primary_rows),"secondary_json":len(secondary_rows)}
         # Payouts come from one secondary publisher only. The second mirror
         # corroborates winning digits, never award amounts.
         previous_payouts=[]
         payout_enabled=(root/PAYOUT_CSV).exists() or (root/PAYOUT_META).exists()
         if payout_enabled:
             previous_payouts,_=load_payouts(root,old)
-            publisher_payout_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))
+            publisher_payout_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))[:len(rows)]
             if len(publisher_payout_rows)!=len(rows):
                 raise ValueError("secondary payout rows do not match draw coverage")
             fresh_payouts=[]
@@ -146,7 +171,7 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
         box_enabled=(root/BOX_CSV).exists() or (root/BOX_META).exists()
         if box_enabled:
             old_box,_=load_box_payouts(root,old)
-            publisher_box_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))
+            publisher_box_rows=list(csv.DictReader(StringIO(data[0].decode("utf-8-sig"))))[:len(rows)]
             if len(publisher_box_rows)!=len(rows):
                 raise ValueError("secondary BOX payout rows do not match draw coverage")
             new_box=[]
@@ -163,7 +188,8 @@ def refresh(root: Path, *, now: datetime|None=None, fetch=read_url) -> dict:
         result["sources"]=sources
         result["current_rows"]=len(rows)
         result["new_rows"]=len(rows)-len(old)
-        result["status"]="validated_no_new_draws"
+        result["status"]=("secondary_mirror_lag_old_archive_preserved"
+                          if unmatched else "validated_no_new_draws")
         if len(rows)>len(old):
             # Append-only semantics: never replace any pre-existing draw.
             text="round,draw_date,winning_number\n"+"".join(

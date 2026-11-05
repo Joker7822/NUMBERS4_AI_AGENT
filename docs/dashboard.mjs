@@ -459,14 +459,15 @@ export function normalizeStatus(s){
   }
   const ops=s.online_operations;
   if(ops){
-    const goodStates=['not_verified','source_unavailable','stale',
+    const goodStates=['not_verified','source_unavailable','secondary_publication_lag','stale',
       'manual_review_required','online_monitoring_active_secondary_research_only'];
     const ruleStates=['not_checked','legacy_read_only_unreviewed',
       'official_rule_anchors_consistent','degraded_official_rules_unverified',
       'rule_change_requires_review'];
     const feedStates=['not_checked','validated_no_new_draws',
       'appended_secondary_history_not_officially_verified',
-      'network_unavailable_old_archive_preserved'];
+      'network_unavailable_old_archive_preserved',
+      'secondary_mirror_lag_old_archive_preserved'];
     const timestamp=t=>t===null||safeTime(t);
     const age=t=>t===null||(typeof t==='number'&&Number.isFinite(t)&&t>=0);
     if(ops.version!=='numbers4-online-production-monitor-status-v1'||
@@ -489,5 +490,6 @@ export function normalizeStatus(s){
     }
   }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
-  return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
+  // Scheduled research runs every 120 minutes; allow a 30-minute Actions delay.
+  return {...s,ageMinutes,stale:ageMinutes>150||ageMinutes< -5};
 }

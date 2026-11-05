@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261104-weekly-audit";
+import {normalizeStatus} from "./dashboard.mjs?v=20261105-two-hour-online-learning";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -349,6 +349,7 @@ function render(data){
     online_monitoring_active_secondary_research_only:"公式ルール監視正常・二次履歴研究運用中",
     manual_review_required:"公式ルール要確認（変更の疑い）",
     source_unavailable:"公開元取得不能・確認保留",
+    secondary_publication_lag:"二次公開元の更新差を確認・共通履歴で研究継続",
     stale:"定期監査の更新が遅延",
     not_verified:"初回監査待ち"
   };
@@ -359,7 +360,8 @@ function render(data){
     not_checked:"未検査",
     validated_no_new_draws:"二次公開元一致・新規なし",
     appended_secondary_history_not_officially_verified:"二次公開元一致・履歴追記",
-    network_unavailable_old_archive_preserved:"取得失敗・旧履歴維持"
+    network_unavailable_old_archive_preserved:"取得失敗・旧履歴維持",
+    secondary_mirror_lag_old_archive_preserved:"1回分の更新差・未照合データを保留"
   };
   set("ops-source-status",ops?statusMap[ops.secondary_feed_status]:"確認できません");
   set("ops-last-feed",ops?.secondary_checked_at_jst?japaneseTime(ops.secondary_checked_at_jst):"確認できません");

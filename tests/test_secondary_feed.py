@@ -92,6 +92,69 @@ class SecondaryFeedTests(unittest.TestCase):
             self.assertEqual(r['status'],'network_unavailable_old_archive_preserved')
             self.assertEqual((root/'data/historical_results.csv').read_bytes(),current)
 
+    def test_one_new_csv_row_waits_for_secondary_publisher_without_overwriting(self):
+        tmp,root=self.fixture()
+        with tmp:
+            before=(root/'data/historical_results.csv').read_bytes()
+            report=refresh(root,now=NOW,fetch=fake_fetch(ROWS,ROWS[:3]))
+            self.assertEqual(report['status'],'secondary_mirror_lag_old_archive_preserved')
+            self.assertEqual(report['previous_rows'],3)
+            self.assertEqual(report['new_rows'],0)
+            self.assertEqual(report['deferred_unmatched_rows'],1)
+            self.assertEqual(report['publisher_rows_seen'],{
+                'primary_csv':4,'secondary_json':3})
+            self.assertFalse(report['official_bank_verified'])
+            self.assertEqual((root/'data/historical_results.csv').read_bytes(),before)
+
+    def test_primary_ahead_by_one_only_shared_new_draw_is_accepted(self):
+        tmp,root=self.fixture()
+        with tmp:
+            extra=[*ROWS,('1994-11-04','2418')]
+            report=refresh(root,now=NOW,fetch=fake_fetch(extra,ROWS))
+            self.assertEqual(report['status'],'appended_secondary_history_not_officially_verified')
+            self.assertEqual(report['new_rows'],1)
+            self.assertEqual(report['deferred_unmatched_rows'],1)
+            saved=(root/'data/historical_results.csv').read_text()
+            self.assertIn('4,1994-10-28,0171',saved)
+            self.assertNotIn('2418',saved)
+            self.assertFalse(report['issued_forecast_grading_authorized'])
+
+    def test_secondary_ahead_by_one_only_shared_new_draw_is_accepted(self):
+        tmp,root=self.fixture()
+        with tmp:
+            extra=[*ROWS,('1994-11-04','2418')]
+            report=refresh(root,now=NOW,fetch=fake_fetch(ROWS,extra))
+            self.assertEqual(report['status'],'appended_secondary_history_not_officially_verified')
+            self.assertEqual(report['new_rows'],1)
+            self.assertEqual(report['deferred_unmatched_rows'],1)
+            saved=(root/'data/historical_results.csv').read_text()
+            self.assertIn('4,1994-10-28,0171',saved)
+            self.assertNotIn('2418',saved)
+
+    def test_different_digits_in_shared_prefix_remain_hard_failure(self):
+        tmp,root=self.fixture()
+        with tmp:
+            with self.assertRaisesRegex(ValueError,'disagree'):
+                refresh(root,now=NOW,fetch=fake_fetch(
+                    [*ROWS,('1994-11-04','2418')],
+                    [*ROWS[:3],('1994-10-28','9999')]))
+            self.assertNotIn('\n4,',(root/'data/historical_results.csv').read_text())
+
+    def test_large_coverage_gap_and_past_archived_coverage_rejected(self):
+        tmp,root=self.fixture()
+        with tmp:
+            extra=[*ROWS,('1994-11-04','2418'),('1994-11-11','3401')]
+            with self.assertRaisesRegex(ValueError,'coverage'):
+                refresh(root,now=NOW,fetch=fake_fetch(extra,ROWS))
+            self.assertEqual(len((root/'data/historical_results.csv').read_text().splitlines()),4)
+
+    def test_unmatched_primary_row_is_still_date_and_weekday_checked(self):
+        tmp,root=self.fixture()
+        with tmp:
+            malformed=[*ROWS[:3],('2026-11-03','0171')]
+            with self.assertRaisesRegex(ValueError,'disagree'):
+                refresh(root,now=NOW,fetch=fake_fetch(malformed,ROWS[:3]))
+
     def test_malformed_number_and_future_date_are_rejected(self):
         broken=primary(ROWS).decode().replace('0097,0,0,9,7','0098,0,0,9,7')
         with self.assertRaisesRegex(ValueError,'digit columns mismatch'):
