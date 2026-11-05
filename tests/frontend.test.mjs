@@ -553,3 +553,26 @@ test('weekly forecast comparison is prominent and both evidence classes have sep
   assert.ok(app.includes('data.recent_week'));
   assert.ok(app.includes('研究再現の一致を正式な予測精度へ加算しません'));
 });
+
+test('two-hour learning lag is safely displayed without granting model authority',()=>{
+  const s=source();
+  s.online_operations.state='secondary_publication_lag';
+  s.online_operations.secondary_feed_status='secondary_mirror_lag_old_archive_preserved';
+  assert.doesNotThrow(()=>normalizeStatus(s));
+  s.online_operations.model_auto_promotion=true;
+  assert.throws(()=>normalizeStatus(s),/オンライン本番監査/);
+});
+
+test('dashboard freshness follows 120-minute learning schedule plus 30-minute grace',()=>{
+  const data=source();
+  const original=Date.now;
+  const base=Date.parse(data.generated_at_jst);
+  try{
+    Date.now=()=>base+145*60*1000;
+    assert.equal(normalizeStatus(data).stale,false);
+    Date.now=()=>base+151*60*1000;
+    assert.equal(normalizeStatus(data).stale,true);
+  }finally{
+    Date.now=original;
+  }
+});
