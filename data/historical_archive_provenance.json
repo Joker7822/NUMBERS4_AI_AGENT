@@ -1,30 +1,30 @@
 {
   "version": "numbers4-historical-archive-v1",
   "status": "secondary_public_mirrors_agree_not_officially_verified",
-  "record_count": 7107,
+  "record_count": 7108,
   "first_round": 1,
-  "last_round": 7107,
+  "last_round": 7108,
   "first_draw_date": "1994-10-07",
-  "last_draw_date": "2026-11-04",
-  "latest_number": "7541",
-  "git_blob_sha1": "da903cad961a62705185b7adb9f1bc0bff12f07d",
+  "last_draw_date": "2026-11-05",
+  "latest_number": "1664",
+  "git_blob_sha1": "3a7f57823793916f58c445ee5c941ac66b474164",
   "officially_verified": false,
   "forecast_grading_authorized": false,
   "source_independence_not_established": true,
   "cross_source_number_mismatches": 0,
   "evidence_scope": "two_public_GitHub_archives_exact_numbers_agree_bank_first_party_not_verified_same_upstream_possible",
-  "imported_as_of_jst_date": "2026-11-05",
+  "imported_as_of_jst_date": "2026-11-06",
   "public_source_revisions": [
     {
-      "url": "https://github.com/hazimekom/numbers4-api/blob/2bb233654fe9c0a523faa01960f2dd16db88b4d7/data/numbers4_results_v2.csv",
-      "commit_sha": "2bb233654fe9c0a523faa01960f2dd16db88b4d7",
-      "blob_sha": "91cc766f41cc93f2a4cbde0d5aaa5a68d0b21273",
+      "url": "https://github.com/hazimekom/numbers4-api/blob/61e2f4c285355914a5c045bbd9263352451eb3ef/data/numbers4_results_v2.csv",
+      "commit_sha": "61e2f4c285355914a5c045bbd9263352451eb3ef",
+      "blob_sha": "78395e54ba63a09c43d6db736802b5ca84f36cd5",
       "provides": "round_date_result"
     },
     {
-      "url": "https://github.com/kodai721229/kujilab/blob/c6bdb88f9eff5e73b3cf7823cbb939e15f4793c7/public/data/numbers4.json",
-      "commit_sha": "c6bdb88f9eff5e73b3cf7823cbb939e15f4793c7",
-      "blob_sha": "e87018871d8ba2f7b1e14fc0fdfffe3f9ef37058",
+      "url": "https://github.com/kodai721229/kujilab/blob/fe7b26636fb140cd00750b43e52671347d1832b1/public/data/numbers4.json",
+      "commit_sha": "fe7b26636fb140cd00750b43e52671347d1832b1",
+      "blob_sha": "48586f8915275020ba2afb07dff449ce212681c6",
       "provides": "round_result"
     }
   ]
