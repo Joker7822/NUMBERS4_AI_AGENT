@@ -490,5 +490,6 @@ export function normalizeStatus(s){
     }
   }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
-  return {...s,ageMinutes,stale:ageMinutes>90||ageMinutes< -5};
+  // Scheduled research runs every 120 minutes; allow a 30-minute Actions delay.
+  return {...s,ageMinutes,stale:ageMinutes>150||ageMinutes< -5};
 }
