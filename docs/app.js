@@ -1,4 +1,4 @@
-import {normalizeStatus} from "./dashboard.mjs?v=20261104-weekly-audit";
+import {normalizeStatus} from "./dashboard.mjs?v=20261105-two-hour-online-learning";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
