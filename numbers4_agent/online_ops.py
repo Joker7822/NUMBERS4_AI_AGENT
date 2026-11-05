@@ -78,7 +78,8 @@ def snapshot(root: Path, now: datetime) -> dict:
         feed_status=feed.get("status","not_checked")
         if feed_status not in {
             "validated_no_new_draws","appended_secondary_history_not_officially_verified",
-            "network_unavailable_old_archive_preserved"
+            "network_unavailable_old_archive_preserved",
+            "secondary_mirror_lag_old_archive_preserved"
         }:
             raise ValueError("unknown historical feed status: manual review required")
         feed_check=feed.get("checked_at_jst")
@@ -97,6 +98,10 @@ def snapshot(root: Path, now: datetime) -> dict:
     elif feed_status=="network_unavailable_old_archive_preserved":
         state="source_unavailable"
         notes.append("公開データの取得失敗により旧履歴を維持しています。")
+    elif (feed_status=="secondary_mirror_lag_old_archive_preserved" or
+          (feed and feed.get("deferred_unmatched_rows",0)>0)):
+        state="secondary_publication_lag"
+        notes.append("二次公開元の最新回に1回分の反映差があり、未照合の回は研究学習から除外しています。照合済み履歴のみ保持・使用します。")
     elif stale_ref or stale_feed:
         state="stale"
         notes.append("定期監査結果が96時間以内に更新されていません。GitHub Actionsの実行状況を確認してください。")
