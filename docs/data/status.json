@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-07T01:38:58+09:00",
+  "generated_at_jst": "2026-11-07T01:48:42+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -139,7 +139,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "3a7f57823793916f58c445ee5c941ac66b474164",
-    "generated_at_jst": "2026-11-07T01:38:58+09:00",
+    "generated_at_jst": "2026-11-07T01:48:42+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -448,12 +448,12 @@
   "research_evolution": {
     "version": "numbers4-recursive-research-evolution-v1",
     "status": "recursive_research_exploration_not_prospective_evidence",
-    "generation": 20,
+    "generation": 21,
     "evaluated_draws": 7107,
     "candidate_models": 6,
-    "research_sources_found": 49,
-    "lifetime_unique_sources": 936,
-    "new_unique_sources": 35,
+    "research_sources_found": 27,
+    "lifetime_unique_sources": 958,
+    "new_unique_sources": 22,
     "requests_attempted": 8,
     "web_search_enabled": false,
     "research_search_errors": 0,
@@ -461,15 +461,15 @@
     "metadata_based_method_leads": 5,
     "next_model": "uniform",
     "next_number": "9120",
-    "generated_at_jst": "2026-11-06T16:47:09+09:00",
+    "generated_at_jst": "2026-11-07T01:48:22+09:00",
     "performance_advantage_confirmed": false,
     "model_auto_promotion_authorized": false,
     "actual_purchase": false,
     "repeated_historical_cohorts_not_independent": true,
     "latest_verification": {
       "scope": "secondary_history_exploratory_reconstruction_only",
-      "generation": 20,
-      "generated_at_jst": "2026-11-06T16:47:09+09:00",
+      "generation": 21,
+      "generated_at_jst": "2026-11-07T01:48:22+09:00",
       "source_status": "secondary_public_mirrors_agree_not_officially_verified",
       "archive_git_blob_sha1": "3a7f57823793916f58c445ee5c941ac66b474164",
       "round_predictions_sha256": "0b61bb32e423e4037fccec92eedfd3e3fbd80f11f19ba929459d054554ed6537",
@@ -517,22 +517,22 @@
             "mean_brier_edge_vs_uniform": -4.032829e-06
           },
           {
-            "model": "markov_250_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.011478697,
-            "mean_brier_edge_vs_uniform": -2.350013e-06
-          },
-          {
             "model": "rolling_120_alpha10",
             "straight_hits": 0,
             "mean_log_score_edge_vs_uniform": -0.043508473,
             "mean_brier_edge_vs_uniform": -8.952686e-06
           },
           {
-            "model": "rolling_60_alpha20",
+            "model": "rolling_500_alpha5",
             "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.010558304,
-            "mean_brier_edge_vs_uniform": -2.155308e-06
+            "mean_log_score_edge_vs_uniform": -0.027781949,
+            "mean_brier_edge_vs_uniform": -5.786447e-06
+          },
+          {
+            "model": "markov_120_alpha20",
+            "straight_hits": 0,
+            "mean_log_score_edge_vs_uniform": -0.003804019,
+            "mean_brier_edge_vs_uniform": -7.90494e-07
           }
         ],
         "repeatedly_inspected_not_independent_holdout": true
@@ -687,8 +687,8 @@
     "data_cutoff_round": 7108,
     "number": "9120",
     "model": "uniform",
-    "research_generation": 20,
-    "computed_at_jst": "2026-11-06T16:47:09+09:00",
+    "research_generation": 21,
+    "computed_at_jst": "2026-11-07T01:48:22+09:00",
     "archive_git_blob_sha1": "3a7f57823793916f58c445ee5c941ac66b474164",
     "status": "research_only_not_issued_not_purchased",
     "actual_purchase": false,
@@ -704,10 +704,10 @@
     "rule_sources_consistent": 1,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-07T01:38:53+09:00",
-    "rule_audit_age_hours": 0.002,
+    "rule_audit_age_hours": 0.164,
     "secondary_feed_status": "secondary_mirror_lag_old_archive_preserved",
     "secondary_checked_at_jst": "2026-11-07T01:38:52+09:00",
-    "secondary_audit_age_hours": 0.002,
+    "secondary_audit_age_hours": 0.164,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
