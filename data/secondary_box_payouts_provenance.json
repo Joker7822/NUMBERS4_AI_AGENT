@@ -1,15 +1,15 @@
 {
   "version": "numbers4-secondary-box-payouts-v1",
   "status": "single_secondary_publisher_not_bank_verified",
-  "git_blob_sha1": "97dc50bdc01fb7a66481951ff5eaccc15867d8cd",
-  "record_count": 7108,
+  "git_blob_sha1": "0c2fdbca2663f00107a60440072deef1256a7512",
+  "record_count": 7109,
   "first_round": 1,
-  "last_round": 7108,
+  "last_round": 7109,
   "first_draw_date": "1994-10-07",
-  "last_draw_date": "2026-11-05",
+  "last_draw_date": "2026-11-06",
   "first_number": "1149",
-  "latest_number": "1664",
-  "eligible_box_draws": 7100,
+  "latest_number": "2419",
+  "eligible_box_draws": 7101,
   "ineligible_box_draws": 8,
   "ticket_price_yen": 200,
   "bank_primary_payouts_verified": false,
@@ -17,11 +17,11 @@
   "forecast_grading_authorized": false,
   "actual_purchase_records_present": false,
   "source": {
-    "url": "https://github.com/hazimekom/numbers4-api/blob/61e2f4c285355914a5c045bbd9263352451eb3ef/data/numbers4_results_v2.csv",
-    "commit_sha": "61e2f4c285355914a5c045bbd9263352451eb3ef",
-    "blob_sha": "78395e54ba63a09c43d6db736802b5ca84f36cd5"
+    "url": "https://github.com/hazimekom/numbers4-api/blob/88a254fb38f2a115f270f3d4fc927a120d27f77c/data/numbers4_results_v2.csv",
+    "commit_sha": "88a254fb38f2a115f270f3d4fc927a120d27f77c",
+    "blob_sha": "f70b89146a138ed05dfa2d9c2ddbd73d774cad45"
   },
-  "other_source_number_crosscheck": "https://github.com/kodai721229/kujilab/blob/fe7b26636fb140cd00750b43e52671347d1832b1/public/data/numbers4.json",
+  "other_source_number_crosscheck": "https://github.com/kodai721229/kujilab/blob/f64f7f79863dc5bf75405422be7dfeb063683bdb/public/data/numbers4.json",
   "official_rule_url": "https://www.mizuhobank.co.jp/takarakuji/products/numbers/index.html",
   "interpretation": "Historical secondhand BOX payouts; blank means all four digits same and BOX application ineligible. No purchases."
 }
