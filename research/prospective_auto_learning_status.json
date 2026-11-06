@@ -54,10 +54,10 @@
   "production_champion": "uniform",
   "champion_changed": false,
   "action": "keep",
-  "evaluated_at_jst": "2026-11-06T16:55:13+09:00",
+  "evaluated_at_jst": "2026-11-06T23:57:46+09:00",
   "automatic_promotion_feature_implemented": true,
   "automatic_promotion_executed": false,
   "actual_purchase": false,
   "forecast_skill_confirmed": false,
-  "assessment_sha256": "7fce2d999066b1cdd290c293c1707785d5392c8f69f8f38da1bd33027b3fcb4e"
+  "assessment_sha256": "23f756a946a144ed7ad8356b28edbdb2bd3ad81b1f8fb6486188c4509d249220"
 }
