@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-06T08:59:20+09:00",
+  "generated_at_jst": "2026-11-06T16:14:16+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -701,7 +701,7 @@
     "officially_verified": false,
     "prediction_skill_confirmed": false,
     "last_changed_at_jst": "2026-11-06T08:59:20+09:00",
-    "changed_since_previous_snapshot": true
+    "changed_since_previous_snapshot": false
   },
   "online_operations": {
     "version": "numbers4-online-production-monitor-status-v1",
@@ -710,10 +710,10 @@
     "rule_sources_consistent": 1,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-06T08:58:06+09:00",
-    "rule_audit_age_hours": 0.021,
+    "rule_audit_age_hours": 7.269,
     "secondary_feed_status": "appended_secondary_history_not_officially_verified",
     "secondary_checked_at_jst": "2026-11-06T08:58:04+09:00",
-    "secondary_audit_age_hours": 0.021,
+    "secondary_audit_age_hours": 7.27,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
