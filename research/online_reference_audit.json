@@ -1,6 +1,6 @@
 {
   "version": "numbers4-operational-official-rule-monitor-v2",
-  "checked_at_jst": "2026-11-07T18:45:54+09:00",
+  "checked_at_jst": "2026-11-08T01:46:36+09:00",
   "status": "degraded_official_rules_unverified",
   "required_rule_sources": 3,
   "rule_sources_consistent": 1,

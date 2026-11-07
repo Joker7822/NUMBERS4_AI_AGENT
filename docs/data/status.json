@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-07T18:46:52+09:00",
+  "generated_at_jst": "2026-11-08T01:46:44+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -21,8 +21,8 @@
   "recent_week": {
     "version": "numbers4-recent-week-v1",
     "days": 7,
-    "start_date": "2026-11-01",
-    "end_date": "2026-11-07",
+    "start_date": "2026-11-02",
+    "end_date": "2026-11-08",
     "issued_forecasts": [],
     "shadow_forecasts": [],
     "research_replay": [
@@ -151,7 +151,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "b081ec96350aa9f4e7fc68aadd081387ef893b43",
-    "generated_at_jst": "2026-11-07T18:46:51+09:00",
+    "generated_at_jst": "2026-11-08T01:46:44+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -715,11 +715,11 @@
     "official_rule_status": "degraded_official_rules_unverified",
     "rule_sources_consistent": 1,
     "rule_sources_required": 3,
-    "rule_checked_at_jst": "2026-11-07T18:45:54+09:00",
-    "rule_audit_age_hours": 0.016,
+    "rule_checked_at_jst": "2026-11-08T01:46:36+09:00",
+    "rule_audit_age_hours": 0.002,
     "secondary_feed_status": "validated_no_new_draws",
-    "secondary_checked_at_jst": "2026-11-07T18:45:52+09:00",
-    "secondary_audit_age_hours": 0.017,
+    "secondary_checked_at_jst": "2026-11-08T01:46:34+09:00",
+    "secondary_audit_age_hours": 0.003,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
