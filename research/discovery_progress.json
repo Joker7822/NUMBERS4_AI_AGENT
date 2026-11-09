@@ -3,28 +3,28 @@
     "106c08297d0421aa2fa00e5b2ef2ed1e98c3cffc8f9f467bf9951e9d2916b026": {
       "exhausted": false,
       "last_checked_date": "2026-11-09",
-      "next_offset": 1080,
+      "next_offset": 1120,
       "provider": "crossref"
     },
     "42ed6af80ec6addf9522bad2755f3612320a38f70d6650282f92aac08a11e316": {
       "exhausted": false,
       "last_checked_date": "2026-11-09",
-      "next_offset": 1080,
+      "next_offset": 1120,
       "provider": "crossref"
     },
     "9bf43b47b2cdb638189aa215f2a1ad18634e4535c483004266427853aec084a5": {
       "exhausted": false,
       "last_checked_date": "2026-11-09",
-      "next_offset": 1080,
+      "next_offset": 1120,
       "provider": "crossref"
     },
     "c6f3e46ba17d3e9ffe883fa8da42488839e95ec291b3db2798ec89d6c6806a74": {
       "exhausted": false,
       "last_checked_date": "2026-11-09",
-      "next_offset": 1080,
+      "next_offset": 1120,
       "provider": "crossref"
     }
   },
-  "request_counter": 216,
+  "request_counter": 224,
   "version": "numbers4-continuous-discovery-v1"
 }
