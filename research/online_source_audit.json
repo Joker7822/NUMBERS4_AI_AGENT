@@ -1,32 +1,32 @@
 {
   "version": "numbers4-online-secondary-source-refresh-v1",
-  "checked_at_jst": "2026-11-10T04:36:46+09:00",
-  "status": "secondary_mirror_lag_old_archive_preserved",
+  "checked_at_jst": "2026-11-13T08:59:33+09:00",
+  "status": "appended_secondary_history_not_officially_verified",
   "previous_rows": 7109,
-  "new_rows": 0,
+  "new_rows": 4,
   "secondary_source_independence_proven": false,
   "official_bank_verified": false,
   "issued_forecast_grading_authorized": false,
   "automatic_model_promotion": false,
   "sources": [
     {
-      "url": "https://github.com/hazimekom/numbers4-api/blob/0a608e94e2fb58877f344b0f14ab42f3812acc15/data/numbers4_results_v2.csv",
-      "commit_sha": "0a608e94e2fb58877f344b0f14ab42f3812acc15",
-      "blob_sha": "cb60df38456d24e27e49b59beac3b02d5350bc7e",
-      "sha256": "6f9892d395a4e0f4d6c5bdde8063bf07a6501769c7e37118ed7bcb290da225ac"
+      "url": "https://github.com/hazimekom/numbers4-api/blob/1804271680389ca66cce721a38e1f67f29517ce5/data/numbers4_results_v2.csv",
+      "commit_sha": "1804271680389ca66cce721a38e1f67f29517ce5",
+      "blob_sha": "cd038b89472b8667f3504b4f64618bd71db78727",
+      "sha256": "07bd1ca866f4767d9dbe324df38698f415a28c1ba346d6c6694735ee5689d969"
     },
     {
-      "url": "https://github.com/kodai721229/kujilab/blob/f64f7f79863dc5bf75405422be7dfeb063683bdb/public/data/numbers4.json",
-      "commit_sha": "f64f7f79863dc5bf75405422be7dfeb063683bdb",
-      "blob_sha": "c1660d09c22fdd470171b90cbe4e34fba435e9e6",
-      "sha256": "d0a7bdc61d9ce7ed84565e8ed59b2a05da88c7a555b90884c3d45dec797efc9f"
+      "url": "https://github.com/kodai721229/kujilab/blob/dcbac9945118263eb120e26ed98de92f79bbd99f/public/data/numbers4.json",
+      "commit_sha": "dcbac9945118263eb120e26ed98de92f79bbd99f",
+      "blob_sha": "d516697271f7f12181fcccd285b8e10cc115b5a3",
+      "sha256": "66196d756e2168031633467aaeead2929443ad8d994671f66a8cd3433b27a4a4"
     }
   ],
   "errors": [],
-  "deferred_unmatched_rows": 1,
+  "deferred_unmatched_rows": 0,
   "publisher_rows_seen": {
-    "primary_csv": 7110,
-    "secondary_json": 7109
+    "primary_csv": 7113,
+    "secondary_json": 7113
   },
-  "current_rows": 7109
+  "current_rows": 7113
 }
