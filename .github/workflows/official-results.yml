@@ -33,7 +33,9 @@ concurrency:
 
 jobs:
   fetch-and-verify:
-    runs-on: ubuntu-latest
+    # Use an authorized runner with publisher access when hosted GitHub IPs get HTTP 403.
+    # Repository variable is optional; the standard hosted runner remains the default.
+    runs-on: ${{ vars.NUMBERS4_OFFICIAL_RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
