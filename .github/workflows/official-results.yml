@@ -178,6 +178,20 @@ jobs:
             echo '- No post-draw issued tickets, lottery purchases, or automatic model promotions.'
             echo '- Retrospective performance never establishes genuine prospective skill.'
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Reject zero verified publisher matches as a successful ingestion
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/numbers4-fetch.json').read_text(encoding='utf-8'))
+          if report['publisher_matched_rows'] == 0:
+              print('::error::Official Numbers4 ingestion BLOCKED: zero independent bank/Rakuten matches. '
+                    'See source diagnostics artifact and the persistent source-ingestion issue.')
+              raise SystemExit(1)
+          print('Officially corroborated published draws:', report['publisher_matched_rows'])
+          PY
 
   deploy-current-dashboard:
     needs: fetch-and-verify
