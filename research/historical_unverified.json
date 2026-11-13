@@ -2,7 +2,7 @@
   "version": "numbers4-research-source-v1",
   "verified_official": false,
   "publisher": "rakuten_lottery_publication_only",
-  "fetched_at_jst": "2026-11-13T16:05:39+09:00",
+  "fetched_at_jst": "2026-11-14T05:28:58+09:00",
   "rows": [
     {
       "round": 6868,
@@ -1668,66 +1668,73 @@
       "draw_date": "2026-11-02",
       "winning_number": "0149",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7106,
       "draw_date": "2026-11-03",
       "winning_number": "5870",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7107,
       "draw_date": "2026-11-04",
       "winning_number": "7541",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7108,
       "draw_date": "2026-11-05",
       "winning_number": "1664",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7109,
       "draw_date": "2026-11-06",
       "winning_number": "2419",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7110,
       "draw_date": "2026-11-09",
       "winning_number": "1843",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7111,
       "draw_date": "2026-11-10",
       "winning_number": "1136",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7112,
       "draw_date": "2026-11-11",
       "winning_number": "1641",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     },
     {
       "round": 7113,
       "draw_date": "2026-11-12",
       "winning_number": "5701",
       "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
-      "sha256": "117219190ef878babe7beb04d89f8611d4b49f77de898bfa2b9d7a38d7830d1e"
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
+    },
+    {
+      "round": 7114,
+      "draw_date": "2026-11-13",
+      "winning_number": "3960",
+      "url": "https://takarakuji.rakuten.co.jp/backnumber/numbers4/202611/",
+      "sha256": "632e695bda09c6c498410c2d6680e68e75ab787fdafb1db2c00a2c95e4f8e0cc"
     }
   ],
-  "rows_count": 246,
+  "rows_count": 247,
   "official_confirmed_count_in_this_sync": 0,
   "warning": "These single-publisher historical rows cannot grade issued forecasts or prove predictive skill"
 }
