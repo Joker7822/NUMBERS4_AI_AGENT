@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from unittest.mock import patch
-from urllib.error import URLError
+from urllib.error import URLError, HTTPError
 
 from numbers4_agent.official_fetch import (
     ResultFetchError, parse_mizuhobank, parse_rakuten, sync, _download,
@@ -111,6 +111,47 @@ class OfficialFetchTests(unittest.TestCase):
         self.assertEqual(render.call_count, 1)
         recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
         self.assertEqual(recorded[0]['bank_response_sha256'], 'a' * 64)
+
+    def test_http_403_can_recover_through_strict_official_bank_browser(self):
+        """A blocked raw bank request must not skip the allowed browser fallback."""
+        ordinary = open_mocks()
+
+        def blocked_raw_bank(request, timeout):
+            if 'www.mizuhobank.co.jp' in request.full_url:
+                raise HTTPError(request.full_url, 403, 'Access Denied', None, None)
+            return ordinary(request, timeout)
+
+        with patch('numbers4_agent.official_fetch._render_bank_page',
+                   return_value=(BANK_OCT, 'c' * 64)) as render:
+            summary = sync(self.root, now=self.now, months_back=2,
+                           opener=blocked_raw_bank, bank_browser_fallback=True)
+        self.assertEqual(summary['status'], 'verified')
+        self.assertEqual(summary['new_verified_rows'], 2)
+        self.assertEqual(summary['publisher_matched_rows'], 2)
+        self.assertEqual(render.call_count, 2)
+        recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
+        self.assertEqual(recorded[0]['bank_response_sha256'], 'c' * 64)
+
+    def test_http_403_without_valid_bank_response_never_verifies(self):
+        """An HTTP rejection must not promote a single Rakuten publication."""
+        ordinary = open_mocks()
+
+        def blocked_raw_bank(request, timeout):
+            if 'www.mizuhobank.co.jp' in request.full_url:
+                raise HTTPError(request.full_url, 403, 'Access Denied', None, None)
+            return ordinary(request, timeout)
+
+        with patch('numbers4_agent.official_fetch._render_bank_page',
+                   side_effect=ResultFetchError('bank browser served a blocked-access page')):
+            summary = sync(self.root, now=self.now, months_back=2,
+                           opener=blocked_raw_bank, bank_browser_fallback=True)
+        self.assertEqual(summary['status'], 'blocked_no_bank_verified_results')
+        self.assertEqual(summary['new_verified_rows'], 0)
+        self.assertEqual(summary['bank_rows'], 0)
+        self.assertTrue(any('HTTP 403' in item['reason'] and
+                            'blocked-access page' in item['reason']
+                            for item in summary['bank_errors']))
+        self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
     def test_bank_browser_empty_result_stays_blocked_and_explains_error(self):
         empty_bank = '<h1>ナンバーズ4抽せん数字一覧表</h1>'
