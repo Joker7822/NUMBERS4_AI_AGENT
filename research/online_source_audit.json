@@ -1,9 +1,9 @@
 {
   "version": "numbers4-online-secondary-source-refresh-v1",
-  "checked_at_jst": "2026-11-13T08:59:33+09:00",
-  "status": "appended_secondary_history_not_officially_verified",
-  "previous_rows": 7109,
-  "new_rows": 4,
+  "checked_at_jst": "2026-11-13T16:40:32+09:00",
+  "status": "validated_no_new_draws",
+  "previous_rows": 7113,
+  "new_rows": 0,
   "secondary_source_independence_proven": false,
   "official_bank_verified": false,
   "issued_forecast_grading_authorized": false,
