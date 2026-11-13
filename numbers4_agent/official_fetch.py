@@ -158,6 +158,9 @@ def _download(url: str, host: str, *, opener=None) -> tuple[str, str]:
             if len(body) > MAX_BYTES:
                 raise ResultFetchError("publisher HTML exceeded size limit")
             declared = response.headers.get_content_charset() or "utf-8"
+    except urllib.error.HTTPError as exc:
+        # Keep the status visible in Actions; a 403 is not an empty results table.
+        raise ResultFetchError(f"publisher rejected request: HTTP {exc.code}") from exc
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
         raise ResultFetchError(f"publisher network fetch failed: {type(exc).__name__}") from exc
     try:
@@ -201,7 +204,11 @@ def _render_bank_page(url: str) -> tuple[str, str]:
             browser = driver.chromium.launch(headless=True)
             try:
                 page = browser.new_page(locale="ja-JP")
-                page.goto(url, wait_until="domcontentloaded", timeout=20_000)
+                response = page.goto(url, wait_until="domcontentloaded", timeout=20_000)
+                if response is not None and response.status in (401, 403, 429):
+                    raise ResultFetchError(
+                        f"bank browser request rejected: HTTP {response.status}"
+                    )
                 try:
                     # Do not treat a merely loaded empty template as evidence.
                     page.wait_for_function(
@@ -214,6 +221,12 @@ def _render_bank_page(url: str) -> tuple[str, str]:
                 if actual.scheme != "https" or actual.hostname != host:
                     raise ResultFetchError("bank browser navigated outside approved host")
                 rendered = page.content()
+                # WAF challenge pages may return HTTP 200 and the original URL.
+                # Never accept their numeric reference IDs as lottery evidence.
+                visible = " ".join(_text(rendered).words)
+                if re.search(r"access denied|request blocked|bot detection|"
+                             r"アクセス(が|を)?(拒否|制限)", visible, re.I):
+                    raise ResultFetchError("bank browser served a blocked-access page")
             finally:
                 browser.close()
     except PlaywrightError as exc:
@@ -226,10 +239,13 @@ def _render_bank_page(url: str) -> tuple[str, str]:
 
 def publisher_month(url: str, host: str, parser, *, opener=None,
                     bank_browser_fallback: bool = False) -> tuple[list[dict], str]:
-    text, sha = _download(url, host, opener=opener)
     try:
+        text, sha = _download(url, host, opener=opener)
         return parser(text), sha
     except ResultFetchError as raw_error:
+        # A WAF HTTP rejection must also attempt the permitted browser fallback.
+        # Only the original bank HTTPS host is allowed; a recovered HTML page
+        # still needs explicit draw rows and independent Rakuten agreement.
         if not bank_browser_fallback or host != "www.mizuhobank.co.jp":
             raise
         try:
@@ -237,7 +253,7 @@ def publisher_month(url: str, host: str, parser, *, opener=None,
             return parser(rendered), rendered_sha
         except ResultFetchError as render_error:
             raise ResultFetchError(
-                f"bank raw HTML rejected ({raw_error}); browser fallback rejected ({render_error})"
+                f"bank raw request rejected ({raw_error}); browser fallback rejected ({render_error})"
             ) from render_error
 
 
