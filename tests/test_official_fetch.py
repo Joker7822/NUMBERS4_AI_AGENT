@@ -108,7 +108,8 @@ class OfficialFetchTests(unittest.TestCase):
         self.assertEqual(summary['new_verified_rows'], 2)
         self.assertEqual(summary['bank_rows'], 2)
         self.assertTrue(summary['bank_browser_fallback_enabled'])
-        self.assertEqual(render.call_count, 1)
+        # The browser is also tried when the other month's raw request fails.
+        self.assertEqual(render.call_count, 2)
         recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
         self.assertEqual(recorded[0]['bank_response_sha256'], 'a' * 64)
 
