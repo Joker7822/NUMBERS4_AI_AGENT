@@ -30,7 +30,7 @@
     "production_promotion_allowed": false,
     "actual_purchase_profit_yen": null,
     "interpretation": "Retrospective analysis only; historic feed provenance and model selection do not establish prospective predictive advantage",
-    "source_sha256": "e12da13f2a2abe261a9fd4380083993ac8432a0a5b71981ea51e8393b490f15c",
+    "source_sha256": "67986471eb716342cb9963d87b88322692f135da003bc6b46b22d6a850e1547f",
     "source_publisher": "rakuten_lottery_publication_only"
   },
   "verified_history_exploratory": {
