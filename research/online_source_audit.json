@@ -1,6 +1,6 @@
 {
   "version": "numbers4-online-secondary-source-refresh-v1",
-  "checked_at_jst": "2026-11-15T00:39:27+09:00",
+  "checked_at_jst": "2026-11-15T06:11:12+09:00",
   "status": "validated_no_new_draws",
   "previous_rows": 7114,
   "new_rows": 0,
@@ -16,8 +16,8 @@
       "sha256": "139900821ac3ce95d4627f2a6d0c9d3cc0051e58e10afd3c4b4c3f1d3130d92e"
     },
     {
-      "url": "https://github.com/kodai721229/kujilab/blob/b0ab7a61a6d1bd5f183e016b76a568540182f2ae/public/data/numbers4.json",
-      "commit_sha": "b0ab7a61a6d1bd5f183e016b76a568540182f2ae",
+      "url": "https://github.com/kodai721229/kujilab/blob/c26bac637a537a594b16f750cff6d0f4ed4aec29/public/data/numbers4.json",
+      "commit_sha": "c26bac637a537a594b16f750cff6d0f4ed4aec29",
       "blob_sha": "f01e1c925d5c263c9402d61f8f249a2058e345a7",
       "sha256": "1a44307c3859c1ba1b7a75159992126fd7ddef25caf1a48993a89e0a93ea376f"
     }
