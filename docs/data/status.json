@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-17T04:25:23+09:00",
+  "generated_at_jst": "2026-11-17T07:52:58+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -10,9 +10,9 @@
   "auto_verified_rounds": 0,
   "latest_consistent_draw": null,
   "latest_unverified_draw": {
-    "round": 7114,
-    "draw_date": "2026-11-13",
-    "winning_number": "3960",
+    "round": 7115,
+    "draw_date": "2026-11-16",
+    "winning_number": "6742",
     "status": "publisher_only_not_officially_verified",
     "source": "rakuten_lottery_publication_only"
   },
@@ -692,10 +692,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-17T04:24:08+09:00",
-    "rule_audit_age_hours": 0.021,
+    "rule_audit_age_hours": 3.481,
     "secondary_feed_status": "secondary_mirror_lag_old_archive_preserved",
     "secondary_checked_at_jst": "2026-11-17T04:24:06+09:00",
-    "secondary_audit_age_hours": 0.021,
+    "secondary_audit_age_hours": 3.481,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -759,14 +759,14 @@
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",
     "scope": "single_publisher_not_officially_verified",
-    "evaluated_draws": 187,
+    "evaluated_draws": 188,
     "top5_model_hits": 0,
     "top5_reference_hits": 0,
-    "uniform_expected_top5_hit_draws": 0.0935,
-    "mean_log_likelihood_edge_vs_uniform": -0.059366638,
+    "uniform_expected_top5_hit_draws": 0.094,
+    "mean_log_likelihood_edge_vs_uniform": -0.060436577,
     "descriptive_moving_block_bootstrap_95pct": [
-      -0.095979927,
-      -0.023455579
+      -0.09600112,
+      -0.025206355
     ],
     "prediction_skill_confirmed": false
   },
