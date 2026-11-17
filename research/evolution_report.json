@@ -1,13 +1,13 @@
 {
   "version": "numbers4-recursive-research-evolution-v1",
-  "generation": 48,
-  "generated_at_jst": "2026-11-17T23:11:47+09:00",
+  "generation": 49,
+  "generated_at_jst": "2026-11-18T07:48:58+09:00",
   "archive_git_blob_sha1": "94c32a3c5155f7d8b61c514011575b170574488f",
   "archive_latest_round": 7115,
   "current_archive_new_rounds_since_previous_generation": 0,
   "research_discovery": {
     "version": "numbers4-continuous-discovery-v1",
-    "searched_at_jst": "2026-11-17T23:11:47+09:00",
+    "searched_at_jst": "2026-11-18T07:48:58+09:00",
     "queries": [
       "lottery draw statistical randomness tests prediction",
       "lottery forecast model comparison data snooping prevention",
@@ -19,221 +19,319 @@
     ],
     "web_search_enabled": false,
     "web_search_provider_requires_configured_key": true,
-    "candidate_count": 23,
+    "candidate_count": 38,
     "candidates": [
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.1111/j.2517-6161.1983.tb01238.x",
-        "title": "Outlier Discordancy Tests in the Normal Linear Model",
-        "source_url": "https://doi.org/10.1111/j.2517-6161.1983.tb01238.x",
-        "publication_year": 1983,
-        "venue": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "76ac970bd711f2e45b04ae19d4f9484c57d11ba0c216cd7ead7cf35a3b99a2df",
-        "method_signals": [],
-        "research_categories": [
-          "validation"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1090/surv/220/04",
-        "title": "Martin-Löf randomness",
-        "source_url": "https://doi.org/10.1090/surv/220/04",
-        "publication_year": 2017,
-        "venue": "Mathematical Surveys and Monographs",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1007/springerreference_222970",
-        "title": "Chance and Randomness",
-        "source_url": "https://doi.org/10.1007/springerreference_222970",
-        "publication_year": null,
-        "venue": "SpringerReference",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.14710/geoplanning.6.1.21-30",
-        "title": "Monte Carlo Simulation for Outlier Identification Studies in Geodetic Network: An Example in A Levelling Network Using Iterative Data Snooping",
-        "source_url": "https://doi.org/10.14710/geoplanning.6.1.21-30",
-        "publication_year": 2019,
-        "venue": "Geoplanning: Journal of Geomatics and Planning",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "d760631848ac298969ff3ed8158163ef5d06feddb87c61c9878c50a111673abc",
-        "method_signals": [
-          "markov"
-        ],
-        "research_categories": [
-          "validation",
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.17762/pe.v52i1.38",
-        "title": "Forecasting Approach for Water Pollution Based on Markov Forecast Model",
-        "source_url": "https://doi.org/10.17762/pe.v52i1.38",
-        "publication_year": 2020,
-        "venue": "Pollution Engineering",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "de1f4c469b4be4fe778d445a2692f4ff33b4d91d159e12c413ea48010eb80bae",
-        "method_signals": [
-          "markov"
-        ],
-        "research_categories": [
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.3390/app11052039",
-        "title": "Feature-Weighted Sampling for Proper Evaluation of Classification Models",
-        "source_url": "https://doi.org/10.3390/app11052039",
-        "publication_year": 2021,
-        "venue": "Applied Sciences",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "5ff6570eab92b29564648791592fcb39a8d13b1294920cb62b2e124b5830ee6c",
-        "method_signals": [],
-        "research_categories": [
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.3390/math10020171",
-        "title": "“A Bias Recognized Is a Bias Sterilized”: The Effects of a Bias in Forecast Evaluation",
-        "source_url": "https://doi.org/10.3390/math10020171",
-        "publication_year": 2022,
-        "venue": "Mathematics",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "94d130ec2e424a0d10f0860454374ae8359678cdcced1bf0698a71826a9b2ba0",
-        "method_signals": [],
-        "research_categories": [
-          "validation"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1109/isit54713.2023.10206922",
-        "title": "Sequential Hypothesis Testing for Markov Chains",
-        "source_url": "https://doi.org/10.1109/isit54713.2023.10206922",
-        "publication_year": 2023,
-        "venue": "2023 IEEE International Symposium on Information Theory (ISIT)",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [
-          "markov"
-        ],
-        "research_categories": [
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "sequential multiple testing overfitting forecast models",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1007/978-981-96-2379-2_24",
-        "title": "Post-Selection Multiple Testing in Generalized Linear Models",
-        "source_url": "https://doi.org/10.1007/978-981-96-2379-2_24",
-        "publication_year": 2025,
-        "venue": "Springer Proceedings in Mathematics &amp; Statistics",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "validation"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "sequential multiple testing overfitting forecast models",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.21203/rs.3.rs-3858355/v1",
-        "title": "Field-testing multiple-choice questions with AI examinees",
-        "source_url": "https://doi.org/10.21203/rs.3.rs-3858355/v1",
-        "publication_year": 2024,
+        "id": "10.2139/ssrn.2032484",
+        "title": "Why Do People Tend to Buy Lottery Products? An Empirical Study on Demand for Lottery Products in Sri Lanka",
+        "source_url": "https://doi.org/10.2139/ssrn.2032484",
+        "publication_year": 2012,
         "venue": "",
         "abstract_metadata_present": true,
-        "abstract_sha256": "8ae8f1c2084893966daba9601aeb5c29241ebbcd8d0fcb83a0454bb8b452bbb9",
+        "abstract_sha256": "d51b5b3aa9d21354028b805478946ff743890a977b8ad93744c8c946d0cae42d",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1142/9789814327756_0001",
+        "title": "Is Randomness Necessary?",
+        "source_url": "https://doi.org/10.1142/9789814327756_0001",
+        "publication_year": 2011,
+        "venue": "Randomness Through Computation",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3102/1692005",
+        "title": "Who \"Wins the Lottery\"? Washington, D.C., Schools' Composition as a Function of the Citywide Lottery",
+        "source_url": "https://doi.org/10.3102/1692005",
+        "publication_year": 2021,
+        "venue": "Proceedings of the 2021 AERA Annual Meeting",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.26451/abc.08.03.01.2021",
+        "title": "The Ape Lottery: Chimpanzees Fail To Consider Spatial Information When Drawing Statistical Inferences",
+        "source_url": "https://doi.org/10.26451/abc.08.03.01.2021",
+        "publication_year": 2021,
+        "venue": "Animal Behavior and Cognition",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "45ca1c20513dcd6e9272b135a68f8bd8277f902f18f1e0fb5f19f256639d109c",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.3594476",
+        "title": "Policing the Lottery: Establishing a Security Division to Maintain Integrity within the Mississippi Lottery Corporation",
+        "source_url": "https://doi.org/10.2139/ssrn.3594476",
+        "publication_year": 2020,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1017/9781108781718.002",
+        "title": "Key developments in algorithmic randomness",
+        "source_url": "https://doi.org/10.1017/9781108781718.002",
+        "publication_year": 2020,
+        "venue": "Algorithmic Randomness",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1515/9781400846429-008",
+        "title": "6. The Division of Labor: Two Cases of the Return of Randomness in Higher Forms",
+        "source_url": "https://doi.org/10.1515/9781400846429-008",
+        "publication_year": 2013,
+        "venue": "Randomness in Evolution",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1109/icecmsn68058.2025.11383146",
+        "title": "Machine Learning Model for Data Loss Prevention in Data Breach Detection",
+        "source_url": "https://doi.org/10.1109/icecmsn68058.2025.11383146",
+        "publication_year": 2025,
+        "venue": "2025 5th International Conference on Evolutionary Computing and Mobile Sustainable Networks (ICECMSN)",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/0040-5809(89)90033-6",
+        "title": "Diffusion analysis and stationary distribution of the two-species lottery competition model",
+        "source_url": "https://doi.org/10.1016/0040-5809(89)90033-6",
+        "publication_year": 1989,
+        "venue": "Theoretical Population Biology",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.47176/tdass/2022.1",
+        "title": "Application of Liquidity Ratios in Predicting Corporate Financial Crisis; Comparison of Support Vector Machine Model and Neural Network in Cement Industry",
+        "source_url": "https://doi.org/10.47176/tdass/2022.1",
+        "publication_year": 2022,
+        "venue": "Transactions on Data Analysis in Social Science",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1088/1755-1315/949/1/012086",
+        "title": "Probabilistic Forecast of Mountain Rivers Runoff in Dagestan and Armenia",
+        "source_url": "https://doi.org/10.1088/1755-1315/949/1/012086",
+        "publication_year": 2022,
+        "venue": "IOP Conference Series: Earth and Environmental Science",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "5ef8a1fdbf3b84276ae6b3973410805aecbf7335acfef720d5e18ef8e5095ee7",
+        "method_signals": [],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/met.2131",
+        "title": "Research on rainbow probabilistic forecast model based on meteorological conditions in <scp>ZhaoSu</scp> region",
+        "source_url": "https://doi.org/10.1002/met.2131",
+        "publication_year": 2023,
+        "venue": "Meteorological Applications",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "924d766961a5bea39347830f82a1f00fbce6ad418b2f3cf55fd34c521427a6ef",
         "method_signals": [
           "calibration"
         ],
         "research_categories": [
           "probability"
         ],
-        "retraction_or_update_metadata_present": true,
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/j.renene.2016.10.064",
+        "title": "Tactical and operational management of wind energy systems with storage using a probabilistic forecast of the energy resource",
+        "source_url": "https://doi.org/10.1016/j.renene.2016.10.064",
+        "publication_year": 2017,
+        "venue": "Renewable Energy",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/j.jobe.2024.110282",
+        "title": "Energy-saving potential benchmarking method of office buildings based on probabilistic forecast",
+        "source_url": "https://doi.org/10.1016/j.jobe.2024.110282",
+        "publication_year": 2024,
+        "venue": "Journal of Building Engineering",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.21236/ada531838",
+        "title": "Bayesian Hierarchical Models to Augment the Mediterranean Forecast System Consolidating Results and Quantifying Impacts",
+        "source_url": "https://doi.org/10.21236/ada531838",
+        "publication_year": 2009,
+        "venue": "",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
         "discovery_query": "sequential multiple testing overfitting forecast models",
         "external_claim_verified": false,
         "full_text_independently_reviewed": false,
@@ -243,61 +341,19 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.1142/12468",
-        "title": "Randomness and Realism",
-        "source_url": "https://doi.org/10.1142/12468",
-        "publication_year": 2021,
+        "id": "10.70675/3fb9135fzb3e6z4bddz9995z98422d4ef215",
+        "title": "Learning preferences with multiple-criteria models",
+        "source_url": "https://doi.org/10.70675/3fb9135fzb3e6z4bddz9995z98422d4ef215",
+        "publication_year": null,
         "venue": "",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1257/rct.4663",
-        "title": "The effect of winning an oil lease lottery on the winner",
-        "source_url": "https://doi.org/10.1257/rct.4663",
-        "publication_year": 2019,
-        "venue": "AEA Randomized Controlled Trials",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1111/insr.12409",
-        "title": "Prediction, Estimation, and Attribution",
-        "source_url": "https://doi.org/10.1111/insr.12409",
-        "publication_year": 2020,
-        "venue": "International Statistical Review",
         "abstract_metadata_present": true,
-        "abstract_sha256": "7ca4e0c23c65a10f1db7638f120713a51becca73d2d062fadaba26a69062b185",
+        "abstract_sha256": "38df06adb8ccc8ca2d3232158f220710ebc076da8eb2bbcfb142b9ad81724ba0",
         "method_signals": [],
         "research_categories": [
           "machine_learning"
         ],
         "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "discovery_query": "sequential multiple testing overfitting forecast models",
         "external_claim_verified": false,
         "full_text_independently_reviewed": false,
         "reproducible_lottery_edge_verified": false,
@@ -306,168 +362,16 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.54097/5w70eb80",
-        "title": "Comparative Analysis of the Business Strategies of China Welfare Lottery and China Sports Lottery",
-        "source_url": "https://doi.org/10.54097/5w70eb80",
+        "id": "10.36074/grail-of-science.07.06.2024.057",
+        "title": "STOP OVERFITTING WITH PROVEN TECHNIQUES",
+        "source_url": "https://doi.org/10.36074/grail-of-science.07.06.2024.057",
         "publication_year": 2024,
-        "venue": "Highlights in Business, Economics and Management",
+        "venue": "Grail of Science",
         "abstract_metadata_present": true,
-        "abstract_sha256": "de82a92505915a537d4fc0d03f0bd50993294df7293a326b59d34a03a1a4b6e8",
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.14710/geoplanning.6.1.21-30",
-        "title": "Monte Carlo Simulation for Outlier Identification Studies in Geodetic Network: An Example in A Levelling Network Using Iterative Data Snooping",
-        "source_url": "https://doi.org/10.14710/geoplanning.6.1.21-30",
-        "publication_year": 2019,
-        "venue": "Geoplanning: Journal of Geomatics and Planning",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "d760631848ac298969ff3ed8158163ef5d06feddb87c61c9878c50a111673abc",
-        "method_signals": [
-          "markov"
-        ],
-        "research_categories": [
-          "validation",
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1007/s11634-013-0154-2",
-        "title": "A comparison of some criteria for states selection in the latent Markov model for longitudinal data",
-        "source_url": "https://doi.org/10.1007/s11634-013-0154-2",
-        "publication_year": 2013,
-        "venue": "Advances in Data Analysis and Classification",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [
-          "markov"
-        ],
-        "research_categories": [
-          "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.52202/068431-1374",
-        "title": "Lottery Tickets on a Data Diet: Finding Initializations with Sparse Trainable Networks",
-        "source_url": "https://doi.org/10.52202/068431-1374",
-        "publication_year": 2022,
-        "venue": "Advances in Neural Information Processing Systems 35",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "randomness"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "lottery forecast model comparison data snooping prevention",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1057/ori.2013.3",
-        "title": "A framework for economic demand forecast evaluation",
-        "source_url": "https://doi.org/10.1057/ori.2013.3",
-        "publication_year": 2013,
-        "venue": "OR Insight",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
-        "method_signals": [],
-        "research_categories": [
-          "validation"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.17811/ebl.12.3.2023.231-240",
-        "title": "Forecasting VIX: the illusion of forecast evaluation criteria",
-        "source_url": "https://doi.org/10.17811/ebl.12.3.2023.231-240",
-        "publication_year": 2023,
-        "venue": "Economics and Business Letters",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "c40d669466c7d71be61304da776907625000cbb3659727b2443a25f0f72885cd",
-        "method_signals": [],
-        "research_categories": [
-          "validation"
-        ],
-        "retraction_or_update_metadata_present": false,
-        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.1007/978-94-010-0324-7_18",
-        "title": "Forecast of Short Term Trends in Stock Exchange using Fuzzy Rules and Neural Networks on Multiresolution Processed Signals",
-        "source_url": "https://doi.org/10.1007/978-94-010-0324-7_18",
-        "publication_year": 2002,
-        "venue": "International Series in Intelligent Technologies",
-        "abstract_metadata_present": false,
-        "abstract_sha256": null,
+        "abstract_sha256": "60104df536decb5a07e00104e6c1269f21e9dc66eadea4827631b10e1c311c26",
         "method_signals": [],
         "research_categories": [
           "machine_learning"
-        ],
-        "retraction_or_update_metadata_present": true,
-        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
-        "external_claim_verified": false,
-        "full_text_independently_reviewed": false,
-        "reproducible_lottery_edge_verified": false,
-        "review_status": "candidate_requires_manual_scientific_review"
-      },
-      {
-        "provider": "crossref",
-        "type": "bibliographic_metadata",
-        "id": "10.2139/ssrn.7338919",
-        "title": "Adversarial Backtest Verification: Catching Overfitting, Beta, Collinearity, and Look-Ahead in a Live Trading-Research Program",
-        "source_url": "https://doi.org/10.2139/ssrn.7338919",
-        "publication_year": 2026,
-        "venue": "",
-        "abstract_metadata_present": true,
-        "abstract_sha256": "78e65a51c8d3a7e535befc6bc15cd94dcabac1c057b07b8e4e27adb51616a164",
-        "method_signals": [],
-        "research_categories": [
-          "validation"
         ],
         "retraction_or_update_metadata_present": false,
         "discovery_query": "sequential multiple testing overfitting forecast models",
@@ -503,13 +407,352 @@
       {
         "provider": "crossref",
         "type": "bibliographic_metadata",
-        "id": "10.21236/ada531838",
-        "title": "Bayesian Hierarchical Models to Augment the Mediterranean Forecast System Consolidating Results and Quantifying Impacts",
-        "source_url": "https://doi.org/10.21236/ada531838",
-        "publication_year": 2009,
+        "id": "10.32614/cran.package.structssi",
+        "title": "structSSI: Multiple Testing for Hypotheses with Hierarchical or Group Structure",
+        "source_url": "https://doi.org/10.32614/cran.package.structssi",
+        "publication_year": 2012,
+        "venue": "CRAN: Contributed Packages",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1515/9781400846429-008",
+        "title": "6. The Division of Labor: Two Cases of the Return of Randomness in Higher Forms",
+        "source_url": "https://doi.org/10.1515/9781400846429-008",
+        "publication_year": 2013,
+        "venue": "Randomness in Evolution",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.3594476",
+        "title": "Policing the Lottery: Establishing a Security Division to Maintain Integrity within the Mississippi Lottery Corporation",
+        "source_url": "https://doi.org/10.2139/ssrn.3594476",
+        "publication_year": 2020,
+        "venue": "SSRN Electronic Journal",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.4135/9781529733617",
+        "title": "Randomness and Probability: An Introduction",
+        "source_url": "https://doi.org/10.4135/9781529733617",
+        "publication_year": 2017,
         "venue": "",
         "abstract_metadata_present": false,
         "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.3102/1692005",
+        "title": "Who \"Wins the Lottery\"? Washington, D.C., Schools' Composition as a Function of the Citywide Lottery",
+        "source_url": "https://doi.org/10.3102/1692005",
+        "publication_year": 2021,
+        "venue": "Proceedings of the 2021 AERA Annual Meeting",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1163/2352-0272_emho_com_023488",
+        "title": "Lottery",
+        "source_url": "https://doi.org/10.1163/2352-0272_emho_com_023488",
+        "publication_year": null,
+        "venue": "Encyclopedia of Early Modern History Online",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.4324/9781003121091-18",
+        "title": "Winning the Lottery (Lottery Skepticism)",
+        "source_url": "https://doi.org/10.4324/9781003121091-18",
+        "publication_year": 2021,
+        "venue": "Epistemology: 50 Puzzles, Paradoxes, and Thought Experiments",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "lottery draw statistical randomness tests prediction",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1177/1091142111403620",
+        "title": "The Income Elasticity of Lottery: New Evidence from Micro Data",
+        "source_url": "https://doi.org/10.1177/1091142111403620",
+        "publication_year": 2011,
+        "venue": "Public Finance Review",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "4454efe7c5b032453eb425b471f709030c084227b6d3a09852716e065c67787d",
+        "method_signals": [],
+        "research_categories": [
+          "randomness"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/s0167-9473(01)00055-x",
+        "title": "Bayesian analysis of the Logit model and comparison of two Metropolis–Hastings strategies",
+        "source_url": "https://doi.org/10.1016/s0167-9473(01)00055-x",
+        "publication_year": 2002,
+        "venue": "Computational Statistics &amp; Data Analysis",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1101/2021.03.15.21253571",
+        "title": "Using Machine Learning along with Data Science algorithms to pre-process and forecast COVID-19 Cases and Deaths",
+        "source_url": "https://doi.org/10.1101/2021.03.15.21253571",
+        "publication_year": 2021,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "7754e492b7b547e772ad960818754451d2762d5c5bf9f98bc9dab407e0091be0",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1088/1742-6596/154/1/012044",
+        "title": "Bayesian model comparison in gravitational wave data analysis",
+        "source_url": "https://doi.org/10.1088/1742-6596/154/1/012044",
+        "publication_year": 2009,
+        "venue": "Journal of Physics: Conference Series",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.2618394",
+        "title": "Crowdsourcing of Economic Forecast – Combination of Forecasts using Bayesian Model Averaging",
+        "source_url": "https://doi.org/10.2139/ssrn.2618394",
+        "publication_year": 2015,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "edd256c0fbc9a0a579adee8e0b493d427a5a4eae7c37b2874d6d1cfdffd08e94",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "lottery forecast model comparison data snooping prevention",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1002/met.2131",
+        "title": "Research on rainbow probabilistic forecast model based on meteorological conditions in <scp>ZhaoSu</scp> region",
+        "source_url": "https://doi.org/10.1002/met.2131",
+        "publication_year": 2023,
+        "venue": "Meteorological Applications",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "924d766961a5bea39347830f82a1f00fbce6ad418b2f3cf55fd34c521427a6ef",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1029/2021ms002766",
+        "title": "Improving Seasonal Forecast Using Probabilistic Deep Learning",
+        "source_url": "https://doi.org/10.1029/2021ms002766",
+        "publication_year": 2022,
+        "venue": "Journal of Advances in Modeling Earth Systems",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "a530410947a6507645e284822c6b2306b3e36b9dfa2c6860cc40a64e994cc3b7",
+        "method_signals": [],
+        "research_categories": [
+          "randomness",
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1016/j.jobe.2024.110282",
+        "title": "Energy-saving potential benchmarking method of office buildings based on probabilistic forecast",
+        "source_url": "https://doi.org/10.1016/j.jobe.2024.110282",
+        "publication_year": 2024,
+        "venue": "Journal of Building Engineering",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1177/17479541211000333",
+        "title": "A probabilistic approach to identifying run scoring advantage in the order of playing cricket",
+        "source_url": "https://doi.org/10.1177/17479541211000333",
+        "publication_year": 2021,
+        "venue": "International Journal of Sports Science &amp; Coaching",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "d2d458c6ebe0583400dfa52e7e313c4df6acdc785ba3d75dff4cdff0011b7f23",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "proper scoring rules probabilistic forecast evaluation",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.70675/3fb9135fzb3e6z4bddz9995z98422d4ef215",
+        "title": "Learning preferences with multiple-criteria models",
+        "source_url": "https://doi.org/10.70675/3fb9135fzb3e6z4bddz9995z98422d4ef215",
+        "publication_year": null,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "38df06adb8ccc8ca2d3232158f220710ebc076da8eb2bbcfb142b9ad81724ba0",
         "method_signals": [],
         "research_categories": [
           "machine_learning"
@@ -520,12 +763,77 @@
         "full_text_independently_reviewed": false,
         "reproducible_lottery_edge_verified": false,
         "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.2139/ssrn.1712086",
+        "title": "Risk Management Models: Construction, Testing, Usage",
+        "source_url": "https://doi.org/10.2139/ssrn.1712086",
+        "publication_year": 2019,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "92a5e8c1625437b3dac400bb3aa0044c8177f250e2a6461369f939a81fc3127a",
+        "method_signals": [
+          "calibration"
+        ],
+        "research_categories": [
+          "probability"
+        ],
+        "retraction_or_update_metadata_present": false,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1007/978-981-96-2379-2_24",
+        "title": "Post-Selection Multiple Testing in Generalized Linear Models",
+        "source_url": "https://doi.org/10.1007/978-981-96-2379-2_24",
+        "publication_year": 2025,
+        "venue": "Springer Proceedings in Mathematics &amp; Statistics",
+        "abstract_metadata_present": false,
+        "abstract_sha256": null,
+        "method_signals": [],
+        "research_categories": [
+          "validation"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
+      },
+      {
+        "provider": "crossref",
+        "type": "bibliographic_metadata",
+        "id": "10.1101/2020.10.11.20210971",
+        "title": "Evaluating Short-term Forecast among Different Epidemiological Models under a Bayesian Framework",
+        "source_url": "https://doi.org/10.1101/2020.10.11.20210971",
+        "publication_year": 2020,
+        "venue": "",
+        "abstract_metadata_present": true,
+        "abstract_sha256": "1db3cfbc1c33ff4a7244a8bdb81cc468932f2133fecdf1dcba23b24aad664fa6",
+        "method_signals": [],
+        "research_categories": [
+          "machine_learning"
+        ],
+        "retraction_or_update_metadata_present": true,
+        "discovery_query": "sequential multiple testing overfitting forecast models",
+        "external_claim_verified": false,
+        "full_text_independently_reviewed": false,
+        "reproducible_lottery_edge_verified": false,
+        "review_status": "candidate_requires_manual_scientific_review"
       }
     ],
-    "new_unique_sources": 17,
-    "lifetime_unique_sources_after_commit": 1671,
-    "lifetime_unique_sources_before_run": 1654,
-    "cumulative_batches_before_run": 44,
+    "new_unique_sources": 24,
+    "lifetime_unique_sources_after_commit": 1695,
+    "lifetime_unique_sources_before_run": 1671,
+    "cumulative_batches_before_run": 45,
     "request_budget_this_run": 8,
     "requests_attempted_this_run": 8,
     "pages_received_this_run": 8,
@@ -543,38 +851,8 @@
   },
   "retrieved_method_metadata_leads": [
     {
-      "source_id": "10.14710/geoplanning.6.1.21-30",
-      "source_url": "https://doi.org/10.14710/geoplanning.6.1.21-30",
-      "mapped_to_approved_implementations": [
-        "markov"
-      ],
-      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
-      "full_paper_independently_reviewed": false,
-      "claimed_predictive_ability_verified": false
-    },
-    {
-      "source_id": "10.17762/pe.v52i1.38",
-      "source_url": "https://doi.org/10.17762/pe.v52i1.38",
-      "mapped_to_approved_implementations": [
-        "markov"
-      ],
-      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
-      "full_paper_independently_reviewed": false,
-      "claimed_predictive_ability_verified": false
-    },
-    {
-      "source_id": "10.1109/isit54713.2023.10206922",
-      "source_url": "https://doi.org/10.1109/isit54713.2023.10206922",
-      "mapped_to_approved_implementations": [
-        "markov"
-      ],
-      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
-      "full_paper_independently_reviewed": false,
-      "claimed_predictive_ability_verified": false
-    },
-    {
-      "source_id": "10.21203/rs.3.rs-3858355/v1",
-      "source_url": "https://doi.org/10.21203/rs.3.rs-3858355/v1",
+      "source_id": "10.1002/met.2131",
+      "source_url": "https://doi.org/10.1002/met.2131",
       "mapped_to_approved_implementations": [
         "rolling"
       ],
@@ -583,20 +861,10 @@
       "claimed_predictive_ability_verified": false
     },
     {
-      "source_id": "10.14710/geoplanning.6.1.21-30",
-      "source_url": "https://doi.org/10.14710/geoplanning.6.1.21-30",
+      "source_id": "10.21236/ada531838",
+      "source_url": "https://doi.org/10.21236/ada531838",
       "mapped_to_approved_implementations": [
-        "markov"
-      ],
-      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
-      "full_paper_independently_reviewed": false,
-      "claimed_predictive_ability_verified": false
-    },
-    {
-      "source_id": "10.1007/s11634-013-0154-2",
-      "source_url": "https://doi.org/10.1007/s11634-013-0154-2",
-      "mapped_to_approved_implementations": [
-        "markov"
+        "rolling"
       ],
       "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
       "full_paper_independently_reviewed": false,
@@ -613,8 +881,58 @@
       "claimed_predictive_ability_verified": false
     },
     {
-      "source_id": "10.21236/ada531838",
-      "source_url": "https://doi.org/10.21236/ada531838",
+      "source_id": "10.1016/s0167-9473(01)00055-x",
+      "source_url": "https://doi.org/10.1016/s0167-9473(01)00055-x",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1088/1742-6596/154/1/012044",
+      "source_url": "https://doi.org/10.1088/1742-6596/154/1/012044",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.2618394",
+      "source_url": "https://doi.org/10.2139/ssrn.2618394",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1002/met.2131",
+      "source_url": "https://doi.org/10.1002/met.2131",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.2139/ssrn.1712086",
+      "source_url": "https://doi.org/10.2139/ssrn.1712086",
+      "mapped_to_approved_implementations": [
+        "rolling"
+      ],
+      "mapping_rule": "bounded_title_keyword_only_not_a_paper_reproduction",
+      "full_paper_independently_reviewed": false,
+      "claimed_predictive_ability_verified": false
+    },
+    {
+      "source_id": "10.1101/2020.10.11.20210971",
+      "source_url": "https://doi.org/10.1101/2020.10.11.20210971",
       "mapped_to_approved_implementations": [
         "rolling"
       ],
@@ -633,7 +951,7 @@
   "original_replay_version": "numbers4-prequential-online-replay-one-ticket-v2",
   "original_replay_straight_hits": 1,
   "original_replay_uniform_hits": 1,
-  "original_replay_sha256": "7c1adbf8df1a5d32e9e63f3fed2f7dc97a0147f8b2322306f4bcab03a9a78bad",
+  "original_replay_sha256": "8afdc278d3ecfcb7f92d1d81643c66a4812f3b6c94dd9ceb87f9e1c06e4e911b",
   "research_round_csv_sha256": "552d22b91fa8230fa95076996449aea3441635583a201e79c48fd8492acb4b7a",
   "next_generation_queries": [
     "lottery draw statistical randomness tests prediction",
@@ -674,14 +992,9 @@
       "alpha": 10
     },
     {
-      "family": "rolling",
-      "window": 250,
+      "family": "ema",
+      "decay": 0.995,
       "alpha": 10
-    },
-    {
-      "family": "markov",
-      "window": 120,
-      "alpha": 20
     }
   ],
   "model_ids": [
@@ -690,8 +1003,7 @@
     "ema_0p99_alpha10",
     "markov_250_alpha20",
     "rolling_120_alpha10",
-    "rolling_250_alpha10",
-    "markov_120_alpha20"
+    "ema_0p995_alpha10"
   ],
   "development": {
     "first_round": 2,
@@ -745,19 +1057,11 @@
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
-      "rolling_250_alpha10": {
+      "ema_0p995_alpha10": {
         "draws": 4999,
         "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.037816809,
-        "mean_brier_edge_vs_uniform": -7.749094e-06,
-        "expected_uniform_hits_per_one_ticket": 0.4999,
-        "confirmed_prospective_skill": false
-      },
-      "markov_120_alpha20": {
-        "draws": 4999,
-        "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.00500821,
-        "mean_brier_edge_vs_uniform": -1.01835e-06,
+        "mean_log_score_edge_vs_uniform": -0.021532716,
+        "mean_brier_edge_vs_uniform": -4.369674e-06,
         "expected_uniform_hits_per_one_ticket": 0.4999,
         "confirmed_prospective_skill": false
       },
@@ -823,19 +1127,11 @@
         "expected_uniform_hits_per_one_ticket": 0.2115,
         "confirmed_prospective_skill": false
       },
-      "rolling_250_alpha10": {
+      "ema_0p995_alpha10": {
         "draws": 2115,
         "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.039987439,
-        "mean_brier_edge_vs_uniform": -8.024415e-06,
-        "expected_uniform_hits_per_one_ticket": 0.2115,
-        "confirmed_prospective_skill": false
-      },
-      "markov_120_alpha20": {
-        "draws": 2115,
-        "straight_hits": 0,
-        "mean_log_score_edge_vs_uniform": -0.003691767,
-        "mean_brier_edge_vs_uniform": -7.70074e-07,
+        "mean_log_score_edge_vs_uniform": -0.018710728,
+        "mean_brier_edge_vs_uniform": -3.834093e-06,
         "expected_uniform_hits_per_one_ticket": 0.2115,
         "confirmed_prospective_skill": false
       },
