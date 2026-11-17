@@ -1,19 +1,19 @@
 {
   "version": "numbers4-online-secondary-source-refresh-v1",
-  "checked_at_jst": "2026-11-17T12:29:45+09:00",
-  "status": "appended_secondary_history_not_officially_verified",
-  "previous_rows": 7114,
-  "new_rows": 1,
+  "checked_at_jst": "2026-11-17T23:11:05+09:00",
+  "status": "secondary_mirror_lag_old_archive_preserved",
+  "previous_rows": 7115,
+  "new_rows": 0,
   "secondary_source_independence_proven": false,
   "official_bank_verified": false,
   "issued_forecast_grading_authorized": false,
   "automatic_model_promotion": false,
   "sources": [
     {
-      "url": "https://github.com/hazimekom/numbers4-api/blob/d50ca83359e5114cb097b179fb794999a54001bd/data/numbers4_results_v2.csv",
-      "commit_sha": "d50ca83359e5114cb097b179fb794999a54001bd",
-      "blob_sha": "370e8c3d562257671638127ca2c03381104c8b4b",
-      "sha256": "7b41e81852c70a0bbc7788b11f48c139718b2a1e2b4e615300b758d881ab693c"
+      "url": "https://github.com/hazimekom/numbers4-api/blob/157496b167aa7d4864d0def38034f0b7e5bde3a6/data/numbers4_results_v2.csv",
+      "commit_sha": "157496b167aa7d4864d0def38034f0b7e5bde3a6",
+      "blob_sha": "76a0014f7390015b5dab7a39d2d03609debbae39",
+      "sha256": "3e83bab5675b777ea46190ab7505c9ba7091748f9757cafa1769c0be11be2c36"
     },
     {
       "url": "https://github.com/kodai721229/kujilab/blob/5c2be466a17f9799aa4eff197cb198ca28fbbc1b/public/data/numbers4.json",
@@ -23,9 +23,9 @@
     }
   ],
   "errors": [],
-  "deferred_unmatched_rows": 0,
+  "deferred_unmatched_rows": 1,
   "publisher_rows_seen": {
-    "primary_csv": 7115,
+    "primary_csv": 7116,
     "secondary_json": 7115
   },
   "current_rows": 7115
