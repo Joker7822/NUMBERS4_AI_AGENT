@@ -1,6 +1,6 @@
 {
   "version": "numbers4-operational-official-rule-monitor-v2",
-  "checked_at_jst": "2026-11-18T22:42:31+09:00",
+  "checked_at_jst": "2026-11-19T07:30:01+09:00",
   "status": "official_rule_anchors_consistent",
   "required_rule_sources": 3,
   "rule_sources_consistent": 3,
@@ -13,8 +13,8 @@
       "url": "https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html",
       "category": "rule",
       "status": "rule_anchors_consistent",
-      "response_sha256": "51bb221f570bc07b5f5d2142ff3bce2fba9e06b20779d0ec0f52794654b0c202",
-      "size_bytes": 58283,
+      "response_sha256": "f7391734f41a13648f6796c3ed2d5e16b0dffb95a9828f94c5b97653fbc58ea0",
+      "size_bytes": 58284,
       "required_markers": [
         "product",
         "ticket_200",
@@ -29,8 +29,8 @@
       "url": "https://www.takarakuji-official.jp/brand/suji/lineup-numbers4/",
       "category": "rule",
       "status": "rule_anchors_consistent",
-      "response_sha256": "4682d4d837f11d697afbe30975423690bd396a6a4683cc9e3dcf11e72603335d",
-      "size_bytes": 39410,
+      "response_sha256": "227e8fe7be0cb7b3127573cb4003a10f12fa7d24d11981cc4855b8889eb4eebb",
+      "size_bytes": 39412,
       "required_markers": [
         "product",
         "straight",
