@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-20T06:30:31+09:00",
+  "generated_at_jst": "2026-11-20T07:36:39+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -25,44 +25,7 @@
     "end_date": "2026-11-20",
     "issued_forecasts": [],
     "shadow_forecasts": [],
-    "research_replay": [
-      {
-        "round": 7117,
-        "draw_date": "2026-11-18",
-        "data_cutoff_round": 7116,
-        "number": "4845",
-        "model": "uniform",
-        "reference_result": "4934",
-        "straight_match": false,
-        "source_status": "secondary_history_not_officially_verified",
-        "issued_before_draw": false,
-        "actual_purchase": false
-      },
-      {
-        "round": 7116,
-        "draw_date": "2026-11-17",
-        "data_cutoff_round": 7115,
-        "number": "2583",
-        "model": "uniform",
-        "reference_result": "1326",
-        "straight_match": false,
-        "source_status": "secondary_history_not_officially_verified",
-        "issued_before_draw": false,
-        "actual_purchase": false
-      },
-      {
-        "round": 7115,
-        "draw_date": "2026-11-16",
-        "data_cutoff_round": 7114,
-        "number": "5555",
-        "model": "uniform",
-        "reference_result": "6742",
-        "straight_match": false,
-        "source_status": "secondary_history_not_officially_verified",
-        "issued_before_draw": false,
-        "actual_purchase": false
-      }
-    ],
+    "research_replay": [],
     "officially_graded_issued": 0,
     "officially_matched_shadow": 0,
     "research_reference_matches": 0
@@ -77,30 +40,30 @@
   },
   "historical_archive": {
     "status": "secondary_public_mirrors_agree_not_officially_verified",
-    "record_count": 7117,
+    "record_count": 7118,
     "first_round": 1,
     "first_draw_date": "1994-10-07",
-    "last_round": 7117,
-    "last_draw_date": "2026-11-18",
-    "latest_number": "4934",
+    "last_round": 7118,
+    "last_draw_date": "2026-11-19",
+    "latest_number": "2887",
     "officially_verified": false,
     "forecast_grading_authorized": false,
     "source_independence_not_established": true,
-    "git_blob_sha1": "fc347bba6786c251d4ed4a483c57ccb94739d4b2"
+    "git_blob_sha1": "32540844482593c785edb8b415ff74a21edcfbfd"
   },
   "online_prequential_replay": {
     "status": "historical_walk_forward_reconstruction_only",
-    "evaluated_draws": 7116,
+    "evaluated_draws": 7117,
     "first_evaluated_round": 2,
-    "last_evaluated_round": 7117,
+    "last_evaluated_round": 7118,
     "tickets_per_draw": 1,
     "selected_straight_hits": 1,
     "uniform_reference_straight_hits": 1,
-    "uniform_theoretical_expected_hits": 0.7116,
-    "selected_mean_log_score_edge_vs_uniform": -1.5247e-05,
+    "uniform_theoretical_expected_hits": 0.7117,
+    "selected_mean_log_score_edge_vs_uniform": -1.5245e-05,
     "selected_mean_brier_improvement_vs_uniform": 3.262e-09,
     "research_model_selection_rounds": {
-      "uniform": 7075,
+      "uniform": 7076,
       "positional_250_alpha5": 1,
       "positional_1000_alpha20": 40
     },
@@ -108,7 +71,7 @@
       "scope": "descriptive_historical_reconstruction_not_preregistered",
       "null_hypothesis": "independent_uniform_10000_possible_outcomes",
       "single_straight_prob_per_draw": 0.0001,
-      "selected_hit_tail_probability_given_uniform_null": 0.50915927,
+      "selected_hit_tail_probability_given_uniform_null": 0.509208354,
       "nonuniform_model_selected_rounds": 41,
       "selected_only_hits_vs_uniform_reference": 0,
       "uniform_reference_only_hits_vs_selected": 0,
@@ -116,18 +79,18 @@
       "interpretation": "A chance benchmark for historical hits, not evidence of forecast skill."
     },
     "next_research_candidate": {
-      "target_round": 7118,
-      "data_cutoff_round": 7117,
+      "target_round": 7119,
+      "data_cutoff_round": 7118,
       "model": "uniform",
       "numbers": [
-        "6600"
+        "7837"
       ],
       "draw_date": null,
       "status": "research_only_not_issued_not_purchased",
       "accuracy_claim": false
     },
-    "archive_git_blob_sha1": "fc347bba6786c251d4ed4a483c57ccb94739d4b2",
-    "generated_at_jst": "2026-11-19T23:13:07+09:00",
+    "archive_git_blob_sha1": "32540844482593c785edb8b415ff74a21edcfbfd",
+    "generated_at_jst": "2026-11-20T07:36:39+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -138,17 +101,17 @@
       "ticket_type": "straight",
       "tickets_per_draw": 1,
       "ticket_unit_cost_yen": 200,
-      "evaluated_rounds": 7116,
+      "evaluated_rounds": 7117,
       "first_evaluated_round": 2,
-      "last_evaluated_round": 7117,
+      "last_evaluated_round": 7118,
       "historical_winning_draws": 1,
-      "simulated_ticket_cost_yen": 1423200,
+      "simulated_ticket_cost_yen": 1423400,
       "simulated_payout_yen": 1365900,
-      "simulated_net_yen": -57300,
-      "simulated_roi_percent": -4.0261,
+      "simulated_net_yen": -57500,
+      "simulated_roi_percent": -4.0396,
       "baseline_winning_draws": 1,
       "baseline_simulated_payout_yen": 1365900,
-      "baseline_simulated_net_yen": -57300,
+      "baseline_simulated_net_yen": -57500,
       "winning_rounds": [
         {
           "round": 82,
@@ -162,7 +125,7 @@
           "status": "retrospective_simulated_hit_not_actual_purchase"
         }
       ],
-      "payout_git_blob_sha1": "237ec0721429c4327a788fd8fa820c3b694ea0f0",
+      "payout_git_blob_sha1": "7e309db09843f90511d1206b0f2a6ee1e2f0e759",
       "payout_source_status": "single_secondary_publisher_not_bank_verified",
       "bank_primary_payouts_verified": false,
       "actual_purchase_records_present": false,
@@ -178,23 +141,23 @@
       "ticket_type": "box",
       "requested_tickets_per_round": 1,
       "ticket_unit_cost_yen": 200,
-      "evaluated_rounds": 7116,
+      "evaluated_rounds": 7117,
       "first_evaluated_round": 2,
-      "last_evaluated_round": 7117,
-      "simulated_purchased_tickets": 7106,
+      "last_evaluated_round": 7118,
+      "simulated_purchased_tickets": 7107,
       "excluded_ineligible_tickets": 10,
       "historical_winning_draws": 14,
       "historical_winning_tickets": 14,
-      "simulated_ticket_cost_yen": 1421200,
+      "simulated_ticket_cost_yen": 1421400,
       "simulated_payout_yen": 945100,
-      "simulated_net_yen": -476100,
-      "simulated_roi_percent": -33.4999,
-      "baseline_purchased_tickets": 7106,
+      "simulated_net_yen": -476300,
+      "simulated_roi_percent": -33.5092,
+      "baseline_purchased_tickets": 7107,
       "baseline_excluded_ineligible_tickets": 10,
       "baseline_winning_tickets": 15,
-      "baseline_ticket_cost_yen": 1421200,
+      "baseline_ticket_cost_yen": 1421400,
       "baseline_simulated_payout_yen": 1023700,
-      "baseline_simulated_net_yen": -397500,
+      "baseline_simulated_net_yen": -397700,
       "winning_rounds": [
         {
           "round": 82,
@@ -421,7 +384,7 @@
           "status": "retrospective_simulated_box_win_not_actual_purchase"
         }
       ],
-      "payout_git_blob_sha1": "ec61c7c2f353e01d64ee8e56fec2cf360505b570",
+      "payout_git_blob_sha1": "25d14ce0bac2c132f3bcc0b64ec194066b698934",
       "payout_source_status": "single_secondary_publisher_not_bank_verified",
       "bank_primary_payouts_verified": false,
       "actual_purchase_records_present": false,
@@ -435,9 +398,9 @@
   },
   "research_evolution": {
     "version": "numbers4-recursive-research-evolution-v1",
-    "status": "recursive_research_exploration_not_prospective_evidence",
+    "status": "stale_history_reanalysis",
     "generation": 54,
-    "evaluated_draws": 7116,
+    "evaluated_draws": 0,
     "candidate_models": 7,
     "research_sources_found": 43,
     "lifetime_unique_sources": 1811,
@@ -447,261 +410,44 @@
     "research_search_errors": 0,
     "new_draws_since_previous_generation": 0,
     "metadata_based_method_leads": 4,
-    "next_model": "uniform",
-    "next_number": "6600",
+    "next_model": null,
+    "next_number": null,
     "generated_at_jst": "2026-11-19T23:12:51+09:00",
     "performance_advantage_confirmed": false,
     "model_auto_promotion_authorized": false,
     "actual_purchase": false,
     "repeated_historical_cohorts_not_independent": true,
-    "latest_verification": {
-      "scope": "secondary_history_exploratory_reconstruction_only",
-      "generation": 54,
-      "generated_at_jst": "2026-11-19T23:12:51+09:00",
-      "source_status": "secondary_public_mirrors_agree_not_officially_verified",
-      "archive_git_blob_sha1": "fc347bba6786c251d4ed4a483c57ccb94739d4b2",
-      "round_predictions_sha256": "d984e8411357d6c4fe8b4da7de6d8646b80b564c980444b24b42916db4fdfec9",
-      "tickets_per_draw": 1,
-      "first_round": 2,
-      "last_round": 7117,
-      "evaluated_draws": 7116,
-      "selected_straight_hits": 1,
-      "uniform_reference_straight_hits": 1,
-      "selected_mean_log_score_edge_vs_uniform": 0.0,
-      "full_expected_uniform_hits": 0.7116,
-      "late_cohort": {
-        "first_round": 5001,
-        "last_round": 7117,
-        "evaluated_draws": 2117,
-        "model_metrics": [
-          {
-            "model": "uniform",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": 0.0,
-            "mean_brier_edge_vs_uniform": 0.0
-          },
-          {
-            "model": "adaptive",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": 0.0,
-            "mean_brier_edge_vs_uniform": 0.0
-          },
-          {
-            "model": "rolling_60_alpha10",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.033979453,
-            "mean_brier_edge_vs_uniform": -7.081173e-06
-          },
-          {
-            "model": "rolling_250_alpha5",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.054778266,
-            "mean_brier_edge_vs_uniform": -1.0985812e-05
-          },
-          {
-            "model": "ema_0p99_alpha10",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.019963617,
-            "mean_brier_edge_vs_uniform": -4.029874e-06
-          },
-          {
-            "model": "markov_250_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.011292409,
-            "mean_brier_edge_vs_uniform": -2.31342e-06
-          },
-          {
-            "model": "rolling_120_alpha10",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.043532432,
-            "mean_brier_edge_vs_uniform": -8.961684e-06
-          },
-          {
-            "model": "rolling_250_alpha10",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.040019174,
-            "mean_brier_edge_vs_uniform": -8.037688e-06
-          },
-          {
-            "model": "markov_120_alpha20",
-            "straight_hits": 0,
-            "mean_log_score_edge_vs_uniform": -0.003633314,
-            "mean_brier_edge_vs_uniform": -7.59021e-07
-          }
-        ],
-        "repeatedly_inspected_not_independent_holdout": true
-      },
-      "recent_rounds": [
-        {
-          "round": 7117,
-          "draw_date": "2026-11-18",
-          "data_cutoff_round": 7116,
-          "actual": "4934",
-          "selected_number": "4845",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "4845",
-          "uniform_hit": false
-        },
-        {
-          "round": 7116,
-          "draw_date": "2026-11-17",
-          "data_cutoff_round": 7115,
-          "actual": "1326",
-          "selected_number": "2583",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "2583",
-          "uniform_hit": false
-        },
-        {
-          "round": 7115,
-          "draw_date": "2026-11-16",
-          "data_cutoff_round": 7114,
-          "actual": "6742",
-          "selected_number": "5555",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "5555",
-          "uniform_hit": false
-        },
-        {
-          "round": 7114,
-          "draw_date": "2026-11-13",
-          "data_cutoff_round": 7113,
-          "actual": "3960",
-          "selected_number": "5932",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "5932",
-          "uniform_hit": false
-        },
-        {
-          "round": 7113,
-          "draw_date": "2026-11-12",
-          "data_cutoff_round": 7112,
-          "actual": "5701",
-          "selected_number": "3947",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "3947",
-          "uniform_hit": false
-        },
-        {
-          "round": 7112,
-          "draw_date": "2026-11-11",
-          "data_cutoff_round": 7111,
-          "actual": "1641",
-          "selected_number": "5296",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "5296",
-          "uniform_hit": false
-        },
-        {
-          "round": 7111,
-          "draw_date": "2026-11-10",
-          "data_cutoff_round": 7110,
-          "actual": "1136",
-          "selected_number": "6333",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "6333",
-          "uniform_hit": false
-        },
-        {
-          "round": 7110,
-          "draw_date": "2026-11-09",
-          "data_cutoff_round": 7109,
-          "actual": "1843",
-          "selected_number": "5644",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "5644",
-          "uniform_hit": false
-        },
-        {
-          "round": 7109,
-          "draw_date": "2026-11-06",
-          "data_cutoff_round": 7108,
-          "actual": "2419",
-          "selected_number": "9120",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "9120",
-          "uniform_hit": false
-        },
-        {
-          "round": 7108,
-          "draw_date": "2026-11-05",
-          "data_cutoff_round": 7107,
-          "actual": "1664",
-          "selected_number": "9725",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "9725",
-          "uniform_hit": false
-        },
-        {
-          "round": 7107,
-          "draw_date": "2026-11-04",
-          "data_cutoff_round": 7106,
-          "actual": "7541",
-          "selected_number": "1722",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "1722",
-          "uniform_hit": false
-        },
-        {
-          "round": 7106,
-          "draw_date": "2026-11-03",
-          "data_cutoff_round": 7105,
-          "actual": "5870",
-          "selected_number": "2903",
-          "selected_model": "uniform",
-          "selected_hit": false,
-          "uniform_number": "2903",
-          "uniform_hit": false
-        }
-      ],
-      "all_rounds_checked_against_archive": true,
-      "independently_verified_prepublished_forecasts": false,
-      "bank_primary_all_rounds_verified": false,
-      "prediction_skill_confirmed": false,
-      "automatic_model_promotion_authorized": false,
-      "actual_purchase": false
-    },
+    "latest_verification": null,
     "description": "All draws from round 2 are retrospectively reconstructed each generation; no actual pre-issued prediction or independent confirmation."
   },
   "latest_research_forecast": {
     "version": "numbers4-latest-research-forecast-v1",
-    "source": "validated_research_evolution",
-    "target_round": 7118,
-    "data_cutoff_round": 7117,
-    "number": "6600",
+    "source": "validated_single_ticket_replay",
+    "target_round": 7119,
+    "data_cutoff_round": 7118,
+    "number": "7837",
     "model": "uniform",
-    "research_generation": 54,
-    "computed_at_jst": "2026-11-19T23:12:51+09:00",
-    "archive_git_blob_sha1": "fc347bba6786c251d4ed4a483c57ccb94739d4b2",
+    "research_generation": null,
+    "computed_at_jst": "2026-11-20T07:36:39+09:00",
+    "archive_git_blob_sha1": "32540844482593c785edb8b415ff74a21edcfbfd",
     "status": "research_only_not_issued_not_purchased",
     "actual_purchase": false,
     "officially_verified": false,
     "prediction_skill_confirmed": false,
-    "last_changed_at_jst": "2026-11-19T07:31:06+09:00",
-    "changed_since_previous_snapshot": false
+    "last_changed_at_jst": "2026-11-20T07:36:39+09:00",
+    "changed_since_previous_snapshot": true
   },
   "online_operations": {
     "version": "numbers4-online-production-monitor-status-v1",
-    "state": "secondary_publication_lag",
+    "state": "online_monitoring_active_secondary_research_only",
     "official_rule_status": "official_rule_anchors_consistent",
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
-    "rule_checked_at_jst": "2026-11-19T23:11:57+09:00",
-    "rule_audit_age_hours": 7.31,
-    "secondary_feed_status": "secondary_mirror_lag_old_archive_preserved",
-    "secondary_checked_at_jst": "2026-11-19T23:11:56+09:00",
-    "secondary_audit_age_hours": 7.31,
+    "rule_checked_at_jst": "2026-11-20T07:36:31+09:00",
+    "rule_audit_age_hours": 0.002,
+    "secondary_feed_status": "appended_secondary_history_not_officially_verified",
+    "secondary_checked_at_jst": "2026-11-20T07:36:29+09:00",
+    "secondary_audit_age_hours": 0.003,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -709,9 +455,7 @@
     "predictive_skill_confirmed": false,
     "model_auto_promotion": false,
     "real_purchases_enabled": false,
-    "warnings": [
-      "二次公開元の最新回に1回分の反映差があり、未照合の回は研究学習から除外しています。照合済み履歴のみ保持・使用します。"
-    ]
+    "warnings": []
   },
   "auto_learning": {
     "version": "numbers4-prospective-auto-learning-v1",
@@ -779,11 +523,11 @@
   "source_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "issuance_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "warnings": [
+    "研究自己進化の第2回からの再解析が現在の二次履歴より古いため、最新の評価値を保留しています。",
     "予測AI自動学習に使える銀行照合済み当せん結果は現在0件です。",
     "Numbers4の2公開元照合済み結果が未登録です。公式銀行の取得に失敗した場合は採点しません。",
     "楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。",
     "全回の過去履歴は二次公開リポジトリの一致記録です。銀行公式未照合のため、発行済み予測の正式採点には使いません。",
-    "二次公開元の最新回に1回分の反映差があり、未照合の回は研究学習から除外しています。照合済み履歴のみ保持・使用します。",
     "事前発行した予測はありません。研究候補を発行済みとして表示しません。"
   ],
   "prediction_skill_confirmed": false,
