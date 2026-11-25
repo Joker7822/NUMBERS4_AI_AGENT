@@ -1,31 +1,31 @@
 {
   "version": "numbers4-online-secondary-source-refresh-v1",
-  "checked_at_jst": "2026-11-25T11:57:43+09:00",
-  "status": "appended_secondary_history_not_officially_verified",
-  "previous_rows": 7120,
-  "new_rows": 1,
+  "checked_at_jst": "2026-11-25T21:34:09+09:00",
+  "status": "secondary_mirror_lag_old_archive_preserved",
+  "previous_rows": 7121,
+  "new_rows": 0,
   "secondary_source_independence_proven": false,
   "official_bank_verified": false,
   "issued_forecast_grading_authorized": false,
   "automatic_model_promotion": false,
   "sources": [
     {
-      "url": "https://github.com/hazimekom/numbers4-api/blob/d7628cef23414f8955939bb68b8e6251c70de5a4/data/numbers4_results_v2.csv",
-      "commit_sha": "d7628cef23414f8955939bb68b8e6251c70de5a4",
-      "blob_sha": "a5a0377567a902b7d9964fd4096c0f2652c6af5f",
-      "sha256": "26272d2ceeaa8e7f49b569cd26503dc076966f1350113f19ae9949f4f54c63f4"
+      "url": "https://github.com/hazimekom/numbers4-api/blob/c5498483f54491e9ba35794d252ce4b66645a108/data/numbers4_results_v2.csv",
+      "commit_sha": "c5498483f54491e9ba35794d252ce4b66645a108",
+      "blob_sha": "87e5160f9ec236a02146395d9036e8e9cdd0bd0b",
+      "sha256": "6ddaffbf4d6410e978a21bdb1cbfb935af1b83f927bd78d9bbf36f588256861a"
     },
     {
-      "url": "https://github.com/kodai721229/kujilab/blob/368217eec212c33609a6638b19f9366465971070/public/data/numbers4.json",
-      "commit_sha": "368217eec212c33609a6638b19f9366465971070",
+      "url": "https://github.com/kodai721229/kujilab/blob/b01f4712cc7c498a44bb14d752032037b74e07e7/public/data/numbers4.json",
+      "commit_sha": "b01f4712cc7c498a44bb14d752032037b74e07e7",
       "blob_sha": "a45184171503aa7a59071404542e4ac2aa855dd9",
       "sha256": "9bb3d43321551b89302d92321c390ac23a014be1b658055c864a579057d3637d"
     }
   ],
   "errors": [],
-  "deferred_unmatched_rows": 0,
+  "deferred_unmatched_rows": 1,
   "publisher_rows_seen": {
-    "primary_csv": 7121,
+    "primary_csv": 7122,
     "secondary_json": 7121
   },
   "current_rows": 7121
