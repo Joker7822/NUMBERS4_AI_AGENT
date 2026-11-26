@@ -1,6 +1,7 @@
 import {normalizeStatus} from "./dashboard.mjs?v=20261105-two-hour-online-learning";
 import {normalizeIntegratedResearch} from "./integrated-research.mjs?v=20261126";
 import {loadPublicSnapshots,createRefreshGate,shouldAutoRefresh,recoveryPercent} from "./dashboard-refresh.mjs?v=20261126";
+import {chartData,drawChart} from "./cashflow-chart.mjs?v=20261126";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -407,6 +408,8 @@ function render(data){
 function renderIntegrated(status,result){
   const values=byId("integrated-values");
   values.hidden=true;
+  byId("cashflow-chart-values").hidden=true;
+  set("cashflow-chart-state","グラフの証拠を検証中");
   set("integrated-prospective",status.auto_learning?
     "銀行照合 "+status.auto_learning.officially_verified_training_rounds+"件／将来検証 "+
     status.auto_learning.eligible_prospective_draws+"/"+status.auto_learning.required_prospective_draws+"件":"未確認");
@@ -425,7 +428,15 @@ function renderIntegrated(status,result){
     set("integrated-box",["dirichlet_100","dirichlet_1000","dirichlet_10000"].map(n=>n+": "+edge(r.box_models[n])).join("／"));
     set("integrated-ensemble",["equal_experts","uniform50","uniform90"].map(n=>n+": "+edge(r.ensemble_models[n])).join("／"));
     values.hidden=false;
+    try{
+      const data=chartData(r,status);
+      drawChart(byId("cashflow-balance-chart"),data,"balance","累積仮想収支：ストレートとBOX、別々のシナリオ");
+      drawChart(byId("cashflow-drawdown-chart"),data,"drawdown","最大累積収支からの下落額（円）");
+      set("cashflow-chart-state","第2〜"+data.last+"回・全回の仮想収支を再構成し、配当・最大下落額と一致");
+      byId("cashflow-chart-values").hidden=false;
+    }catch(e){set("cashflow-chart-state","グラフ用データ未生成、または検証不一致のため表示保留");}
   }catch(e){
+    set("cashflow-chart-state","統合監査の来歴不一致・取得待ち");
     set("integrated-state","未生成・履歴更新待ち、または来歴不一致のため表示保留");
   }
 }

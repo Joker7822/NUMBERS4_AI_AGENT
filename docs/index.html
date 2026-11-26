@@ -7,8 +7,8 @@
   <meta name="description" content="Numbers4 AI Agent: 根拠を区別する独立した研究・予測監査ダッシュボード">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
-  <link rel="stylesheet" href="style.css?v=20261126-overview">
-  <script type="module" src="app.js?v=20261126-overview"></script>
+  <link rel="stylesheet" href="style.css?v=20261126-cashflow">
+  <script type="module" src="app.js?v=20261126-cashflow"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">本文へ移動</a>
@@ -46,7 +46,7 @@
         <p class="subtle">仮想回収率＝仮想払戻額 ÷ 仮想購入額 × 100。仮想収益率（差引収支 ÷ 購入額）とは別の値です。券種は別々の仮想シナリオで、将来の収益予測ではありません。</p>
       </section>
       <nav class="section-nav" aria-label="ダッシュボード内の項目">
-        <a href="#overview">主要指標</a><a href="#recent-week-forecast-audit">直近7日</a><a href="#integrated-research-audit">回収率・リスク</a><a href="#historical-straight-finance">収支明細</a><a href="#online-operations">運用監視</a><a href="#predictive-auto-learning">将来検証</a><a href="#recursive-research-evolution">研究履歴</a>
+        <a href="#overview">主要指標</a><a href="#recent-week-forecast-audit">直近7日</a><a href="#integrated-research-audit">回収率・リスク</a><a href="#cashflow-analysis">資金推移</a><a href="#historical-straight-finance">収支明細</a><a href="#online-operations">運用監視</a><a href="#predictive-auto-learning">将来検証</a><a href="#recursive-research-evolution">研究履歴</a>
       </nav>
       <section class="panel" id="recent-week-forecast-audit">
         <div class="panel-head"><span>LAST 7 DAYS / JAPAN TIME / EVIDENCE SEPARATED</span><h2>直近7日間の予測番号・当せん結果照合</h2></div>
@@ -87,6 +87,19 @@
         </div>
         <div class="data-row"><span>公式照合・将来検証（現行ステータス）</span><strong id="integrated-prospective">—</strong></div>
         <p class="subtle">各評価の対象期間・BOX抽出条件は異なります。期待回収率は実績ではなく、統計スコアは利益率ではありません。正の期待値は未証明、購入判断はSKIP。</p>
+      </section>
+      <section class="panel" id="cashflow-analysis">
+        <div class="panel-head"><span>HISTORICAL CASH FLOW / RISK</span><h2>累積仮想収支とドローダウン</h2></div>
+        <p class="subtle">第2回から1口200円で再現した別々の仮想シナリオ。BOXの4桁同一候補は費用ゼロで除外。実購入・将来の利益を示すものではありません。</p>
+        <p id="cashflow-chart-state" role="status" class="subtle">グラフの証拠を検証中</p>
+        <div id="cashflow-chart-values" hidden>
+          <div class="cashflow-legend"><span class="legend-straight">ストレート（実線）</span><span class="legend-box">BOX（破線）</span></div>
+          <h3>累積仮想収支（円）</h3>
+          <div id="cashflow-balance-chart" class="cashflow-chart"></div>
+          <h3>ドローダウン（過去最高累積収支からの下落額・円）</h3>
+          <div id="cashflow-drawdown-chart" class="cashflow-chart"></div>
+          <p class="subtle">各回の費用・配当から全回を再構成しています。縦軸は円（万＝10,000円）、横軸は回号。数値の詳細は<a href="#integrated-research-audit">統合研究監査</a>と<a href="#historical-straight-finance">仮想収支明細</a>にあります。</p>
+        </div>
       </section>
       <section class="panel" id="recursive-research-evolution">
         <div class="panel-head"><span>RECURSIVE / WEB RESEARCH / ONE TICKET</span><h2>オンライン情報を活用する研究AIの自己進化</h2></div>

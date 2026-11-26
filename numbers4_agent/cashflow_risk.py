@@ -108,7 +108,11 @@ def evaluate(grades: list[dict], history: list[dict], straight: list[int],
     scenarios = {}
     for mode, original in (("straight", s), ("box", b)):
         for reference in (False, True):
-            metrics = cashflow_metrics(_events(grades, history, straight, box, mode, reference))
+            events = _events(grades, history, straight, box, mode, reference)
+            metrics = cashflow_metrics(events)
+            if not reference:
+                metrics["cashflow_exceptions"] = [[rnd, cost, award] for rnd, cost, award in events
+                                                  if cost != PRICE_PER_TICKET_YEN or award != 0]
             prefix = "baseline_" if reference else ""
             expected_spend = (original["baseline_ticket_cost_yen"]
                               if reference and mode == "box"
