@@ -1,9 +1,11 @@
 import {normalizeStatus} from "./dashboard.mjs?v=20261105-two-hour-online-learning";
 import {normalizeIntegratedResearch} from "./integrated-research.mjs?v=20261126";
+import {loadPublicSnapshots,createRefreshGate,shouldAutoRefresh,recoveryPercent} from "./dashboard-refresh.mjs?v=20261126";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
-const japaneseTime=t=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date(t))+" JST";
+const timeFormatter=new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false});
+const japaneseTime=t=>timeFormatter.format(new Date(t))+" JST";
 const yen=n=>typeof n==="number"?n.toLocaleString("ja-JP")+"円":"未算定";
 function render(data){
   set("draw-count",data.consistent_rounds);set("issue-count",data.issued_draws);set("graded-count",data.graded_issued_draws);
@@ -113,6 +115,15 @@ function render(data){
     box?.status==='historical_simulation_only_not_actual_purchase';
   const straightReady=oneReady&&
     straight?.status==='historical_simulation_only_not_actual_purchase';
+  const displayRecovery=(id,value,ready)=>{
+    const pct=recoveryPercent(value,ready);
+    set("overview-"+id,pct===null?"未算定":pct.toFixed(2)+"%");
+    byId("overview-"+id).classList.toggle("loss",pct!==null&&pct<100);
+    set("overview-"+id+"-net",pct===null?"二次履歴・実購入なし":"仮想収支 "+yen(value.simulated_net_yen)+" / 実購入なし");
+  };
+  displayRecovery("straight",straight,straightReady);
+  displayRecovery("box",box,financeReady);
+  set("overview-history",archive?"二次履歴：第"+archive.first_round+"〜"+archive.last_round+"回（"+archive.first_draw_date+"〜"+archive.last_draw_date+"）":"履歴未登録");
   set("online-replay-hits",financeReady&&straightReady?
       'ストレート '+straight.historical_winning_draws+'回 / ボックス '+
       box.historical_winning_draws+'回（'+box.historical_winning_tickets+'口）':
@@ -373,6 +384,15 @@ function render(data){
     integrity_blocked:"証拠不整合",no_verified_draws:"公式学習データなし",verified_history_available:"公式履歴あり",no_forecasts:"事前予測なし",witnesses_pending:"公開証跡不足",witnesses_recorded:"公開証跡あり",insufficient_draws:"将来検証不足",minimum_count_met_not_proof:"最低件数到達・予測力未証明"};
   const h=health?.official_ingestion;
   set("health-ingestion",labels[h?.state]??"未確認");
+  set("overview-ingestion",labels[h?.state]??"取得診断未確認");
+  set("overview-official",automated?automated.officially_verified_training_rounds+"回":"未確認");
+  set("overview-prospective",automated?automated.eligible_prospective_draws+" / "+automated.required_prospective_draws:"未確認");
+  const progress=byId("overview-progress");
+  progress.max=automated?.required_prospective_draws||1;
+  progress.value=automated?.eligible_prospective_draws||0;
+  progress.hidden=!automated;
+  set("overview-alert",(data.stale?"公開スナップショットは更新遅延または時刻不正。表示値は生成時点の履歴です。 ":"")+
+    "将来の予測優位性・実収益は未証明。購入記録とは区別しています。");
   set("health-ingestion-time",h?.checked_at_jst?japaneseTime(h.checked_at_jst):"未確認");
   set("health-counts",h?.bank_rows==null?"未確認":[h.bank_rows,h.rakuten_rows,h.matched_rows].join("／")+"件");
   set("health-schedule",labels[health?.schedule.state]??"未確認");
@@ -384,7 +404,7 @@ function render(data){
   for(const warning of data.warnings)warnings.append(create("p","",warning));
   if(!data.warnings.length)warnings.append(create("p","ok","重大な入力不一致はありません。ただし予測精度は実証されていません。"));
 }
-async function renderIntegrated(status){
+function renderIntegrated(status,result){
   const values=byId("integrated-values");
   values.hidden=true;
   set("integrated-prospective",status.auto_learning?
@@ -392,9 +412,8 @@ async function renderIntegrated(status){
     status.auto_learning.eligible_prospective_draws+"/"+status.auto_learning.required_prospective_draws+"件":"未確認");
   set("integrated-state","統合監査データを確認中");
   try{
-    const response=await fetch("./data/integrated-research.json?b="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});
-    if(!response.ok)throw new Error("HTTP "+response.status);
-    const r=normalizeIntegratedResearch(await response.json(),status);
+    if(result.status!=="fulfilled")throw result.reason;
+    const r=normalizeIntegratedResearch(result.value,status);
     const pct=x=>x.toFixed(2)+"%";
     const edge=x=>x.mean_log_edge===null?"未評価":x.mean_log_edge.toFixed(6);
     set("integrated-state","第"+r.last_round+"回（"+r.last_draw_date+"）までの二次履歴・来歴一致");
@@ -410,25 +429,36 @@ async function renderIntegrated(status){
     set("integrated-state","未生成・履歴更新待ち、または来歴不一致のため表示保留");
   }
 }
-export async function refresh(){
-  const button=byId("refresh"),error=byId("error");button.disabled=true;error.hidden=true;
+let lastAttempt=0;
+const gate=createRefreshGate(async()=>{
+  lastAttempt=Date.now();
+  const button=byId("refresh"),error=byId("error"),content=byId("dashboard-content");
+  button.disabled=true;error.hidden=true;content.setAttribute("aria-busy","true");
   try{
-    const response=await fetch("./data/status.json?b="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});
-    if(!response.ok)throw new Error("HTTP "+response.status);
-    const data=normalizeStatus(await response.json());
+    const result=await loadPublicSnapshots();
+    const data=normalizeStatus(result.status);
     render(data);
-    await renderIntegrated(data);
-  }catch(e){byId("integrated-values").hidden=true;for(const id of ["ingestion","ingestion-time","counts","schedule","training","publication","prospective","freshness"])set("health-"+id,"公開データ検証不可");set("integrated-state","公開データ検証不可");set("integrated-prospective","未確認");error.textContent="公開データを取得・検証できません: "+String(e.message||e);error.hidden=false;
+    renderIntegrated(data,result.integrated);
+    content.hidden=false;
+  }catch(e){
+    // All evidence-bearing values are hidden, not left behind an error banner.
+    content.hidden=true;
+    byId("integrated-values").hidden=true;
+    error.textContent="公開データを取得・検証できません: "+String(e?.message||e);
+    error.hidden=false;
     set("status-pill","データ検証不可");byId("status-pill").className="pill block";
-  }finally{button.disabled=false}
-}
+    set("refresh-time","最新の検証に失敗・表示保留");
+  }finally{
+    content.setAttribute("aria-busy","false");button.disabled=false;
+  }
+});
+export async function refresh(){return gate.run()}
 byId("refresh").addEventListener("click",refresh);
 refresh();
-// A tab left open reflects the newly published candidate without manual reload.
+// Keep the existing 120-second cadence; avoid duplicate requests on tab return.
 const FORECAST_REFRESH_INTERVAL_MS=120_000;
-setInterval(()=>{
-  if(!document.hidden&&!byId("refresh").disabled)refresh();
-},FORECAST_REFRESH_INTERVAL_MS);
-document.addEventListener("visibilitychange",()=>{
-  if(!document.hidden&&!byId("refresh").disabled)refresh();
-});
+function autoRefresh(){
+  if(shouldAutoRefresh({hidden:document.hidden,busy:gate.busy,lastAttempt,now:Date.now(),interval:FORECAST_REFRESH_INTERVAL_MS}))refresh();
+}
+setInterval(autoRefresh,FORECAST_REFRESH_INTERVAL_MS);
+document.addEventListener("visibilitychange",autoRefresh);
