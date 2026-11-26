@@ -114,6 +114,13 @@ def audit(root: Path) -> dict:
         raise ValueError("historical archive missing")
     straight, straight_meta = load_payouts(root, history)
     box, box_meta = load_box_payouts(root, history)
+    return _audit_loaded(history, archive, straight, straight_meta, box, box_meta)
+
+
+def _audit_loaded(history, archive, straight, straight_meta, box, box_meta) -> dict:
+    """Internal report builder; callers must use validated loader results."""
+    if not history:
+        raise ValueError("historical archive missing")
     return {
         "version": VERSION,
         "status": "secondary_history_retrospective_research_only",
