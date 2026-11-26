@@ -1,0 +1,15 @@
+{
+  "version": "numbers4-official-ingestion-summary-v1",
+  "checked_at_jst": "2026-11-26T12:30:18+09:00",
+  "status": "blocked_no_bank_verified_results",
+  "bank_rows": 0,
+  "rakuten_rows": 255,
+  "publisher_matched_rows": 0,
+  "new_verified_rows": 0,
+  "denied_publishers": [
+    "mizuhobank"
+  ],
+  "requests_skipped_after_access_denial": 11,
+  "ledger_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_purchase": false
+}

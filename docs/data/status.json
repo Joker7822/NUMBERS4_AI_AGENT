@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-26T12:29:53+09:00",
+  "generated_at_jst": "2026-11-26T12:30:33+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -698,10 +698,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-26T12:29:45+09:00",
-    "rule_audit_age_hours": 0.002,
+    "rule_audit_age_hours": 0.013,
     "secondary_feed_status": "validated_no_new_draws",
     "secondary_checked_at_jst": "2026-11-26T12:29:44+09:00",
-    "secondary_audit_age_hours": 0.003,
+    "secondary_audit_age_hours": 0.014,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -714,14 +714,16 @@
   "operational_health": {
     "version": "numbers4-operational-health-v1",
     "official_ingestion": {
-      "state": "not_checked",
-      "checked_at_jst": null,
-      "age_hours": null,
-      "bank_rows": null,
-      "rakuten_rows": null,
-      "matched_rows": null,
-      "denied_publishers": [],
-      "skipped_requests": null
+      "state": "access_denied",
+      "checked_at_jst": "2026-11-26T12:30:18+09:00",
+      "age_hours": 0.004,
+      "bank_rows": 0,
+      "rakuten_rows": 255,
+      "matched_rows": 0,
+      "denied_publishers": [
+        "mizuhobank"
+      ],
+      "skipped_requests": 11
     },
     "schedule": {
       "state": "no_reviewed_target",
