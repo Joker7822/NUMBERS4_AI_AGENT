@@ -1,0 +1,79 @@
+{
+  "version": "numbers4-public-integrated-research-v1",
+  "scope": "secondary_history_only",
+  "last_round": 7122,
+  "last_draw_date": "2026-11-25",
+  "archive_git_blob_sha1": "01d87dc4a7b8fa6ece6493865894a01308f5f62f",
+  "straight_payout_git_blob_sha1": "49c712757b399a2da5fd2cb0113d5e0617a8a6ce",
+  "box_payout_git_blob_sha1": "422bbfacd1b004fa566ed292918db53d8f3b778d",
+  "actual_purchase": false,
+  "production_promotion_authorized": false,
+  "positive_expected_value_confirmed": false,
+  "purchase_decision": "SKIP",
+  "straight_reference": {
+    "evaluated_rounds": 7121,
+    "expected_gross_recovery_percent": 47.83595070917006,
+    "simulated_loss_fraction": 0.8368,
+    "simulations": 10000
+  },
+  "box_reference": {
+    "evaluated_rounds": 7121,
+    "expected_gross_recovery_percent": 47.827458127977714,
+    "simulated_loss_fraction": 0.9961,
+    "simulations": 10000
+  },
+  "straight_risk": {
+    "gross_recovery_percent": 95.90647380985817,
+    "hypothetical_net_yen": -58300,
+    "maximum_settled_drawdown_yen": 1408000,
+    "longest_consecutive_losing_purchased_tickets": 7040
+  },
+  "box_risk": {
+    "gross_recovery_percent": 66.45338208409507,
+    "hypothetical_net_yen": -477100,
+    "maximum_settled_drawdown_yen": 574700,
+    "longest_consecutive_losing_purchased_tickets": 1182
+  },
+  "payout_late_count": 2122,
+  "payout_mae_yen": {
+    "expanding_mean": 208261.17530427894,
+    "rolling_30": 203748.89098334906,
+    "rolling_100": 205580.42836946278
+  },
+  "box_models": {
+    "uniform_ordered": {
+      "evaluated_draws": 7022,
+      "mean_log_edge": 0.0
+    },
+    "dirichlet_100": {
+      "evaluated_draws": 7022,
+      "mean_log_edge": -0.20231435776248485
+    },
+    "dirichlet_1000": {
+      "evaluated_draws": 7022,
+      "mean_log_edge": -0.06403276643767127
+    },
+    "dirichlet_10000": {
+      "evaluated_draws": 7022,
+      "mean_log_edge": -0.005970989780932112
+    }
+  },
+  "ensemble_models": {
+    "uniform": {
+      "evaluated_draws": 6122,
+      "mean_log_edge": 2.2204460492503128e-16
+    },
+    "equal_experts": {
+      "evaluated_draws": 6122,
+      "mean_log_edge": -0.019590166667767778
+    },
+    "uniform50": {
+      "evaluated_draws": 6122,
+      "mean_log_edge": -0.00456278032823058
+    },
+    "uniform90": {
+      "evaluated_draws": 6122,
+      "mean_log_edge": -8.90310838179312e-05
+    }
+  }
+}
