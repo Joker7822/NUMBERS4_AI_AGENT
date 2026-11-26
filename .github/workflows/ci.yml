@@ -211,5 +211,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check docs/app.js && node --check docs/dashboard.mjs && node --check docs/integrated-research.mjs
+      - run: node --check docs/app.js && node --check docs/dashboard.mjs && node --check docs/integrated-research.mjs && node --check docs/dashboard-refresh.mjs
       - run: node --test tests/*.test.mjs

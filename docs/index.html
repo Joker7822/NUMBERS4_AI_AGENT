@@ -7,23 +7,47 @@
   <meta name="description" content="Numbers4 AI Agent: 根拠を区別する独立した研究・予測監査ダッシュボード">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
-  <link rel="stylesheet" href="style.css?v=20261102-replay-verification">
-  <script type="module" src="app.js?v=20261126-operational-health"></script>
+  <link rel="stylesheet" href="style.css?v=20261126-overview">
+  <script type="module" src="app.js?v=20261126-overview"></script>
 </head>
 <body>
+  <a class="skip-link" href="#top">本文へ移動</a>
   <div class="page">
     <header class="topbar">
       <a href="#top" class="brand"><span class="logo">N<span>4</span></span><span class="brand-name"><strong>NUMBERS4 <em>AI AGENT</em></strong><small>INDEPENDENT RESEARCH SYSTEM</small></span></a>
-      <button id="refresh" class="button" type="button">↻ 最新データを読み込む</button>
+      <button id="refresh" class="button" type="button" aria-controls="dashboard-content">↻ 最新データを読み込む</button>
     </header>
-    <main id="top">
+    <main id="top" tabindex="-1">
       <section class="hero">
         <div class="eyebrow"><span class="pulse"></span> FOUR DIGITS / INDEPENDENT EVIDENCE</div>
-        <h1>4桁の予測を、<br><span>根拠から評価する。</span></h1>
+        <h1>NUMBERS4 <span>研究監査</span></h1>
         <p>ナンバーズ4専用の独立した研究・記録システムです。候補、事前発行、結果照合、過去検証を混同しません。</p>
-        <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time">公開JSONを確認中</span></div>
+        <div class="hero-meta"><span id="status-pill" class="pill">データ取得中</span><span id="refresh-time" role="status">公開JSONを確認中</span></div>
       </section>
       <div id="error" role="alert" class="error" hidden></div>
+      <noscript><p class="error">公開データを検証して表示するにはJavaScriptが必要です。</p></noscript>
+      <div id="dashboard-content" hidden>
+      <section class="overview" id="overview" aria-labelledby="overview-title">
+        <div class="overview-heading"><h2 id="overview-title">主要指標</h2><span>実績・履歴研究を分けて表示</span></div>
+        <p id="overview-alert" class="overview-alert" role="status">公開データを検証中です。</p>
+      <section class="stats" aria-label="主要指標">
+        <article class="stat"><label>公開元照合済み抽せん</label><strong id="draw-count">—</strong><small>銀行＋販売元または手入力を照合</small></article>
+        <article class="stat"><label>事前発行の記録</label><strong id="issue-count">—</strong><small>発行と実際の購入は別</small></article>
+        <article class="stat"><label>採点できた発行回</label><strong id="graded-count">—</strong><small>事前発行＋2系統一致のみ</small></article>
+        <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
+      </section>
+        <div class="overview-grid">
+          <article class="overview-metric"><h3>公式学習データ</h3><strong id="overview-official">—</strong><p id="overview-ingestion">取得診断未確認</p></article>
+          <article class="overview-metric"><h3>独立した将来検証</h3><strong id="overview-prospective">—</strong><progress id="overview-progress" max="1" value="0" aria-label="必要な独立将来検証件数に対する進捗"></progress><p>件数到達だけでは予測力を証明しません。</p></article>
+          <article class="overview-metric"><h3>ストレート仮想回収率</h3><strong id="overview-straight">—</strong><p id="overview-straight-net">二次履歴・実購入なし</p></article>
+          <article class="overview-metric"><h3>BOX仮想回収率</h3><strong id="overview-box">—</strong><p id="overview-box-net">二次履歴・実購入なし</p></article>
+        </div>
+        <p class="subtle" id="overview-history">履歴の範囲を確認中です。</p>
+        <p class="subtle">仮想回収率＝仮想払戻額 ÷ 仮想購入額 × 100。仮想収益率（差引収支 ÷ 購入額）とは別の値です。券種は別々の仮想シナリオで、将来の収益予測ではありません。</p>
+      </section>
+      <nav class="section-nav" aria-label="ダッシュボード内の項目">
+        <a href="#overview">主要指標</a><a href="#recent-week-forecast-audit">直近7日</a><a href="#integrated-research-audit">回収率・リスク</a><a href="#historical-straight-finance">収支明細</a><a href="#online-operations">運用監視</a><a href="#predictive-auto-learning">将来検証</a><a href="#recursive-research-evolution">研究履歴</a>
+      </nav>
       <section class="panel" id="recent-week-forecast-audit">
         <div class="panel-head"><span>LAST 7 DAYS / JAPAN TIME / EVIDENCE SEPARATED</span><h2>直近7日間の予測番号・当せん結果照合</h2></div>
         <p class="subtle" id="recent-week-window">日本時間で直近7日間の対象日を確認中です。</p>
@@ -134,12 +158,6 @@
         <div class="data-row"><span>公開スナップショット鮮度</span><strong id="health-freshness">未確認</strong></div>
         <p class="subtle">公式ルールの必須文言に変化があれば手動確認対象とし、予測コード・配当・発行済み記録を自動変更しません。監視記録：<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_reference_audit.json" rel="noopener noreferrer">公式情報監査</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_source_audit.json" rel="noopener noreferrer">公開データ監査</a>。</p>
       </section>
-      <section class="stats" aria-label="主要指標">
-        <article class="stat"><label>公開元照合済み抽せん</label><strong id="draw-count">—</strong><small>銀行＋販売元または手入力を照合</small></article>
-        <article class="stat"><label>事前発行の記録</label><strong id="issue-count">—</strong><small>発行と実際の購入は別</small></article>
-        <article class="stat"><label>採点できた発行回</label><strong id="graded-count">—</strong><small>事前発行＋2系統一致のみ</small></article>
-        <article class="stat"><label>予測力の実証</label><strong class="neutral">未確定</strong><small>研究用の暫定スコアを断定しない</small></article>
-      </section>
       <section class="panel" id="latest-research-forecast">
         <div class="panel-head"><span>NEXT / LATEST MODEL RESEARCH</span><h2>最新の予測1口（ストレート・ボックス共通の研究候補）</h2></div>
         <p class="subtle">新しい研究世代や抽せん履歴の更新で候補が変わった場合は、最新の検証可能な研究1口へ自動で切り替えます。自己進化の評価がまだ終わっていない場合は、現在の履歴を使ったリプレイ候補を暫定表示します。画面を開いたままでも2分おきに最新情報を確認します。ストレートとボックスで番号は共通ですが、ボックスは並び順不問・4桁同一は購入不可です。正式な事前発行・購入実績ではありません。</p>
@@ -239,6 +257,7 @@
         <p id="online-next-candidate" class="subtle">更新後の研究候補を確認中です。</p>
         <p class="subtle">第2回以降を過去情報だけで順次再現した研究であり、抽せん前に実際に発行した予測ではありません。モデルの自動更新は研究に限定し、購入・本番昇格は行いません。<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/online_round_predictions.csv" rel="noopener noreferrer">回別の再現予測を検証</a>。</p>
       </section>
+      </div>
     </main>
     <footer><span>NUMBERS4 AI AGENT · 独立リポジトリ v0.12.0</span><span>正規データの出典は<a href="https://www.takarakuji-official.jp/kuji/numbers/numbers4/howto.html" rel="noopener noreferrer">宝くじ公式サイト</a>と<a href="https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html" rel="noopener noreferrer">みずほ銀行</a></span></footer>
   </div>
