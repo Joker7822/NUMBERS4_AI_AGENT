@@ -2,13 +2,12 @@
 from __future__ import annotations
 
 import argparse
-from collections import deque
 import json
 from math import fsum, isfinite, log, prod
 from pathlib import Path
 
 from .historical_archive import load_archive
-from .online_learning import MODELS, positional_probs
+from .online_learning import MODELS, RollingPositionCounts
 from .rules import four_digits
 
 VERSION = "numbers4-ensemble-score-audit-v1"
@@ -69,7 +68,7 @@ def _summary(events: list[tuple[int, float, float]]) -> dict:
 def evaluate(history: list[dict], *, split_round: int = SPLIT_ROUND) -> dict:
     if not history or type(split_round) is not int or split_round < 1:
         raise ValueError("invalid history or split")
-    windows = [deque(maxlen=length) for _, length, _ in MODELS]
+    windows = [RollingPositionCounts(length) for _, length, _ in MODELS]
     events = {name: [] for name in WEIGHTS}
     previous_date = ""
     for i, row in enumerate(history):
@@ -79,7 +78,7 @@ def evaluate(history: list[dict], *, split_round: int = SPLIT_ROUND) -> dict:
         previous_date = date
         actual = four_digits(row["winning_number"])
         if i >= WARMUP:
-            experts = [UNIFORM, *(positional_probs(window, spec[2])
+            experts = [UNIFORM, *(window.probabilities(spec[2])
                                   for window, spec in zip(windows, MODELS))]
             masses, dots = components(experts, actual)
             for name, weights in WEIGHTS.items():

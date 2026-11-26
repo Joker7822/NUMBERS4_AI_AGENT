@@ -52,6 +52,39 @@ def positional_probs(history: Iterable[str], alpha: int) -> list[list[float]]:
     return result
 
 
+class RollingPositionCounts:
+    """Exact position counts for a fixed trailing window of validated draws.
+
+    Each update touches four incoming and at most four outgoing digits.
+    The probability formula is identical to positional_probs; the current
+    outcome must be appended only after scoring.
+    """
+
+    def __init__(self, length: int):
+        if type(length) is not int or length < 1:
+            raise ValueError("window length must be a positive integer")
+        self._values = deque(maxlen=length)
+        self._counts = [[0] * 10 for _ in range(4)]
+
+    def append(self, number: str) -> None:
+        number = four_digits(number)
+        if len(self._values) == self._values.maxlen:
+            for position, digit in enumerate(self._values[0]):
+                self._counts[position][int(digit)] -= 1
+        for position, digit in enumerate(number):
+            self._counts[position][int(digit)] += 1
+        self._values.append(number)
+
+    def probabilities(self, alpha: int) -> list[list[float]]:
+        if type(alpha) is not int or alpha < 1:
+            raise ValueError("alpha must be positive integer")
+        if not self._values:
+            return [[.1] * 10 for _ in range(4)]
+        denominator = len(self._values) + alpha * 10
+        return [[(count + alpha) / denominator for count in line]
+                for line in self._counts]
+
+
 def best_five(q: list[list[float]]) -> list[str]:
     """Top-5 highest probability numbers via exact top-K product search.
 
@@ -107,7 +140,7 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
             raise ValueError("draw dates must strictly increase")
         four_digits(row["winning_number"])
         previous_date=row["draw_date"]
-    windows={name:deque(maxlen=length) for name,length,_ in MODELS}
+    windows={name:RollingPositionCounts(length) for name,length,_ in MODELS}
     model_scores={name:0.0 for name,_,_ in MODELS}
     score_trace={name:[] for name,_,_ in MODELS}
     selected_hits=reference_hits=0
@@ -130,7 +163,7 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
             model_preds={}
             current_grades={}
             for name,_,alpha in MODELS:
-                q=positional_probs(windows[name], alpha)
+                q=windows[name].probabilities(alpha)
                 model_preds[name]=best_five(q)[:1]
                 current_grades[name]=grade_prob(q,actual)
             if selection!="uniform":
@@ -181,7 +214,7 @@ def replay(rows: list[dict]) -> tuple[dict,list[dict]]:
     next_model=max(eligible,key=lambda x:(model_scores[x],x)) if eligible else "uniform"
     next_n=rows[-1]["round"]+1
     next_numbers=(uniform_numbers(next_n) if next_model=="uniform"
-                  else best_five(positional_probs(windows[next_model],
+                  else best_five(windows[next_model].probabilities(
                                      next(v[2] for v in MODELS if v[0]==next_model)))[:1])
     result={
         "next_research_candidate":{"target_round":next_n,"data_cutoff_round":rows[-1]["round"],
