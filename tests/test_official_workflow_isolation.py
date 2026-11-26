@@ -18,6 +18,13 @@ class OfficialWorkflowIsolationTests(unittest.TestCase):
         self.assertNotIn("contents: write", pr)
         self.assertNotIn("git push", pr)
 
+    def test_pr_concurrency_never_uses_the_production_lock(self):
+        workflow = (ROOT / ".github/workflows/official-results.yml").read_text()
+        concurrency = workflow.split("\nconcurrency:\n", 1)[1].split("\njobs:\n", 1)[0]
+        self.assertIn("github.event_name == 'pull_request' && format('numbers4-official-feed-pr-{0}', github.event.pull_request.number) || 'numbers4-official-feed-main'", concurrency)
+        self.assertIn("cancel-in-progress: ${{ github.event_name == 'pull_request' }}", concurrency)
+        self.assertNotIn("group: numbers4-official-feed-main", concurrency)
+
     def test_official_runner_requires_main_and_non_pr_event(self):
         workflow = (ROOT / ".github/workflows/official-results.yml").read_text()
         production = workflow.split("  fetch-and-verify:\n", 1)[1].split(

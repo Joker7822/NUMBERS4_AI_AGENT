@@ -151,6 +151,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Benchmark exact rolling counts against full archive rescan
+        run: python -m numbers4_agent.benchmark_rolling_counts
       - name: Run complete read-only research audit
         run: |
           python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
