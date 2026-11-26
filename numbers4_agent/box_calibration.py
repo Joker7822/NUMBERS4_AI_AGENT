@@ -67,6 +67,49 @@ def pattern_probs(q: tuple[float, ...]) -> tuple[float, ...]:
     return tuple(masses)
 
 
+class PosteriorMoments:
+    """Exact integer sufficient statistics for the fixed Dirichlet family.
+
+    Scoring needs the actual signature mass, sum of squared masses and five
+    pattern masses. Keep integer moments of counts and multiplicities; avoid
+    rebuilding a 715-entry vector on every draw.
+    """
+    _multiplicities = tuple(permutation_count(s) for s in SIGNATURES)
+
+    def __init__(self):
+        self._counts = [0] * len(SIGNATURES)
+        self._total = 0
+        self._sum_squares = 0
+        self._weighted_count = 0
+        self._pattern_counts = [0] * len(PATTERNS)
+
+    @staticmethod
+    def _validate_index(actual):
+        if type(actual) is not int or not 0 <= actual < len(SIGNATURES):
+            raise ValueError("invalid outcome index")
+
+    def observe(self, actual: int) -> None:
+        self._validate_index(actual)
+        self._sum_squares += 2 * self._counts[actual] + 1
+        self._weighted_count += self._multiplicities[actual]
+        self._counts[actual] += 1
+        self._pattern_counts[PATTERN_INDEX[actual]] += 1
+        self._total += 1
+
+    def evaluate(self, actual: int, alpha: int) -> tuple[float, float, tuple[float, ...]]:
+        self._validate_index(actual)
+        if type(alpha) is not int or alpha <= 0:
+            raise ValueError("invalid prior strength")
+        denominator = self._total + alpha
+        p = UNIFORM[actual]
+        q = (self._counts[actual] + alpha * p) / denominator
+        norm2 = (self._sum_squares + 2 * alpha * self._weighted_count / OUTCOMES
+                 + alpha * alpha * BASELINE_SQUARE_SUM) / (denominator * denominator)
+        masses = tuple((c + alpha * p0) / denominator
+                       for c, p0 in zip(self._pattern_counts, BASE_PATTERN_PROBS))
+        return log(q / p), 2 * (q - p) + BASELINE_SQUARE_SUM - norm2, masses
+
+
 def _summary(events: list[tuple[int, float, float, tuple[float, ...], int]]) -> dict:
     n = len(events)
     if n == 0:
@@ -92,7 +135,7 @@ def _summary(events: list[tuple[int, float, float, tuple[float, ...], int]]) -> 
 def evaluate(history: list[dict], *, split_round: int = SPLIT_ROUND) -> dict:
     if not history or type(split_round) is not int or split_round < 1:
         raise ValueError("invalid history or split")
-    counts = [0] * len(SIGNATURES)
+    moments = PosteriorMoments()
     names = ("uniform_ordered", *(f"dirichlet_{a}" for a in PRIOR_STRENGTHS))
     events = {name: [] for name in names}
     previous_date = ""
@@ -107,12 +150,11 @@ def evaluate(history: list[dict], *, split_round: int = SPLIT_ROUND) -> dict:
             events[names[0]].append((rnd, 0.0, 0.0, BASE_PATTERN_PROBS,
                                       PATTERN_INDEX[actual]))
             for alpha, name in zip(PRIOR_STRENGTHS, names[1:]):
-                q = posterior(counts, alpha)
-                log_edge, brier_edge = score(q, actual)
-                events[name].append((rnd, log_edge, brier_edge, pattern_probs(q),
+                log_edge, brier_edge, masses = moments.evaluate(actual, alpha)
+                events[name].append((rnd, log_edge, brier_edge, masses,
                                      PATTERN_INDEX[actual]))
         # Only after scoring may the current observation enter the counts.
-        counts[actual] += 1
+        moments.observe(actual)
 
     return {
         "unordered_outcome_classes": len(SIGNATURES),
