@@ -31,6 +31,11 @@ class ResultFetchError(ValueError):
     pass
 
 
+class PublisherAccessDenied(ResultFetchError):
+    """Publisher explicitly refused access or asked us to stop sending requests."""
+
+
+
 class VisibleText(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -160,7 +165,8 @@ def _download(url: str, host: str, *, opener=None) -> tuple[str, str]:
             declared = response.headers.get_content_charset() or "utf-8"
     except urllib.error.HTTPError as exc:
         # Keep the status visible in Actions; a 403 is not an empty results table.
-        raise ResultFetchError(f"publisher rejected request: HTTP {exc.code}") from exc
+        error = PublisherAccessDenied if exc.code in (401, 403, 429) else ResultFetchError
+        raise error(f"publisher rejected request: HTTP {exc.code}") from exc
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
         raise ResultFetchError(f"publisher network fetch failed: {type(exc).__name__}") from exc
     try:
@@ -206,7 +212,7 @@ def _render_bank_page(url: str) -> tuple[str, str]:
                 page = browser.new_page(locale="ja-JP")
                 response = page.goto(url, wait_until="domcontentloaded", timeout=20_000)
                 if response is not None and response.status in (401, 403, 429):
-                    raise ResultFetchError(
+                    raise PublisherAccessDenied(
                         f"bank browser request rejected: HTTP {response.status}"
                     )
                 try:
@@ -226,7 +232,7 @@ def _render_bank_page(url: str) -> tuple[str, str]:
                 visible = " ".join(_text(rendered).words)
                 if re.search(r"access denied|request blocked|bot detection|"
                              r"アクセス(が|を)?(拒否|制限)", visible, re.I):
-                    raise ResultFetchError("bank browser served a blocked-access page")
+                    raise PublisherAccessDenied("bank browser served a blocked-access page")
             finally:
                 browser.close()
     except PlaywrightError as exc:
@@ -242,17 +248,21 @@ def publisher_month(url: str, host: str, parser, *, opener=None,
     try:
         text, sha = _download(url, host, opener=opener)
         return parser(text), sha
+    except PublisherAccessDenied:
+        # Never retry explicit access denial through a different client.
+        raise
     except ResultFetchError as raw_error:
-        # A WAF HTTP rejection must also attempt the permitted browser fallback.
-        # Only the original bank HTTPS host is allowed; a recovered HTML page
-        # still needs explicit draw rows and independent Rakuten agreement.
+        # Rendering is for ordinary empty JavaScript templates, not access denial.
+        # Only the original bank HTTPS host is allowed; explicit draw rows and
+        # independent Rakuten agreement are still required.
         if not bank_browser_fallback or host != "www.mizuhobank.co.jp":
             raise
         try:
             rendered, rendered_sha = _render_bank_page(url)
             return parser(rendered), rendered_sha
         except ResultFetchError as render_error:
-            raise ResultFetchError(
+            error = PublisherAccessDenied if isinstance(render_error, PublisherAccessDenied) else ResultFetchError
+            raise error(
                 f"bank raw request rejected ({raw_error}); browser fallback rejected ({render_error})"
             ) from render_error
 
@@ -269,6 +279,8 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
     bank: dict[int, dict] = {}
     rakuten: dict[int, dict] = {}
     errors = []
+    denied: dict[str, str] = {}
+    skipped_requests = 0
     for year, month in month_pairs(now, months_back):
         link_b = f"{BANK}?year={year}&month={month}"
         link_r = f"{RAKUTEN}{year}{month:02d}/"
@@ -276,6 +288,12 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
             ("mizuhobank", link_b, "www.mizuhobank.co.jp", parse_mizuhobank, bank),
             ("rakuten", link_r, "takarakuji.rakuten.co.jp", parse_rakuten, rakuten),
         ):
+            if name in denied:
+                skipped_requests += 1
+                errors.append({"publisher": name, "month": f"{year:04d}-{month:02d}",
+                               "reason": "not requested: earlier publisher access denial",
+                               "code": "skipped_after_access_denial"})
+                continue
             try:
                 observations, content_sha = publisher_month(
                     url, host, parse, opener=opener,
@@ -294,7 +312,11 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
                     staged[row["round"]] = {**row, "url": url, "sha256": content_sha}
                 target.update(staged)
             except (ResultFetchError, ValueError) as exc:
-                errors.append({"publisher": name, "month": f"{year:04d}-{month:02d}", "reason": str(exc)})
+                item = {"publisher": name, "month": f"{year:04d}-{month:02d}", "reason": str(exc)}
+                if isinstance(exc, PublisherAccessDenied):
+                    denied[name] = str(exc)
+                    item["code"] = "publisher_access_denied"
+                errors.append(item)
     path = root / "data" / AUTO_LEDGER
     previous = {r["round"]: r for r in load(path)}
     common = sorted(bank.keys() & rakuten.keys())
@@ -364,6 +386,8 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
         "new_verified_rows": new, "conflicted_rounds": conflicts,
         "bank_missing_coverage": sorted(set(rakuten) - set(bank)),
         "errors": errors,
+        "publisher_access_denials": denied,
+        "requests_skipped_after_access_denial": skipped_requests,
         "bank_browser_fallback_enabled": bank_browser_fallback,
         "bank_errors": [error for error in errors if error["publisher"] == "mizuhobank"],
         "rakuten_errors": [error for error in errors if error["publisher"] == "rakuten"],

@@ -69,3 +69,18 @@ A malformed publisher/month response is rejected atomically.
 No publisher permission, access to a configured authorized runner, or fresh
 dual-source matches were established by this code change. Do not populate the
 approved schedule from generic weekday rules or promote secondary observations.
+
+## 2026-11-26 access-denial handling
+
+The main-branch run https://github.com/Joker7822/NUMBERS4_AI_AGENT/actions/runs/45748239749
+reported 0 bank rows, 255 Rakuten rows and 0 matched rows. The bank raw HTML
+contained no usable result rows; browser requests returned HTTP 403 for all
+12 requested months (2025-12 through 2026-11).
+
+Explicit HTTP 401, 403 or 429, or a detected browser access-block page, now
+halts requests to that publisher for the remainder of the sync. The browser
+fallback is for ordinary empty templates, not for retrying explicit denial.
+The other publisher remains independent and its unverified observations remain
+research-only. Diagnostics distinguish denied requests from months not requested.
+This reduces unnecessary requests, but is not a restoration of bank access.
+A publisher-authorized route and actual dual-source matches remain required.

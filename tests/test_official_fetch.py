@@ -113,45 +113,64 @@ class OfficialFetchTests(unittest.TestCase):
         recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
         self.assertEqual(recorded[0]['bank_response_sha256'], 'a' * 64)
 
-    def test_http_403_can_recover_through_strict_official_bank_browser(self):
-        """A blocked raw bank request must not skip the allowed browser fallback."""
+    def test_explicit_http_denial_never_uses_browser_or_retries_months(self):
         ordinary = open_mocks()
+        for status in (401, 403, 429):
+            with self.subTest(status=status):
+                calls = []
+                def blocked_raw_bank(request, timeout):
+                    if 'www.mizuhobank.co.jp' in request.full_url:
+                        calls.append(request.full_url)
+                        raise HTTPError(request.full_url, status, 'Denied', None, None)
+                    return ordinary(request, timeout)
+                with patch('numbers4_agent.official_fetch._render_bank_page') as render:
+                    summary = sync(self.root, now=self.now, months_back=2,
+                                   opener=blocked_raw_bank, bank_browser_fallback=True)
+                render.assert_not_called()
+                self.assertEqual(len(calls), 1)
+                self.assertEqual(summary['status'], 'blocked_no_bank_verified_results')
+                self.assertEqual(summary['new_verified_rows'], 0)
+                self.assertEqual(summary['rakuten_rows'], 2)
+                self.assertEqual(summary['requests_skipped_after_access_denial'], 1)
+                self.assertIn(f'HTTP {status}', summary['publisher_access_denials']['mizuhobank'])
+                self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
-        def blocked_raw_bank(request, timeout):
-            if 'www.mizuhobank.co.jp' in request.full_url:
-                raise HTTPError(request.full_url, 403, 'Access Denied', None, None)
-            return ordinary(request, timeout)
-
-        with patch('numbers4_agent.official_fetch._render_bank_page',
-                   return_value=(BANK_OCT, 'c' * 64)) as render:
-            summary = sync(self.root, now=self.now, months_back=2,
-                           opener=blocked_raw_bank, bank_browser_fallback=True)
-        self.assertEqual(summary['status'], 'verified')
-        self.assertEqual(summary['new_verified_rows'], 2)
-        self.assertEqual(summary['publisher_matched_rows'], 2)
-        self.assertEqual(render.call_count, 2)
-        recorded = load(self.root/'data'/'auto_verified_draws.jsonl')
-        self.assertEqual(recorded[0]['bank_response_sha256'], 'c' * 64)
-
-    def test_http_403_without_valid_bank_response_never_verifies(self):
-        """An HTTP rejection must not promote a single Rakuten publication."""
+    def test_browser_denial_stops_remaining_bank_months(self):
         ordinary = open_mocks()
-
-        def blocked_raw_bank(request, timeout):
+        calls = []
+        def empty_bank(request, timeout):
             if 'www.mizuhobank.co.jp' in request.full_url:
-                raise HTTPError(request.full_url, 403, 'Access Denied', None, None)
+                calls.append(request.full_url)
+                return Response(request.full_url, '<h1>ナンバーズ4</h1>')
             return ordinary(request, timeout)
-
+        from numbers4_agent.official_fetch import PublisherAccessDenied
         with patch('numbers4_agent.official_fetch._render_bank_page',
-                   side_effect=ResultFetchError('bank browser served a blocked-access page')):
+                   side_effect=PublisherAccessDenied('bank browser request rejected: HTTP 403')) as render:
             summary = sync(self.root, now=self.now, months_back=2,
-                           opener=blocked_raw_bank, bank_browser_fallback=True)
-        self.assertEqual(summary['status'], 'blocked_no_bank_verified_results')
-        self.assertEqual(summary['new_verified_rows'], 0)
+                           opener=empty_bank, bank_browser_fallback=True)
+        self.assertEqual(len(calls), 1)
+        render.assert_called_once()
         self.assertEqual(summary['bank_rows'], 0)
-        self.assertTrue(any('HTTP 403' in item['reason'] and
-                            'blocked-access page' in item['reason']
-                            for item in summary['bank_errors']))
+        self.assertEqual(summary['rakuten_rows'], 2)
+        self.assertEqual(summary['requests_skipped_after_access_denial'], 1)
+        self.assertEqual(summary['bank_errors'][0]['code'], 'publisher_access_denied')
+        self.assertEqual(summary['bank_errors'][1]['code'], 'skipped_after_access_denial')
+        self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
+
+    def test_rakuten_denial_does_not_prevent_independent_bank_fetch(self):
+        ordinary = open_mocks()
+        calls = []
+        def blocked_rakuten(request, timeout):
+            if 'takarakuji.rakuten.co.jp' in request.full_url:
+                calls.append(request.full_url)
+                raise HTTPError(request.full_url, 429, 'Rate limited', None, None)
+            return ordinary(request, timeout)
+        summary = sync(self.root, now=self.now, months_back=2, opener=blocked_rakuten)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(summary['bank_rows'], 2)
+        self.assertEqual(summary['rakuten_rows'], 0)
+        self.assertEqual(summary['publisher_matched_rows'], 0)
+        self.assertIn('rakuten', summary['publisher_access_denials'])
         self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
     def test_bank_browser_empty_result_stays_blocked_and_explains_error(self):
