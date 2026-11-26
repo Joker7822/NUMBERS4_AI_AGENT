@@ -157,6 +157,8 @@ jobs:
         run: python -m numbers4_agent.benchmark_box_moments
       - name: Compare shared validated audit inputs to independent loads
         run: python -m numbers4_agent.benchmark_shared_audit
+      - name: Compare rolling payout totals to full-list means
+        run: python -m numbers4_agent.benchmark_payout_totals
       - name: Run complete read-only research audit
         run: |
           python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
