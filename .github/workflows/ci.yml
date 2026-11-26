@@ -159,6 +159,24 @@ jobs:
         run: python -m numbers4_agent.benchmark_shared_audit
       - name: Compare rolling payout totals to full-list means
         run: python -m numbers4_agent.benchmark_payout_totals
+      - name: Run descriptive retrospective stability audit
+        run: |
+          python -m numbers4_agent.stability_audit --root . > /tmp/numbers4-stability.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/numbers4-stability.json').read_text())
+          assert r['within_audit_comparison_count']==24
+          assert r['prospective_skill_confirmed'] is False
+          assert r['production_promotion_authorized'] is False
+          assert r['actual_purchase'] is False
+          assert r['purchase_decision']=='SKIP'
+          for name, cohort in r['cohorts'].items():
+              for length, models in cohort['block_results'].items():
+                  for model, v in models.items():
+                      print('STABILITY',name,length,model,v['observed_mean_log_edge'],
+                            v['nominal_bonferroni_percentile_range'])
+          PY
       - name: Run complete read-only research audit
         run: |
           python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
@@ -179,7 +197,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: integrated-research-audit
-          path: /tmp/numbers4-integrated.json
+          path: |
+            /tmp/numbers4-integrated.json
+            /tmp/numbers4-stability.json
           retention-days: 30
   frontend:
     runs-on: ubuntu-latest
