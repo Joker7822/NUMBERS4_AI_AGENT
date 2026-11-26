@@ -1,9 +1,9 @@
 {
   "version": "numbers4-official-ingestion-summary-v1",
-  "checked_at_jst": "2026-11-26T17:47:39+09:00",
+  "checked_at_jst": "2026-11-27T07:17:58+09:00",
   "status": "blocked_no_bank_verified_results",
   "bank_rows": 0,
-  "rakuten_rows": 255,
+  "rakuten_rows": 256,
   "publisher_matched_rows": 0,
   "new_verified_rows": 0,
   "denied_publishers": [
