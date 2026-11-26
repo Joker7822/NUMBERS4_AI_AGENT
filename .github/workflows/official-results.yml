@@ -104,6 +104,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python -m numbers4_agent.cli --root . fetch-official --months-back 12 --bank-browser-fallback > /tmp/numbers4-fetch.json
+            python -m numbers4_agent.operational_health < /tmp/numbers4-fetch.json > research/official_ingestion_status.json
             python -m numbers4_agent.cli --root . prove --output research/historical_backtest.json > /tmp/numbers4-research.json
             python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-dashboard.json
             python - <<'PY'
@@ -125,10 +126,10 @@ jobs:
           print('historical only:', proof['research_unverified_history'])
           PY
             git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl
-            for output in data/auto_verified_draws.jsonl research/historical_unverified.json research/historical_backtest.json docs/data/status.json; do
+            for output in data/auto_verified_draws.jsonl research/historical_unverified.json research/historical_backtest.json research/official_ingestion_status.json docs/data/status.json; do
               if [ -f "$output" ]; then git add -- "$output"; fi
             done
-            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/auto_verified_draws.jsonl|research/historical_(unverified|backtest).json|docs/data/status.json)$' || true)"
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(data/auto_verified_draws.jsonl|research/historical_(unverified|backtest).json|research/official_ingestion_status.json|docs/data/status.json)$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unexpected staged path: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No change to publish'; exit 0; fi
             git commit -m 'data: publish independently matched Numbers4 results and exploratory diagnostics'

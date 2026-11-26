@@ -489,6 +489,27 @@ export function normalizeStatus(s){
       throw new Error('オンライン本番監査の出典・権限・状態が不正です');
     }
   }
+  const h=s.operational_health;
+  if(h!==undefined){
+    const n=x=>Number.isSafeInteger(x)&&x>=0;
+    const state=(x,allowed)=>x&&allowed.includes(x.state);
+    const i=h?.official_ingestion, c=h?.schedule, t=h?.training, p=h?.publication, q=h?.prospective;
+    if(h?.version!=="numbers4-operational-health-v1"||h.actual_purchase!==false||h.promotion_authorized_by_monitor!==false||h.max_ingestion_age_hours!==96||
+       !state(i,["not_checked","invalid_evidence","stale","publisher_disagreement","access_denied","no_matches","matched"])||
+       !Array.isArray(i.denied_publishers)||i.denied_publishers.some(x=>!["mizuhobank","rakuten"].includes(x))||
+       (["not_checked","invalid_evidence"].includes(i.state)?
+         [i.checked_at_jst,i.age_hours,i.bank_rows,i.rakuten_rows,i.matched_rows,i.skipped_requests].some(x=>x!==null):
+         !safeTime(i.checked_at_jst)||typeof i.age_hours!=="number"||!Number.isFinite(i.age_hours)||i.age_hours<0||
+           ![i.bank_rows,i.rakuten_rows,i.matched_rows,i.skipped_requests].every(n)||i.matched_rows>Math.min(i.bank_rows,i.rakuten_rows))||
+       !state(c,["no_reviewed_target","review_not_yet_effective","freeze_window_closed","reviewed_target","invalid_schedule"])||
+       !(c.target_round===null||n(c.target_round))||!(c.reviewed_entries_today_or_later===null||n(c.reviewed_entries_today_or_later))||
+       !state(t,["integrity_blocked","no_verified_draws","verified_history_available"])||!n(t.verified_draws)||
+       !state(p,["integrity_blocked","no_forecasts","witnesses_pending","witnesses_recorded"])||!n(p.forecasts)||!n(p.witnesses)||p.witnesses>p.forecasts||
+       !state(q,["integrity_blocked","insufficient_draws","minimum_count_met_not_proof"])||!n(q.eligible)||!n(q.required)||q.required===0||q.eligible>p.witnesses||q.eligible>t.verified_draws||
+       !s.auto_learning||t.verified_draws!==s.auto_learning.officially_verified_training_rounds||p.forecasts!==s.auto_learning.shadow_forecasts_recorded||p.witnesses!==s.auto_learning.pre_draw_github_witnesses||q.eligible!==s.auto_learning.eligible_prospective_draws||q.required!==s.auto_learning.required_prospective_draws){
+      throw new Error("運用診断の形式・証拠が不正です");
+    }
+  }
   const ageMinutes=(Date.now()-Date.parse(s.generated_at_jst))/60000;
   // Scheduled research runs every 120 minutes; allow a 30-minute Actions delay.
   return {...s,ageMinutes,stale:ageMinutes>150||ageMinutes< -5};
