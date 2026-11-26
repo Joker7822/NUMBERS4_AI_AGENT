@@ -155,6 +155,8 @@ jobs:
         run: python -m numbers4_agent.benchmark_rolling_counts
       - name: Benchmark BOX sufficient statistics against full vector
         run: python -m numbers4_agent.benchmark_box_moments
+      - name: Compare shared validated audit inputs to independent loads
+        run: python -m numbers4_agent.benchmark_shared_audit
       - name: Run complete read-only research audit
         run: |
           python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json

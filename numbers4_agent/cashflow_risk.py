@@ -131,6 +131,13 @@ def audit(root: Path) -> dict:
         raise ValueError("historical archive missing or insufficient")
     straight, smeta = load_payouts(root, history)
     box, bmeta = load_box_payouts(root, history)
+    return _audit_loaded(history, meta, straight, smeta, box, bmeta)
+
+
+def _audit_loaded(history, meta, straight, smeta, box, bmeta) -> dict:
+    """Internal report builder; callers must use validated loader results."""
+    if len(history) < 2:
+        raise ValueError("historical archive missing or insufficient")
     _, grades = replay(history)
     return {
         "version": VERSION,

@@ -1,6 +1,8 @@
 import copy
+import tempfile
 import unittest
 from unittest.mock import patch
+from contextlib import ExitStack
 from pathlib import Path
 
 from numbers4_agent import integrated_audit as m
@@ -75,18 +77,52 @@ class IntegratedAuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.integrate(reports, future)
 
-    def test_orchestration_invokes_each_read_only_audit(self):
+    def test_shared_loaders_once_and_report_arguments(self):
         reports, future = fixture()
         root = Path(".")
-        with patch.object(m.return_audit, "audit", return_value=reports["returns"]) as a, \
-             patch.object(m.payout_research, "audit", return_value=reports["payouts"]), \
-             patch.object(m.box_calibration, "audit", return_value=reports["box"]), \
-             patch.object(m.ensemble_audit, "audit", return_value=reports["ensemble"]), \
-             patch.object(m.cashflow_risk, "audit", return_value=reports["cashflow"]), \
-             patch.object(m, "assess_prospective", return_value=future) as p:
+        history = [{"round": 1}, {"round": 2}]
+        archive, smeta, bmeta = {"a": 1}, {"b": 2}, {"c": 3}
+        straight, box = [1, 2], [3, None]
+        with ExitStack() as stack:
+            fp = stack.enter_context(patch.object(m, "_fingerprint", return_value=("same",)))
+            h = stack.enter_context(patch.object(m.historical_archive, "load_archive", return_value=(history, archive)))
+            s = stack.enter_context(patch.object(m.finance, "load_payouts", return_value=(straight, smeta)))
+            b = stack.enter_context(patch.object(m.box_finance, "load_box_payouts", return_value=(box, bmeta)))
+            modules = {"returns": m.return_audit, "payouts": m.payout_research,
+                       "box": m.box_calibration, "ensemble": m.ensemble_audit, "cashflow": m.cashflow_risk}
+            builders = {name: stack.enter_context(patch.object(module, "_audit_loaded", return_value=reports[name]))
+                        for name, module in modules.items()}
+            p = stack.enter_context(patch.object(m, "assess_prospective", return_value=future))
             self.assertEqual(m.audit(root, simulations=10, seed=1)["historical_audit_count"], 5)
-            a.assert_called_once_with(root, simulations=10, seed=1)
+            h.assert_called_once_with(root)
+            s.assert_called_once_with(root, history)
+            b.assert_called_once_with(root, history)
             p.assert_called_once_with(root)
+            self.assertEqual(fp.call_count, 2)
+            builders["returns"].assert_called_once_with(history, archive, straight, smeta, box, bmeta, simulations=10, seed=1)
+            for name in ("payouts", "cashflow"):
+                builders[name].assert_called_once_with(history, archive, straight, smeta, box, bmeta)
+            for name in ("box", "ensemble"):
+                builders[name].assert_called_once_with(history, archive)
+            fp.side_effect = [("before",), ("after",)]
+            with self.assertRaisesRegex(ValueError, "inputs changed"):
+                m.audit(root)
+
+    def test_fingerprint_covers_all_six_inputs_and_missing_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for path in m.INPUT_PATHS:
+                (root/path).parent.mkdir(parents=True, exist_ok=True)
+                (root/path).write_bytes(b"original")
+            original = m._fingerprint(root)
+            self.assertEqual(len(original), 6)
+            for path in m.INPUT_PATHS:
+                (root/path).write_bytes(b"changed")
+                self.assertNotEqual(m._fingerprint(root), original)
+                (root/path).write_bytes(b"original")
+            (root/m.INPUT_PATHS[-1]).unlink()
+            with self.assertRaises(OSError):
+                m._fingerprint(root)
 
 
 if __name__ == "__main__":

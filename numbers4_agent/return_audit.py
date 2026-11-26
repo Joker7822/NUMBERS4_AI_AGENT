@@ -118,6 +118,13 @@ def audit(root: Path, *, simulations: int = 10_000, seed: int = 20261126) -> dic
         raise ValueError("at least two historical draws are required")
     straight, straight_meta = load_payouts(root, history)
     box, box_meta = load_box_payouts(root, history)
+    return _audit_loaded(history, archive_meta, straight, straight_meta, box, box_meta, simulations=simulations, seed=seed)
+
+
+def _audit_loaded(history, archive_meta, straight, straight_meta, box, box_meta, *, simulations, seed) -> dict:
+    """Internal report builder; callers must use validated loader results."""
+    if len(history) < 2:
+        raise ValueError("at least two historical draws are required")
     return {
         "version": VERSION,
         "status": "secondary_history_conditional_benchmark_only",

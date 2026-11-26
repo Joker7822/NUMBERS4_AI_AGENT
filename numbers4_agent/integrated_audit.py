@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+from hashlib import sha256
+
+from . import historical_archive, finance, box_finance
 
 from . import box_calibration, cashflow_risk, ensemble_audit, payout_research, return_audit
 from .automatic_learning import assess as assess_prospective
@@ -81,12 +84,35 @@ def integrate(reports: dict, prospective: dict) -> dict:
     }
 
 
+INPUT_PATHS = (
+    historical_archive.ARCHIVE, historical_archive.PROVENANCE,
+    finance.PAYOUT_CSV, finance.PAYOUT_META,
+    box_finance.PAYOUT_CSV, box_finance.PAYOUT_META,
+)
+
+
+def _fingerprint(root: Path) -> tuple[str, ...]:
+    """Detect missing/changed inputs, including provenance-only edits."""
+    return tuple(sha256((root / path).read_bytes()).hexdigest() for path in INPUT_PATHS)
+
+
 def audit(root: Path, *, simulations: int = 10000, seed: int = 20261126) -> dict:
+    # Scope reuse to this call only. No cache survives a changed archive or run.
+    before = _fingerprint(root)
+    history, archive = historical_archive.load_archive(root)
+    if len(history) < 2:
+        raise ValueError("at least two historical draws are required")
+    straight, smeta = finance.load_payouts(root, history)
+    box, bmeta = box_finance.load_box_payouts(root, history)
     reports = {
-        "returns": return_audit.audit(root, simulations=simulations, seed=seed),
-        "payouts": payout_research.audit(root),
-        "box": box_calibration.audit(root),
-        "ensemble": ensemble_audit.audit(root),
-        "cashflow": cashflow_risk.audit(root),
+        "returns": return_audit._audit_loaded(history, archive, straight, smeta, box, bmeta,
+                                             simulations=simulations, seed=seed),
+        "payouts": payout_research._audit_loaded(history, archive, straight, smeta, box, bmeta),
+        "box": box_calibration._audit_loaded(history, archive),
+        "ensemble": ensemble_audit._audit_loaded(history, archive),
+        "cashflow": cashflow_risk._audit_loaded(history, archive, straight, smeta, box, bmeta),
     }
-    return integrate(reports, assess_prospective(root))
+    report = integrate(reports, assess_prospective(root))
+    if _fingerprint(root) != before:
+        raise ValueError("historical audit inputs changed during evaluation")
+    return report
