@@ -4,7 +4,7 @@ No number recommendations, promotion, purchase decisions, or official verificati
 """
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, deque
 from math import sqrt
 from pathlib import Path
 
@@ -38,6 +38,38 @@ def prior_estimates(values: list[int]) -> dict[str, float] | None:
     }
 
 
+class PayoutTotals:
+    """Exact integer totals with bounded 30- and 100-observation windows."""
+    def __init__(self):
+        self._count = 0
+        self._total = 0
+        self._windows = {length: deque(maxlen=length) for length in (30, 100)}
+        self._sums = {length: 0 for length in self._windows}
+
+    def __len__(self):
+        return self._count
+
+    def append(self, value: int) -> None:
+        if type(value) is not int or value <= 0:
+            raise ValueError("invalid positive integer payout")
+        for length, window in self._windows.items():
+            if len(window) == length:
+                self._sums[length] -= window[0]
+            window.append(value)
+            self._sums[length] += value
+        self._total += value
+        self._count += 1
+
+    def estimates(self) -> dict[str, float] | None:
+        if self._count < WARMUP:
+            return None
+        return {
+            "expanding_mean": self._total / self._count,
+            "rolling_30": self._sums[30] / 30,
+            "rolling_100": self._sums[100] / 100,
+        }
+
+
 def _metrics(events: list[tuple[int, int, dict[str, float]]]) -> dict:
     n = len(events)
     if not n:
@@ -58,7 +90,7 @@ def evaluate(history: list[dict], straight: list[int], box: list[int | None],
     if (not history or len(history) != len(straight) or len(history) != len(box)
             or type(split_round) is not int or split_round < 1):
         raise ValueError("invalid aligned payout history or split")
-    observed: dict[str, list[int]] = {g: [] for g in GROUPS}
+    observed = {g: PayoutTotals() for g in GROUPS}
     events: dict[str, list[tuple[int, int, dict[str, float]]]] = {g: [] for g in GROUPS}
     previous_date = ""
     for index, row in enumerate(history):
@@ -79,7 +111,7 @@ def evaluate(history: list[dict], straight: list[int], box: list[int | None],
 
         # Form every conditional group estimate before consuming this draw.
         # The actual BOX group is used only to select which estimate to grade.
-        predictions = {g: prior_estimates(observed[g]) for g in GROUPS}
+        predictions = {g: observed[g].estimates() for g in GROUPS}
         outcomes = [("straight", s)]
         if group is not None:
             outcomes.append((group, b))
