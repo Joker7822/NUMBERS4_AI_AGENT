@@ -5,6 +5,7 @@ from urllib.parse import parse_qs, urlsplit
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from numbers4_agent.research_acquisition import (
     VERSION, SOURCE_LEDGER, PROGRESS_PATH, collect, persist, _seen,
@@ -134,6 +135,49 @@ class ContinuousResearchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"ledger checksum"):
             collect(self.root,["lottery"],crossref_fetch=crossref_page,
                     request_budget=1,now=NOW)
+
+    def test_stale_collection_cannot_append_duplicate_batch(self):
+        a, stage_a = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                             request_budget=1, now=NOW)
+        b, stage_b = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                             request_budget=1, now=NOW)
+        persist(self.root, stage_a, a)
+        before = (self.root/SOURCE_LEDGER).read_bytes()
+        with self.assertRaisesRegex(ValueError, "stale"):
+            persist(self.root, stage_b, b)
+        self.assertEqual((self.root/SOURCE_LEDGER).read_bytes(), before)
+        self.assertEqual(len(_seen(self.root)[0]), 20)
+
+    def test_duplicate_staged_identity_rejected_before_write(self):
+        report, staged = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                                 request_budget=1, now=NOW)
+        staged["new_sources"][1] = dict(staged["new_sources"][0])
+        with self.assertRaisesRegex(ValueError, "duplicate staged"):
+            persist(self.root, staged, report)
+        self.assertFalse((self.root/SOURCE_LEDGER).exists())
+        self.assertFalse((self.root/PROGRESS_PATH).exists())
+
+    def test_exhausted_unchanged_checkpoint_is_not_rewritten(self):
+        report, staged = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                                 request_budget=2, now=NOW)
+        persist(self.root, staged, report)
+        report, staged = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                                 request_budget=2, now=NOW)
+        self.assertEqual(report["requests_attempted_this_run"], 0)
+        self.assertEqual(report["new_unique_sources"], 0)
+        with patch.object(Path, "write_bytes", side_effect=AssertionError("unexpected rewrite")):
+            persist(self.root, staged, report)
+
+    def test_checkpoint_edit_invalidates_staged_collection(self):
+        report, staged = collect(self.root, ["lottery"], crossref_fetch=crossref_page,
+                                 request_budget=1, now=NOW)
+        path = self.root/PROGRESS_PATH
+        path.parent.mkdir()
+        path.write_text(json.dumps({"version":VERSION,"request_counter":0,"positions":{}}),
+                        encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "stale"):
+            persist(self.root, staged, report)
+        self.assertFalse((self.root/SOURCE_LEDGER).exists())
 
     def test_cumulative_budget_is_never_an_infinite_http_loop(self):
         for budget in (0,-1,101,True):

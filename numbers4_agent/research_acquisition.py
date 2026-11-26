@@ -21,7 +21,7 @@ from .research_discovery import (
     _brave_entries, _brave_request, _crossref_entries, _crossref_request,
     _queries,
 )
-from .store import append, load
+from .store import append, load, file_hash
 
 VERSION = "numbers4-continuous-discovery-v1"
 PROGRESS_PATH = Path("research/discovery_progress.json")
@@ -94,6 +94,7 @@ def collect(root: Path, queries: list[str], *, brave_api_key: str | None = None,
     if type(request_budget) is not int or not 1 <= request_budget <= 100:
         raise ValueError("per-run request budget must be between 1 and 100")
     now = (now or datetime.now(JST)).astimezone(JST)
+    input_hashes = _input_hashes(root)
     state = _progress(root)
     seen, old_batches = _seen(root)
     known_before = len(seen)
@@ -213,19 +214,48 @@ def collect(root: Path, queries: list[str], *, brave_api_key: str | None = None,
         "official_results_verified": False,
         "automatic_production_model_promotion": False,
     }
-    return discovery, {"progress": staged, "new_sources": new_sources}
+    return discovery, {"progress": staged, "new_sources": new_sources,
+                       "input_hashes": input_hashes}
+
+
+def _input_hashes(root: Path) -> dict:
+    return {str(path): file_hash(root / path) for path in (SOURCE_LEDGER, PROGRESS_PATH)}
 
 
 def persist(root: Path, staged: dict, discovery: dict) -> None:
-    """Commit source ledger and checkpoint only AFTER the full replay succeeds."""
+    """Commit only a still-current staged collection after the full replay."""
     expected = _progress(root)
     if (not isinstance(staged, dict) or
+            staged.get("input_hashes") != _input_hashes(root) or
             staged.get("progress", {}).get("request_counter", -1) <
             expected["request_counter"] or
             discovery.get("version") != VERSION or
-            len(staged.get("new_sources", [])) != discovery["new_unique_sources"]):
-        raise ValueError("research acquisition staging is inconsistent")
+            not isinstance(staged.get("new_sources"), list) or
+            len(staged["new_sources"]) != discovery["new_unique_sources"]):
+        raise ValueError("research acquisition staging is inconsistent or stale")
     new = staged["new_sources"]
+    seen, batches = _seen(root)
+    identities = set()
+    for source in new:
+        if not isinstance(source, dict):
+            raise ValueError("malformed staged source")
+        provider, identifier = source.get("provider"), source.get("id")
+        if not isinstance(provider, str) or not isinstance(identifier, str):
+            raise ValueError("missing staged source identity")
+        identity = (provider, identifier)
+        if identity in seen or identity in identities:
+            raise ValueError("duplicate staged source identity")
+        identities.add(identity)
+    if (discovery.get("lifetime_unique_sources_before_run") != len(seen)
+            or discovery.get("cumulative_batches_before_run") != batches
+            or discovery.get("lifetime_unique_sources_after_commit") != len(seen) + len(identities)):
+        raise ValueError("research acquisition source counts disagree")
+    # Serialize before appending so a malformed checkpoint cannot fail later
+    # merely because JSON serialization was impossible.
+    raw = (json.dumps(staged["progress"], ensure_ascii=False, sort_keys=True,
+                      indent=2, allow_nan=False) + "\n").encode("utf-8")
+    if staged["input_hashes"] != _input_hashes(root):
+        raise ValueError("research acquisition inputs changed during validation")
     if new:
         append(root / SOURCE_LEDGER, {
             "version": VERSION, "observed_at_jst": discovery["searched_at_jst"],
@@ -234,7 +264,7 @@ def persist(root: Path, staged: dict, discovery: dict) -> None:
             "can_train_production": False, "purchase_authorized": False,
         })
     destination = root / PROGRESS_PATH
+    if destination.is_file() and destination.read_bytes() == raw:
+        return
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(
-        json.dumps(staged["progress"], ensure_ascii=False, sort_keys=True,
-                   indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    destination.write_bytes(raw)

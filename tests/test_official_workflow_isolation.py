@@ -18,6 +18,16 @@ class OfficialWorkflowIsolationTests(unittest.TestCase):
         self.assertNotIn("contents: write", pr)
         self.assertNotIn("git push", pr)
 
+    def test_pr_validation_does_not_call_live_publishers(self):
+        workflow = (ROOT / ".github/workflows/official-results.yml").read_text()
+        pr = workflow.split("  pull-request-validation:\n", 1)[1].split(
+            "\n  fetch-and-verify:\n", 1)[0]
+        production = workflow.split("  fetch-and-verify:\n", 1)[1]
+        self.assertNotIn("fetch-official", pr)
+        self.assertIn("python -m unittest discover -s tests -v", pr)
+        self.assertIn("python -m numbers4_agent.cli --root . prove", pr)
+        self.assertIn("fetch-official", production)
+
     def test_pr_concurrency_never_uses_the_production_lock(self):
         workflow = (ROOT / ".github/workflows/official-results.yml").read_text()
         concurrency = workflow.split("\nconcurrency:\n", 1)[1].split("\njobs:\n", 1)[0]
