@@ -281,12 +281,18 @@ def sync(root: Path, *, now: datetime | None = None, months_back: int = 12,
                     url, host, parse, opener=opener,
                     bank_browser_fallback=bank_browser_fallback and name == "mizuhobank",
                 )
+                # Stage the entire publisher/month response before accepting any row.
+                # A wrong-month or conflicting row must not leave a partial response
+                # in the candidate set used for independent corroboration.
+                staged: dict[int, dict] = {}
                 for row in observations:
                     if row["draw_date"][:7] != f"{year:04d}-{month:02d}":
                         raise ResultFetchError("publisher month disagrees with request")
-                    if row["round"] in target and any(target[row["round"]][key] != row[key] for key in ("round", "draw_date", "winning_number")):
-                        raise ResultFetchError("conflicting publisher row")
-                    target[row["round"]] = {**row, "url": url, "sha256": content_sha}
+                    for existing in (target.get(row["round"]), staged.get(row["round"])):
+                        if existing is not None and any(existing[key] != row[key] for key in ("round", "draw_date", "winning_number")):
+                            raise ResultFetchError("conflicting publisher row")
+                    staged[row["round"]] = {**row, "url": url, "sha256": content_sha}
+                target.update(staged)
             except (ResultFetchError, ValueError) as exc:
                 errors.append({"publisher": name, "month": f"{year:04d}-{month:02d}", "reason": str(exc)})
     path = root / "data" / AUTO_LEDGER

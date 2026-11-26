@@ -50,3 +50,22 @@ after writing source diagnostics and an incident.
   results must not increment verified draws.
 - Preserve immutable forecast and observation ledgers.
 - Never infer predictive skill from retrospective results or authorize purchases.
+
+## 2026-11-26 follow-up
+
+The public Mizuho Numbers4 results page still exposes a table template without
+explicit draw rows in the retrieved HTML:
+https://www.mizuhobank.co.jp/takarakuji/check/numbers/numbers4/index.html
+
+The bank's historical index is public, but its current-year template alone does
+not establish a working structured feed:
+https://www.mizuhobank.co.jp/takarakuji/check/numbers/backnumber/index.html
+
+A successful PR workflow is a code validation result, not live data recovery.
+The dedicated authorized runner is restricted to non-PR main-branch jobs;
+PR validation runs on a GitHub-hosted runner with read-only token permissions.
+A malformed publisher/month response is rejected atomically.
+
+No publisher permission, access to a configured authorized runner, or fresh
+dual-source matches were established by this code change. Do not populate the
+approved schedule from generic weekday rules or promote secondary observations.

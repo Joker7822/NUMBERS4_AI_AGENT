@@ -141,6 +141,37 @@ jobs:
           name: straight-research-python-${{ matrix.python-version }}
           path: /tmp/numbers4-straight-benchmark.json
           retention-days: 30
+  integrated-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run complete read-only research audit
+        run: |
+          python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/numbers4-integrated.json').read_text())
+          assert report['historical_audit_count'] == 5
+          assert report['purchase_decision'] == 'SKIP'
+          assert report['actual_purchase'] is False
+          assert report['production_promotion_authorized'] is False
+          assert report['positive_expected_value_confirmed'] is False
+          print('Integrated research audit:', report['last_round'], report['blockers'])
+          PY
+          git diff --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integrated-research-audit
+          path: /tmp/numbers4-integrated.json
+          retention-days: 30
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
