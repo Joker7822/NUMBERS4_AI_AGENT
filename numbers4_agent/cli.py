@@ -15,6 +15,7 @@ from .official_fetch import sync
 from .proof import run as research_proof, save_report
 from .historical_archive import archive_summary
 from .online_learning import write_replay
+from .payout_research import audit as audit_payouts
 from .straight_challenger import write_report as write_straight_benchmark
 from .open_web import inspect_urls as inspect_public_web
 from .research_discovery import (
@@ -64,6 +65,7 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("audit", help="print snapshot and source conflicts")
     sub.add_parser("evaluate", help="grade existing pre-issued tickets against two entered sources")
     sub.add_parser("backtest", help="historical walk-forward, never prospective confirmation")
+    sub.add_parser("audit-payouts", help="read-only prior-observation payout research audit")
     sub.add_parser("audit-history", help="validate full secondary archive from round 1 (not officially verified)")
     sub.add_parser("replay-history", help="research-only predict each draw starting from round 2")
     challenger = sub.add_parser("benchmark-straight",
@@ -144,6 +146,8 @@ def main(argv: list[str] | None = None) -> int:
             result = {"status": "two_source_manual_entry_only", "graded": graded_predictions(root)}
         elif args.command == "backtest":
             result = walk_forward(root)
+        elif args.command == "audit-payouts":
+            result = audit_payouts(root)
         elif args.command == "audit-history":
             result = archive_summary(root)
         elif args.command == "replay-history":
