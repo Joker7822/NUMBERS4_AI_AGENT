@@ -166,6 +166,25 @@ class OfficialFetchTests(unittest.TestCase):
                             for item in summary['bank_errors']))
         self.assertFalse((self.root/'data'/'auto_verified_draws.jsonl').exists())
 
+    def test_mixed_month_bank_response_never_partially_verifies(self):
+        mixed = BANK_OCT.replace("2026年10月30日", "2026年11月1日")
+        result = sync(self.root, now=self.now, months_back=2,
+                      opener=open_mocks(bank=mixed))
+        self.assertEqual(result["bank_rows"], 0)
+        self.assertEqual(result["publisher_matched_rows"], 0)
+        self.assertEqual(result["status"], "blocked_no_bank_verified_results")
+        self.assertTrue(any("month disagrees" in e["reason"] for e in result["bank_errors"]))
+        self.assertFalse((self.root / "data" / "auto_verified_draws.jsonl").exists())
+
+    def test_mixed_month_rakuten_response_never_partially_verifies(self):
+        mixed = RAK_OCT.replace("2026/10/30", "2026/11/1")
+        result = sync(self.root, now=self.now, months_back=2,
+                      opener=open_mocks(rak=mixed))
+        self.assertEqual(result["rakuten_rows"], 0)
+        self.assertEqual(result["publisher_matched_rows"], 0)
+        self.assertTrue(any("month disagrees" in e["reason"] for e in result["rakuten_errors"]))
+        self.assertFalse((self.root / "research" / "historical_unverified.json").exists())
+
     def test_source_conflict_refuses_batch_without_partial_commit(self):
         faulty=RAK_OCT.replace('2491','2492')
         with self.assertRaisesRegex(ResultFetchError,'publisher disagreement'):
