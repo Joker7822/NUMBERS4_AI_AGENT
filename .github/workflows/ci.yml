@@ -177,6 +177,9 @@ jobs:
                       print('STABILITY',name,length,model,v['observed_mean_log_edge'],
                             v['nominal_bonferroni_percentile_range'])
           PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Run complete read-only research audit
         run: |
           python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
@@ -192,6 +195,20 @@ jobs:
           print('Integrated research audit:', report['last_round'], report['blockers'])
           PY
           python -m numbers4_agent.public_integrated < /tmp/numbers4-integrated.json > /tmp/numbers4-public-integrated.json
+          python -m numbers4_agent.cli --root . build-dashboard --output /tmp/numbers4-chart-status.json > /dev/null
+          node --input-type=module - <<'JS'
+          import {readFileSync} from 'node:fs';
+          import {normalizeStatus} from './docs/dashboard.mjs';
+          import {normalizeIntegratedResearch} from './docs/integrated-research.mjs';
+          import {chartData} from './docs/cashflow-chart.mjs';
+          const read=p=>JSON.parse(readFileSync(p,'utf8'));
+          const status=normalizeStatus(read('/tmp/numbers4-chart-status.json'));
+          const integrated=normalizeIntegratedResearch(read('/tmp/numbers4-public-integrated.json'),status);
+          const data=chartData(integrated,status);
+          console.log('CASHFLOW CHART VERIFIED',data.last,JSON.stringify({
+            straight:{net:data.straight.net,drawdown:data.straight.maxDrawdown,points:data.straight.balance.length},
+            box:{net:data.box.net,drawdown:data.box.maxDrawdown,points:data.box.balance.length,skipped:data.box.skipped}}));
+          JS
           git diff --exit-code
           test -z "$(git status --porcelain --untracked-files=normal)"
       - uses: actions/upload-artifact@v4
@@ -211,5 +228,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check docs/app.js && node --check docs/dashboard.mjs && node --check docs/integrated-research.mjs && node --check docs/dashboard-refresh.mjs
+      - run: node --check docs/app.js && node --check docs/dashboard.mjs && node --check docs/integrated-research.mjs && node --check docs/dashboard-refresh.mjs && node --check docs/cashflow-chart.mjs
       - run: node --test tests/*.test.mjs
