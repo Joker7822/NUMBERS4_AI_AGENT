@@ -49,11 +49,11 @@ jobs:
           import json
           from datetime import datetime, time
           from pathlib import Path
-          from urllib.parse import urlsplit
           from numbers4_agent.sources import JST
           from numbers4_agent.automatic_learning import (
               DEADLINE_CLOCK, freeze_shadow, _verified, apply_policy)
           from numbers4_agent.publication_witness import verify_and_record
+          from numbers4_agent.draw_schedule import target_for_date
 
           root=Path('.')
           now=datetime.now(JST)
@@ -66,24 +66,11 @@ jobs:
                 'action:',result['action'],
                 'blocker:',result['integrity_blocker'])
 
-          schedule=root/'research/approved_draw_schedule.json'
-          if schedule.is_file() and now.time()<DEADLINE_CLOCK:
-              config=json.loads(schedule.read_text(encoding='utf-8'))
-              if (config.get('version')!='numbers4-approved-draw-schedule-v1'
-                      or not isinstance(config.get('rounds'),list)):
-                  raise ValueError('invalid reviewed draw schedule')
-              targets=[r for r in config['rounds']
-                       if isinstance(r,dict) and r.get('draw_date')==now.date().isoformat()]
-              if len(targets)>1:
-                  raise ValueError('duplicate approved schedule for the same draw date')
-              if targets:
-                  item=targets[0]
-                  source=urlsplit(item.get('source_url',''))
-                  if (item.get('human_reviewed') is not True or
-                      source.scheme!='https' or
-                      source.hostname not in
-                      {'www.mizuhobank.co.jp','www.takarakuji-official.jp'}):
-                      raise ValueError('calendar entry lacks reviewed official source')
+          if now.time()<DEADLINE_CLOCK:
+              item=target_for_date(root,now.date().isoformat())
+              if item is None:
+                  print('Shadow blocked: no reviewed official schedule entry')
+              else:
                   verified=_verified(root)
                   if verified and verified[-1]['round']==item['round']-1:
                       frozen=freeze_shadow(root,target_round=item['round'],
@@ -93,7 +80,7 @@ jobs:
                   else:
                       print('Shadow blocked: immediate previous bank result unavailable')
           else:
-              print('No reviewed draw calendar entry or outside freeze window')
+              print('Outside freeze window')
           PY
             git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl
             for output in data/shadow_forecasts.jsonl data/shadow_publication_witnesses.jsonl data/production_champion.json research/prospective_auto_learning_status.json; do

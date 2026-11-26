@@ -44,6 +44,17 @@ def witness(root, shadow, hour=15):
     })
 
 
+def approve(root, rnd=7105, day=DAY, **changes):
+    item = {"round": rnd, "draw_date": day, "human_reviewed": True,
+            "source_url": VALID_BANK, "reviewed_at_jst": "2026-11-01T12:00:00+09:00"}
+    item.update(changes)
+    path = root / "research/approved_draw_schedule.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"version": "numbers4-approved-draw-schedule-v1",
+                                "rounds": [item]}), encoding="utf-8")
+    return item
+
+
 class AutomaticLearningTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -53,6 +64,7 @@ class AutomaticLearningTests(unittest.TestCase):
 
     def prepare(self):
         official(self.root, "1234", 7104, "2026-10-30")
+        approve(self.root)
 
     def test_empty_bank_blocks_training_shadow_and_promotion(self):
         self.assertEqual(assess(self.root)["status"], "no_shadow_forecasts")
@@ -157,6 +169,38 @@ class AutomaticLearningTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 freeze_shadow(self.root,target_round=7105,
                               draw_date=draw,now=now)
+
+    def test_direct_freeze_requires_exact_approved_schedule(self):
+        self.prepare()
+        (self.root/"research/approved_draw_schedule.json").unlink()
+        with self.assertRaisesRegex(ValueError, "reviewed official schedule"):
+            freeze_shadow(self.root, target_round=7105, draw_date=DAY, now=self.now)
+        approve(self.root, rnd=7106)
+        with self.assertRaisesRegex(ValueError, "reviewed official schedule"):
+            freeze_shadow(self.root, target_round=7105, draw_date=DAY, now=self.now)
+        self.assertFalse((self.root/FORECAST_PATH).exists())
+
+    def test_schedule_review_after_issuance_and_training_after_issuance_refused(self):
+        self.prepare()
+        approve(self.root, reviewed_at_jst=DAY+"T16:00:00+09:00")
+        with self.assertRaisesRegex(ValueError, "after forecast issuance"):
+            freeze_shadow(self.root, target_round=7105, draw_date=DAY, now=self.now)
+        approve(self.root)
+        path=self.root/"data/auto_verified_draws.jsonl"
+        row=load(path)[0]
+        path.unlink()
+        payload={k:v for k,v in row.items() if k not in {"event_sha256","previous_sha256"}}
+        payload["verified_at_jst"]=DAY+"T16:00:00+09:00"
+        append(path,payload)
+        with self.assertRaisesRegex(ValueError, "not available"):
+            freeze_shadow(self.root, target_round=7105, draw_date=DAY, now=self.now)
+
+    def test_changed_approved_schedule_blocks_evidence(self):
+        self.prepare()
+        freeze_shadow(self.root,target_round=7105,draw_date=DAY,now=self.now)
+        approve(self.root, source_url=VALID_BANK+"?revised=1")
+        with self.assertRaisesRegex(ValueError, "schedule evidence changed"):
+            assess(self.root)
 
     def test_policy_changes_only_when_rigorous_assessment_agrees(self):
         result=assess(self.root)
