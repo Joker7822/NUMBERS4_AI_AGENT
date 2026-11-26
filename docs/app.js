@@ -1,4 +1,5 @@
 import {normalizeStatus} from "./dashboard.mjs?v=20261105-two-hour-online-learning";
+import {normalizeIntegratedResearch} from "./integrated-research.mjs?v=20261126";
 const byId=id=>document.getElementById(id);
 const set=(id,value)=>{const n=byId(id);if(n)n.textContent=value==null?"—":String(value)};
 const create=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=String(text);return n};
@@ -369,13 +370,41 @@ function render(data){
   for(const warning of data.warnings)warnings.append(create("p","",warning));
   if(!data.warnings.length)warnings.append(create("p","ok","重大な入力不一致はありません。ただし予測精度は実証されていません。"));
 }
+async function renderIntegrated(status){
+  const values=byId("integrated-values");
+  values.hidden=true;
+  set("integrated-prospective",status.auto_learning?
+    "銀行照合 "+status.auto_learning.officially_verified_training_rounds+"件／将来検証 "+
+    status.auto_learning.eligible_prospective_draws+"/"+status.auto_learning.required_prospective_draws+"件":"未確認");
+  set("integrated-state","統合監査データを確認中");
+  try{
+    const response=await fetch("./data/integrated-research.json?b="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});
+    if(!response.ok)throw new Error("HTTP "+response.status);
+    const r=normalizeIntegratedResearch(await response.json(),status);
+    const pct=x=>x.toFixed(2)+"%";
+    const edge=x=>x.mean_log_edge===null?"未評価":x.mean_log_edge.toFixed(6);
+    set("integrated-state","第"+r.last_round+"回（"+r.last_draw_date+"）までの二次履歴・来歴一致");
+    set("integrated-reference",pct(r.straight_reference.expected_gross_recovery_percent)+"／"+pct(r.box_reference.expected_gross_recovery_percent));
+    set("integrated-loss",pct(100*r.straight_reference.simulated_loss_fraction)+"／"+pct(100*r.box_reference.simulated_loss_fraction));
+    set("integrated-drawdown",yen(r.straight_risk.maximum_settled_drawdown_yen)+"／"+yen(r.box_risk.maximum_settled_drawdown_yen));
+    set("integrated-streak",r.straight_risk.longest_consecutive_losing_purchased_tickets+"回／"+r.box_risk.longest_consecutive_losing_purchased_tickets+"回");
+    set("integrated-payout",["expanding_mean","rolling_30","rolling_100"].map(n=>yen(r.payout_mae_yen[n])).join("／")+"（"+r.payout_late_count+"件）");
+    set("integrated-box",["dirichlet_100","dirichlet_1000","dirichlet_10000"].map(n=>n+": "+edge(r.box_models[n])).join("／"));
+    set("integrated-ensemble",["equal_experts","uniform50","uniform90"].map(n=>n+": "+edge(r.ensemble_models[n])).join("／"));
+    values.hidden=false;
+  }catch(e){
+    set("integrated-state","未生成・履歴更新待ち、または来歴不一致のため表示保留");
+  }
+}
 export async function refresh(){
   const button=byId("refresh"),error=byId("error");button.disabled=true;error.hidden=true;
   try{
     const response=await fetch("./data/status.json?b="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});
     if(!response.ok)throw new Error("HTTP "+response.status);
-    render(normalizeStatus(await response.json()));
-  }catch(e){error.textContent="公開データを取得・検証できません: "+String(e.message||e);error.hidden=false;
+    const data=normalizeStatus(await response.json());
+    render(data);
+    await renderIntegrated(data);
+  }catch(e){byId("integrated-values").hidden=true;set("integrated-state","公開データ検証不可");set("integrated-prospective","未確認");error.textContent="公開データを取得・検証できません: "+String(e.message||e);error.hidden=false;
     set("status-pill","データ検証不可");byId("status-pill").className="pill block";
   }finally{button.disabled=false}
 }
