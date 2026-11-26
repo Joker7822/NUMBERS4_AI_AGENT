@@ -99,7 +99,7 @@ def verify_and_record(root: Path, *, fetch=None) -> dict:
                     run.get("head_sha") != commit or
                     run.get("head_branch") != "main" or
                     run.get("name") != "Numbers4 CI" or
-                    type(run.get("id")) is not int):
+                    type(run.get("id")) is not int or run["id"] <= 0):
                 continue
             try:
                 created = _time(run["created_at"])

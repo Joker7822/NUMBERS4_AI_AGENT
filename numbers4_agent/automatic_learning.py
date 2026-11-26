@@ -17,6 +17,7 @@ from .online_learning import best_five, positional_probs, uniform_numbers
 from .rules import four_digits
 from .sources import JST, automatic_verified_rows, reconcile
 from .store import append, canonical, file_hash, load
+from .draw_schedule import DEADLINE_CLOCK, entry_hash, require_target, validate_forecast_schedule
 
 VERSION = "numbers4-prospective-auto-learning-v1"
 FORECAST_PATH = Path("data/shadow_forecasts.jsonl")
@@ -31,7 +32,6 @@ SPECS = {
 MODELS = ("uniform", *SPECS)
 ALPHA_FAMILY = 0.01
 MIN_PROSPECTIVE_DRAWS = 500
-DEADLINE_CLOCK = time(18, 0)  # stricter than the Numbers4 18:30 purchase deadline
 PROTOCOL_HASH = sha256(canonical({
     "version": VERSION, "models": SPECS,
     "family_alpha": ALPHA_FAMILY, "minimum_draws": MIN_PROSPECTIVE_DRAWS,
@@ -134,12 +134,16 @@ def freeze_shadow(root: Path, *, target_round: int, draw_date: str,
         raise ValueError("one immediately preceding bank-verified draw required")
     if date.fromisoformat(verified[-1]["draw_date"]) >= announced:
         raise ValueError("target draw date must be after last verified draw")
+    if any(_time(r["verified_at_jst"]) > stamp for r in verified):
+        raise ValueError("training evidence was not available at forecast issuance")
+    schedule = require_target(root, target_round, draw_date, stamp)
     forecasts = load(root / FORECAST_PATH)
     if forecasts:
         last = forecasts[-1]
         if target_round == last["round"]:
             if last["draw_date"] != draw_date:
                 raise ValueError("duplicate forecast round has a conflicting date")
+            validate_forecast_schedule(root, last)
             return {"status": "already_frozen", "round": target_round,
                     "forecast_sha256": last["event_sha256"]}
         if target_round != last["round"] + 1:
@@ -157,6 +161,7 @@ def freeze_shadow(root: Path, *, target_round: int, draw_date: str,
         "issued_at_jst": stamp.isoformat(timespec="seconds"),
         "freeze_deadline_jst": datetime.combine(announced, DEADLINE_CLOCK,
                                                  JST).isoformat(timespec="seconds"),
+        "schedule_entry_sha256": entry_hash(schedule),
         "training_verified_rounds": len(verified),
         "training_last_round": verified[-1]["round"],
         "training_sha256": _training_hash(verified),
@@ -217,6 +222,8 @@ def _validated_witnesses(root: Path, forecasts: list[dict]) -> dict[int, dict]:
     forecast_by_round = {r["round"]: r for r in forecasts}
     if len(forecast_by_round) != len(forecasts):
         raise ValueError("duplicate shadow forecasts")
+    for forecast in forecasts:
+        validate_forecast_schedule(root, forecast)
     records = {}
     for row in witnesses:
         rnd = row.get("round")
@@ -229,7 +236,7 @@ def _validated_witnesses(root: Path, forecasts: list[dict]) -> dict[int, dict]:
                 row.get("github_event") not in {"push", "workflow_dispatch"} or
                 row.get("github_repo") != "Joker7822/NUMBERS4_AI_AGENT" or
                 row.get("github_workflow") != "Numbers4 CI" or
-                not isinstance(row.get("github_run_id"), int) or
+                type(row.get("github_run_id")) is not int or
                 row["github_run_id"] <= 0 or
                 not isinstance(row.get("github_head_sha"), str) or
                 len(row["github_head_sha"]) != 40 or
@@ -281,7 +288,10 @@ def assess(root: Path) -> dict:
                 gap = "draw_date_or_verification_conflict"
                 break
             prior = [r for r in rows if r["round"] < forecast["round"]]
-            if (not prior or prior[-1]["round"] != forecast["training_last_round"]
+            if (not prior or prior[-1]["round"] != forecast["round"] - 1
+                    or prior[-1]["round"] != forecast["training_last_round"]
+                    or len(prior) != forecast["training_verified_rounds"]
+                    or any(_time(r["verified_at_jst"]) > _time(forecast["issued_at_jst"]) for r in prior)
                     or _training_hash(prior) != forecast["training_sha256"]):
                 gap = "historical_training_prefix_changed"
                 break
