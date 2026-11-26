@@ -84,3 +84,13 @@ The other publisher remains independent and its unverified observations remain
 research-only. Diagnostics distinguish denied requests from months not requested.
 This reduces unnecessary requests, but is not a restoration of bank access.
 A publisher-authorized route and actual dual-source matches remain required.
+
+## PR validation concurrency
+
+The read-only official-source PR validation queue is isolated per PR number.
+A newer commit may cancel validation of the same PR; it cannot cancel a main
+branch ingestion through this concurrency group. Production keeps the existing
+numbers4-official-feed-main lock and does not cancel running jobs. This removes
+queue contention between PR validation and production; it does not speed up
+publisher network requests or restore publisher access. Existing queued runs
+created with the former workflow may remain in the old queue.

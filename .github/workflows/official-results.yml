@@ -27,8 +27,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: numbers4-official-feed-main
-  cancel-in-progress: false
+  # PRs use independent read-only validation queues; main retains its existing lock.
+  group: ${{ github.event_name == 'pull_request' && format('numbers4-official-feed-pr-{0}', github.event.pull_request.number) || 'numbers4-official-feed-main' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   pull-request-validation:
