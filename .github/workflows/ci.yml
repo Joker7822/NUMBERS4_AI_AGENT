@@ -165,6 +165,7 @@ jobs:
           assert report['positive_expected_value_confirmed'] is False
           print('Integrated research audit:', report['last_round'], report['blockers'])
           PY
+          python -m numbers4_agent.public_integrated < /tmp/numbers4-integrated.json > /tmp/numbers4-public-integrated.json
           git diff --exit-code
           test -z "$(git status --porcelain --untracked-files=normal)"
       - uses: actions/upload-artifact@v4
@@ -182,5 +183,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check docs/app.js && node --check docs/dashboard.mjs
+      - run: node --check docs/app.js && node --check docs/dashboard.mjs && node --check docs/integrated-research.mjs
       - run: node --test tests/*.test.mjs

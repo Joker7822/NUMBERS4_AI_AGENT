@@ -102,15 +102,17 @@ jobs:
           print(json.dumps(summary,ensure_ascii=False,indent=2))
           print('RECURSIVE_EVOLUTION_SUMMARY_END')
           PY
+            python -m numbers4_agent.cli --root . audit-integrated --simulations 10000 > /tmp/numbers4-integrated.json
+            python -m numbers4_agent.public_integrated < /tmp/numbers4-integrated.json > docs/data/integrated-research.json
             python -m numbers4_agent.cli --root . build-dashboard --output docs/data/status.json > /tmp/numbers4-evolution-dashboard.json
             git diff --exit-code -- data/issued_forecasts.jsonl data/source_observations.jsonl data/auto_verified_draws.jsonl data/production_champion.json
             git add -- research/evolution_report.json research/evolution_round_predictions.csv \
               research/evolution_journal.jsonl research/online_replay.json \
-              research/online_round_predictions.csv docs/data/status.json
+              research/online_round_predictions.csv docs/data/status.json docs/data/integrated-research.json
             for source_state in research/discovery_sources.jsonl research/discovery_progress.json; do
               if [ -f "$source_state" ]; then git add -- "$source_state"; fi
             done
-            unexpected="$(git diff --cached --name-only | grep -Ev '^(research/(evolution_(report.json|round_predictions.csv|journal.jsonl)|online_replay.json|online_round_predictions.csv|discovery_(sources.jsonl|progress.json))|docs/data/status.json)$' || true)"
+            unexpected="$(git diff --cached --name-only | grep -Ev '^(research/(evolution_(report.json|round_predictions.csv|journal.jsonl)|online_replay.json|online_round_predictions.csv|discovery_(sources.jsonl|progress.json))|docs/data/(status.json|integrated-research.json))$' || true)"
             if [ -n "$unexpected" ]; then echo "::error::Unexpected staged file: $unexpected"; exit 1; fi
             if git diff --cached --quiet; then echo 'No research report changes'; exit 0; fi
             git commit -m 'research: evolve verified-method hypotheses and full round-two retro replay'

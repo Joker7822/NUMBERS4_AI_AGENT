@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>NUMBERS4 AI AGENT | EVIDENCE DASHBOARD</title>
   <link rel="stylesheet" href="style.css?v=20261102-replay-verification">
-  <script type="module" src="app.js?v=20261105-two-hour-online-learning"></script>
+  <script type="module" src="app.js?v=20261126-integrated-research"></script>
 </head>
 <body>
   <div class="page">
@@ -47,6 +47,22 @@
         </div>
         <p class="subtle" id="recent-week-evidence-note">未照合の数字は正式な的中判定に使いません。</p>
         <p class="subtle">参照：<a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/data/issued_forecasts.jsonl" rel="noopener noreferrer">事前発行記録</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/evolution_round_predictions.csv" rel="noopener noreferrer">研究の回別再計算</a> / <a href="https://github.com/Joker7822/NUMBERS4_AI_AGENT/blob/main/research/prospective_auto_learning_status.json" rel="noopener noreferrer">昇格判定</a></p>
+      </section>
+      <section class="panel" id="integrated-research-audit">
+        <h2>回収率・確率・資金リスクの統合研究監査</h2>
+        <p class="subtle">二次履歴による仮想評価です。実購入・将来の利益・公式配当の検証ではありません。</p>
+        <p id="integrated-state" class="subtle" role="status">統合監査データを確認中</p>
+        <div id="integrated-values" hidden>
+          <div class="data-row"><span>一様基準の期待回収率（ストレート／有効BOX）</span><strong id="integrated-reference">—</strong></div>
+          <div class="data-row"><span>仮想系列の損失割合（ストレート／有効BOX）</span><strong id="integrated-loss">—</strong></div>
+          <div class="data-row"><span>最大ドローダウン（ストレート／BOX再採点）</span><strong id="integrated-drawdown">—</strong></div>
+          <div class="data-row"><span>最長連続不的中（ストレート／BOX再採点）</span><strong id="integrated-streak">—</strong></div>
+          <div class="data-row"><span>配当MAE（累積／直近30／直近100、後半履歴）</span><strong id="integrated-payout">—</strong></div>
+          <div class="data-row"><span>BOXモデルの平均log-score差（全評価期間）</span><strong id="integrated-box">—</strong></div>
+          <div class="data-row"><span>アンサンブルの平均log-score差（全評価期間）</span><strong id="integrated-ensemble">—</strong></div>
+        </div>
+        <div class="data-row"><span>公式照合・将来検証（現行ステータス）</span><strong id="integrated-prospective">—</strong></div>
+        <p class="subtle">各評価の対象期間・BOX抽出条件は異なります。期待回収率は実績ではなく、統計スコアは利益率ではありません。正の期待値は未証明、購入判断はSKIP。</p>
       </section>
       <section class="panel" id="recursive-research-evolution">
         <div class="panel-head"><span>RECURSIVE / WEB RESEARCH / ONE TICKET</span><h2>オンライン情報を活用する研究AIの自己進化</h2></div>
