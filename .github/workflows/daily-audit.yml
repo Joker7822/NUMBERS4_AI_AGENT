@@ -29,6 +29,9 @@ jobs:
               f.write('## Numbers4 read-only evidence audit\n')
               f.write(f"- Consistent manual source records: {report['consistent_rounds']}\n")
               f.write(f"- Future prediction skill confirmed: {report['prediction_skill_confirmed']}\n")
+              health=report['operational_health']
+              for k in ('official_ingestion','schedule','training','publication','prospective'):
+                  f.write(f"- {k}: {health[k]['state']}\\n")
               for w in report['warnings']:
                   f.write(f'- WATCH: {w}\n')
           PY

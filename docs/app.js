@@ -366,6 +366,20 @@ function render(data){
   };
   set("ops-source-status",ops?statusMap[ops.secondary_feed_status]:"確認できません");
   set("ops-last-feed",ops?.secondary_checked_at_jst?japaneseTime(ops.secondary_checked_at_jst):"確認できません");
+  const health=data.operational_health;
+  const labels={not_checked:"診断未登録",invalid_evidence:"診断不一致・保留",stale:"取得診断更新遅延",
+    publisher_disagreement:"公開元不一致",access_denied:"公開元アクセス拒否",no_matches:"照合0件",matched:"一致あり（予測力とは別）",
+    no_reviewed_target:"当日の承認済み日程なし",review_not_yet_effective:"承認時刻前",freeze_window_closed:"固定期限経過",reviewed_target:"当日の日程承認済み",invalid_schedule:"日程不正・保留",
+    integrity_blocked:"証拠不整合",no_verified_draws:"公式学習データなし",verified_history_available:"公式履歴あり",no_forecasts:"事前予測なし",witnesses_pending:"公開証跡不足",witnesses_recorded:"公開証跡あり",insufficient_draws:"将来検証不足",minimum_count_met_not_proof:"最低件数到達・予測力未証明"};
+  const h=health?.official_ingestion;
+  set("health-ingestion",labels[h?.state]??"未確認");
+  set("health-ingestion-time",h?.checked_at_jst?japaneseTime(h.checked_at_jst):"未確認");
+  set("health-counts",h?.bank_rows==null?"未確認":[h.bank_rows,h.rakuten_rows,h.matched_rows].join("／")+"件");
+  set("health-schedule",labels[health?.schedule.state]??"未確認");
+  set("health-training",health?labels[health.training.state]+"（"+health.training.verified_draws+"件）":"未確認");
+  set("health-publication",health?labels[health.publication.state]+"（"+health.publication.witnesses+"/"+health.publication.forecasts+"件）":"未確認");
+  set("health-prospective",health?labels[health.prospective.state]+"（"+health.prospective.eligible+"/"+health.prospective.required+"件）":"未確認");
+  set("health-freshness",data.stale?"公開更新遅延または時刻不正":"150分以内の生成時刻");
   const warnings=byId("warning-list");warnings.replaceChildren();
   for(const warning of data.warnings)warnings.append(create("p","",warning));
   if(!data.warnings.length)warnings.append(create("p","ok","重大な入力不一致はありません。ただし予測精度は実証されていません。"));
@@ -404,7 +418,7 @@ export async function refresh(){
     const data=normalizeStatus(await response.json());
     render(data);
     await renderIntegrated(data);
-  }catch(e){byId("integrated-values").hidden=true;set("integrated-state","公開データ検証不可");set("integrated-prospective","未確認");error.textContent="公開データを取得・検証できません: "+String(e.message||e);error.hidden=false;
+  }catch(e){byId("integrated-values").hidden=true;for(const id of ["ingestion","ingestion-time","counts","schedule","training","publication","prospective","freshness"])set("health-"+id,"公開データ検証不可");set("integrated-state","公開データ検証不可");set("integrated-prospective","未確認");error.textContent="公開データを取得・検証できません: "+String(e.message||e);error.hidden=false;
     set("status-pill","データ検証不可");byId("status-pill").className="pill block";
   }finally{button.disabled=false}
 }

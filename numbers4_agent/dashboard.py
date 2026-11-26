@@ -17,6 +17,7 @@ from .finance import load_payouts, summarize_reconstruction
 from .box_finance import load_box_payouts, simulate_box
 from .online_learning import VERSION as ONLINE_VERSION
 from .online_ops import snapshot as operational_snapshot
+from .operational_health import snapshot as health_snapshot
 from .evolution import public_status as evolution_status
 from .automatic_learning import (assess as assess_auto_learning,
                                   VERSION as AUTO_VERSION,
@@ -438,6 +439,7 @@ def snapshot(root: Path, now: datetime | None = None) -> dict:
         "latest_research_forecast": _add_change_metadata(
             root, latest_research_forecast(archive, evolution, online), now),
         "online_operations": operations,
+        "operational_health": health_snapshot(root, now, prospective),
         "auto_learning": model_automation,
         "historical_accuracy_proof": {
             "status": research.get("status", "not_yet_run"),
