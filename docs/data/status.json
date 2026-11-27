@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-27T18:31:38+09:00",
+  "generated_at_jst": "2026-11-28T04:50:24+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -21,8 +21,8 @@
   "recent_week": {
     "version": "numbers4-recent-week-v1",
     "days": 7,
-    "start_date": "2026-11-21",
-    "end_date": "2026-11-27",
+    "start_date": "2026-11-22",
+    "end_date": "2026-11-28",
     "issued_forecasts": [],
     "shadow_forecasts": [],
     "research_replay": [
@@ -139,7 +139,7 @@
       "accuracy_claim": false
     },
     "archive_git_blob_sha1": "0c39e100b358d248f73edd20ac964c4406453647",
-    "generated_at_jst": "2026-11-27T18:31:33+09:00",
+    "generated_at_jst": "2026-11-28T04:50:24+09:00",
     "prediction_skill_confirmed": false,
     "officially_verified": false,
     "forecast_grading_authorized": false,
@@ -693,15 +693,15 @@
   },
   "online_operations": {
     "version": "numbers4-online-production-monitor-status-v1",
-    "state": "online_monitoring_active_secondary_research_only",
+    "state": "source_unavailable",
     "official_rule_status": "official_rule_anchors_consistent",
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
-    "rule_checked_at_jst": "2026-11-27T18:30:31+09:00",
-    "rule_audit_age_hours": 0.019,
-    "secondary_feed_status": "validated_no_new_draws",
-    "secondary_checked_at_jst": "2026-11-27T18:30:30+09:00",
-    "secondary_audit_age_hours": 0.019,
+    "rule_checked_at_jst": "2026-11-28T04:50:20+09:00",
+    "rule_audit_age_hours": 0.001,
+    "secondary_feed_status": "network_unavailable_old_archive_preserved",
+    "secondary_checked_at_jst": "2026-11-28T04:50:19+09:00",
+    "secondary_audit_age_hours": 0.001,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -709,14 +709,16 @@
     "predictive_skill_confirmed": false,
     "model_auto_promotion": false,
     "real_purchases_enabled": false,
-    "warnings": []
+    "warnings": [
+      "公開データの取得失敗により旧履歴を維持しています。"
+    ]
   },
   "operational_health": {
     "version": "numbers4-operational-health-v1",
     "official_ingestion": {
       "state": "access_denied",
       "checked_at_jst": "2026-11-27T17:57:16+09:00",
-      "age_hours": 0.573,
+      "age_hours": 10.886,
       "bank_rows": 0,
       "rakuten_rows": 256,
       "matched_rows": 0,
@@ -818,6 +820,7 @@
     "Numbers4の2公開元照合済み結果が未登録です。公式銀行の取得に失敗した場合は採点しません。",
     "楽天宝くじの結果は参考情報です。銀行未照合のため、事前発行予測の正式採点には使いません。",
     "全回の過去履歴は二次公開リポジトリの一致記録です。銀行公式未照合のため、発行済み予測の正式採点には使いません。",
+    "公開データの取得失敗により旧履歴を維持しています。",
     "事前発行した予測はありません。研究候補を発行済みとして表示しません。"
   ],
   "prediction_skill_confirmed": false,
