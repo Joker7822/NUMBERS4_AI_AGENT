@@ -1,6 +1,6 @@
 {
   "version": "numbers4-dashboard-v1",
-  "generated_at_jst": "2026-11-28T04:50:24+09:00",
+  "generated_at_jst": "2026-11-28T06:57:07+09:00",
   "product": "Numbers4",
   "official_auto_fetch_enabled": true,
   "data_scope": "bank_primary_plus_rakuten_publication_only_or_manual_entry",
@@ -10,9 +10,9 @@
   "auto_verified_rounds": 0,
   "latest_consistent_draw": null,
   "latest_unverified_draw": {
-    "round": 7123,
-    "draw_date": "2026-11-26",
-    "winning_number": "9822",
+    "round": 7124,
+    "draw_date": "2026-11-27",
+    "winning_number": "2650",
     "status": "publisher_only_not_officially_verified",
     "source": "rakuten_lottery_publication_only"
   },
@@ -698,10 +698,10 @@
     "rule_sources_consistent": 3,
     "rule_sources_required": 3,
     "rule_checked_at_jst": "2026-11-28T04:50:20+09:00",
-    "rule_audit_age_hours": 0.001,
+    "rule_audit_age_hours": 2.113,
     "secondary_feed_status": "network_unavailable_old_archive_preserved",
     "secondary_checked_at_jst": "2026-11-28T04:50:19+09:00",
-    "secondary_audit_age_hours": 0.001,
+    "secondary_audit_age_hours": 2.114,
     "max_freshness_hours": 96,
     "rule_auto_adoption": false,
     "bank_first_party_draws_verified_by_this_monitor": false,
@@ -717,10 +717,10 @@
     "version": "numbers4-operational-health-v1",
     "official_ingestion": {
       "state": "access_denied",
-      "checked_at_jst": "2026-11-27T17:57:16+09:00",
-      "age_hours": 10.886,
+      "checked_at_jst": "2026-11-28T06:56:54+09:00",
+      "age_hours": 0.004,
       "bank_rows": 0,
-      "rakuten_rows": 256,
+      "rakuten_rows": 257,
       "matched_rows": 0,
       "denied_publishers": [
         "mizuhobank"
@@ -802,14 +802,14 @@
   "historical_accuracy_proof": {
     "status": "historical_exploratory_only",
     "scope": "single_publisher_not_officially_verified",
-    "evaluated_draws": 196,
+    "evaluated_draws": 197,
     "top5_model_hits": 0,
     "top5_reference_hits": 0,
-    "uniform_expected_top5_hit_draws": 0.098,
-    "mean_log_likelihood_edge_vs_uniform": -0.057839705,
+    "uniform_expected_top5_hit_draws": 0.0985,
+    "mean_log_likelihood_edge_vs_uniform": -0.058094482,
     "descriptive_moving_block_bootstrap_95pct": [
-      -0.093790444,
-      -0.021684668
+      -0.096054856,
+      -0.02189599
     ],
     "prediction_skill_confirmed": false
   },
