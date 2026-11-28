@@ -1,43 +1,43 @@
 {
   "version": "numbers4-public-integrated-research-v1",
   "scope": "secondary_history_only",
-  "last_round": 7123,
-  "last_draw_date": "2026-11-26",
-  "archive_git_blob_sha1": "0c39e100b358d248f73edd20ac964c4406453647",
-  "straight_payout_git_blob_sha1": "84b99b0dbf4e508e0c0bab104be747f925adb7c3",
-  "box_payout_git_blob_sha1": "d9a17d52555d69df7f2d242112ea1c9c28395a20",
+  "last_round": 7124,
+  "last_draw_date": "2026-11-27",
+  "archive_git_blob_sha1": "fea887fd5dd4f119ece0bdf29983f2fc46020d6b",
+  "straight_payout_git_blob_sha1": "4f7861bc6adf6895729276c62d37301b6a8736ae",
+  "box_payout_git_blob_sha1": "932f271550329ab8c771f8a2f6757e400b3673f0",
   "actual_purchase": false,
   "production_promotion_authorized": false,
   "positive_expected_value_confirmed": false,
   "purchase_decision": "SKIP",
   "straight_reference": {
-    "evaluated_rounds": 7122,
-    "expected_gross_recovery_percent": 47.836310727323784,
+    "evaluated_rounds": 7123,
+    "expected_gross_recovery_percent": 47.83789765548224,
     "simulated_loss_fraction": 0.8367,
     "simulations": 10000
   },
   "box_reference": {
-    "evaluated_rounds": 7122,
-    "expected_gross_recovery_percent": 47.827826422322346,
-    "simulated_loss_fraction": 0.996,
+    "evaluated_rounds": 7123,
+    "expected_gross_recovery_percent": 47.82940879950566,
+    "simulated_loss_fraction": 0.9958,
     "simulations": 10000
   },
   "straight_risk": {
-    "gross_recovery_percent": 95.89300758213984,
-    "hypothetical_net_yen": -58500,
-    "maximum_settled_drawdown_yen": 1408200,
-    "longest_consecutive_losing_purchased_tickets": 7041
+    "gross_recovery_percent": 95.87954513547662,
+    "hypothetical_net_yen": -58700,
+    "maximum_settled_drawdown_yen": 1408400,
+    "longest_consecutive_losing_purchased_tickets": 7042
   },
   "box_risk": {
-    "gross_recovery_percent": 66.44403824521935,
-    "hypothetical_net_yen": -477300,
-    "maximum_settled_drawdown_yen": 574900,
+    "gross_recovery_percent": 66.43469703360044,
+    "hypothetical_net_yen": -477500,
+    "maximum_settled_drawdown_yen": 575100,
     "longest_consecutive_losing_purchased_tickets": 1182
   },
   "cashflow_chart": {
     "version": "numbers4-cashflow-exceptions-v1",
     "first_round": 2,
-    "last_round": 7123,
+    "last_round": 7124,
     "default_cost_yen": 200,
     "straight": [
       [
@@ -169,46 +169,46 @@
       ]
     ]
   },
-  "payout_late_count": 2123,
+  "payout_late_count": 2124,
   "payout_mae_yen": {
-    "expanding_mean": 208187.23361467134,
-    "rolling_30": 203666.18464437118,
-    "rolling_100": 205497.68393782384
+    "expanding_mean": 208195.65571213939,
+    "rolling_30": 203661.10954174516,
+    "rolling_100": 205498.1906779661
   },
   "box_models": {
     "uniform_ordered": {
-      "evaluated_draws": 7023,
+      "evaluated_draws": 7024,
       "mean_log_edge": 0.0
     },
     "dirichlet_100": {
-      "evaluated_draws": 7023,
-      "mean_log_edge": -0.2022500538799652
+      "evaluated_draws": 7024,
+      "mean_log_edge": -0.20222204374290753
     },
     "dirichlet_1000": {
-      "evaluated_draws": 7023,
-      "mean_log_edge": -0.06399167705533909
+      "evaluated_draws": 7024,
+      "mean_log_edge": -0.06398326354997151
     },
     "dirichlet_10000": {
-      "evaluated_draws": 7023,
-      "mean_log_edge": -0.005954076857310322
+      "evaluated_draws": 7024,
+      "mean_log_edge": -0.005953559371945732
     }
   },
   "ensemble_models": {
     "uniform": {
-      "evaluated_draws": 6123,
+      "evaluated_draws": 6124,
       "mean_log_edge": 2.2204460492503128e-16
     },
     "equal_experts": {
-      "evaluated_draws": 6123,
-      "mean_log_edge": -0.019594984926482067
+      "evaluated_draws": 6124,
+      "mean_log_edge": -0.019595590831237616
     },
     "uniform50": {
-      "evaluated_draws": 6123,
-      "mean_log_edge": -0.0045659947941413615
+      "evaluated_draws": 6124,
+      "mean_log_edge": -0.004567140921837278
     },
     "uniform90": {
-      "evaluated_draws": 6123,
-      "mean_log_edge": -8.980083107188354e-05
+      "evaluated_draws": 6124,
+      "mean_log_edge": -9.016276174538283e-05
     }
   }
 }
